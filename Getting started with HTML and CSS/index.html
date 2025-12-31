@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn HTML & CSS | Fun & Interactive Course</title>
-    <link rel="stylesheet" href="style.css?v=1.1">
+    <title>Master HTML & CSS | Comprehensive Course</title>
+    <link rel="stylesheet" href="style.css?v=1.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,7 +12,7 @@
     <nav class="course-nav">
         <div class="nav-container">
             <a href="../index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
-            <div class="course-title">HTML & CSS Masterclass</div>
+            <div class="course-title">HTML & CSS Mastery</div>
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
@@ -21,84 +21,122 @@
 
     <header class="hero-banner">
         <div class="hero-content">
-            <h1>🚀 Master the Web</h1>
-            <p>Start your journey into web development with our fun and interactive HTML & CSS course!</p>
+            <h1>🎓 Master the Web</h1>
+            <p>The ultimate guide to becoming a professional web developer.</p>
             <div class="hero-stats">
-                <span><i class="fas fa-book-open"></i> 6 Modules</span>
-                <span><i class="fas fa-clock"></i> 2 Hours</span>
-                <span><i class="fas fa-certificate"></i> Beginner Friendly</span>
+                <span><i class="fas fa-book-open"></i> 10 Modules</span>
+                <span><i class="fas fa-clock"></i> 5 Hours</span>
+                <span><i class="fas fa-certificate"></i> Mastery Level</span>
             </div>
         </div>
     </header>
 
     <main class="course-container">
         <aside class="sidebar">
-            <h3>Course Content</h3>
+            <h3>Course Modules</h3>
             <ul class="module-list">
                 <li class="active" onclick="showModule(1)"><i class="fas fa-play-circle"></i> 1. Introduction</li>
-                <li onclick="showModule(2)"><i class="fas fa-code"></i> 2. HTML Basics</li>
-                <li onclick="showModule(3)"><i class="fas fa-layer-group"></i> 3. HTML Structure</li>
-                <li onclick="showModule(4)"><i class="fas fa-palette"></i> 4. CSS Fundamentals</li>
-                <li onclick="showModule(5)"><i class="fas fa-box"></i> 5. The Box Model</li>
-                <li onclick="showModule(6)"><i class="fas fa-rocket"></i> 6. Layouts & Flexbox</li>
+                <li onclick="showModule(2)"><i class="fas fa-code"></i> 2. HTML5 Essentials</li>
+                <li onclick="showModule(3)"><i class="fas fa-sitemap"></i> 3. Semantic HTML</li>
+                <li onclick="showModule(4)"><i class="fas fa-wpforms"></i> 4. Forms & Input</li>
+                <li onclick="showModule(5)"><i class="fas fa-palette"></i> 5. CSS3 Styling</li>
+                <li onclick="showModule(6)"><i class="fas fa-box"></i> 6. Advanced Box Model</li>
+                <li onclick="showModule(7)"><i class="fas fa-rocket"></i> 7. Flexbox Layouts</li>
+                <li onclick="showModule(8)"><i class="fas fa-th"></i> 8. CSS Grid Mastery</li>
+                <li onclick="showModule(9)"><i class="fas fa-mobile-alt"></i> 9. Responsive Design</li>
+                <li onclick="showModule(10)"><i class="fas fa-magic"></i> 10. Animations & Effects</li>
             </ul>
         </aside>
 
         <section class="content-area">
+            <!-- Module 1 -->
             <div id="module1" class="module-content active">
-                <h2>Welcome to the Web! 👋</h2>
-                <p>Web development is like building a house. <strong>HTML</strong> is the structure (the walls and beams), and <strong>CSS</strong> is the decoration (the paint and furniture).</p>
+                <h2>Welcome to Mastery! 👋</h2>
+                <p>You're about to embark on a journey to master the building blocks of the web. This course covers everything from basic tags to advanced CSS animations.</p>
                 <div class="fun-fact">
                     <i class="fas fa-lightbulb"></i>
-                    <span><strong>Fun Fact:</strong> The first website ever made is still online! It was created in 1991.</span>
+                    <span><strong>Goal:</strong> By the end of this course, you'll be able to build professional, responsive websites from scratch.</span>
                 </div>
-                <button class="next-btn" onclick="showModule(2)">Start Learning <i class="fas fa-arrow-right"></i></button>
+                <div class="nav-controls">
+                    <button class="prev-btn disabled" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn" onclick="showModule(2)">Start Learning <i class="fas fa-arrow-right"></i></button>
+                </div>
             </div>
 
+            <!-- Module 2 -->
             <div id="module2" class="module-content">
-                <h2>HTML Basics 🏗️</h2>
-                <p>HTML stands for HyperText Markup Language. It uses "tags" to tell the browser what to show.</p>
+                <h2>HTML5 Essentials 🏗️</h2>
+                <p>HTML5 is the latest standard. It introduced new elements like <code>&lt;video&gt;</code>, <code>&lt;audio&gt;</code>, and <code>&lt;canvas&gt;</code>.</p>
                 <div class="code-playground">
-                    <div class="code-header">Example Code</div>
-                    <pre><code>&lt;h1&gt;Hello World!&lt;/h1&gt;
-&lt;p&gt;This is my first webpage.&lt;/p&gt;</code></pre>
-                </div>
-                <button class="next-btn" onclick="showModule(3)">Next: Structure <i class="fas fa-arrow-right"></i></button>
-            </div>
-
-            <div id="module3" class="module-content">
-                <h2>HTML Structure 🦴</h2>
-                <p>Every HTML file needs a specific structure to work correctly.</p>
-                <div class="code-playground">
-                    <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;My Page&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;!-- Content goes here --&gt;
-  &lt;/body&gt;
+                    <pre><code>&lt;!-- Basic HTML5 Template --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Mastery&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello Mastery!&lt;/h1&gt;
+&lt;/body&gt;
 &lt;/html&gt;</code></pre>
                 </div>
-                <button class="next-btn" onclick="showModule(4)">Next: CSS Intro <i class="fas fa-arrow-right"></i></button>
-            </div>
-
-            <div id="module4" class="module-content">
-                <h2>CSS Fundamentals 🎨</h2>
-                <p>CSS (Cascading Style Sheets) makes your website look beautiful. You can change colors, fonts, and sizes!</p>
-                <div class="code-playground">
-                    <pre><code>h1 {
-  color: #ff4757;
-  font-size: 40px;
-  text-align: center;
-}</code></pre>
+                <div class="nav-controls">
+                    <button class="prev-btn" onclick="showModule(1)"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn" onclick="showModule(3)">Next: Semantic HTML <i class="fas fa-arrow-right"></i></button>
                 </div>
-                <button class="next-btn" onclick="showModule(5)">Next: Box Model <i class="fas fa-arrow-right"></i></button>
             </div>
 
+            <!-- Module 3 -->
+            <div id="module3" class="module-content">
+                <h2>Semantic HTML 🦴</h2>
+                <p>Semantic elements clearly describe their meaning to both the browser and the developer. This is crucial for SEO and Accessibility.</p>
+                <div class="semantic-viz">
+                    <div class="sem-header">Header</div>
+                    <div class="sem-main">
+                        <div class="sem-nav">Nav</div>
+                        <div class="sem-section">Section / Article</div>
+                        <div class="sem-aside">Aside</div>
+                    </div>
+                    <div class="sem-footer">Footer</div>
+                </div>
+                <div class="nav-controls">
+                    <button class="prev-btn" onclick="showModule(2)"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn" onclick="showModule(4)">Next: Forms <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Module 4 -->
+            <div id="module4" class="module-content">
+                <h2>Forms & Input 📝</h2>
+                <p>Forms are how we collect data from users. HTML5 added many new input types like <code>email</code>, <code>date</code>, and <code>range</code>.</p>
+                <div class="form-demo">
+                    <input type="text" placeholder="Your Name">
+                    <input type="email" placeholder="Your Email">
+                    <button type="button" class="demo-btn">Submit Demo</button>
+                </div>
+                <div class="nav-controls">
+                    <button class="prev-btn" onclick="showModule(3)"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn" onclick="showModule(5)">Next: CSS3 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Module 5 -->
             <div id="module5" class="module-content">
-                <h2>The Box Model 📦</h2>
-                <p>In CSS, everything is a box! Understanding Margin, Border, and Padding is key.</p>
+                <h2>CSS3 Styling 🎨</h2>
+                <p>CSS3 brought powerful features like gradients, shadows, and rounded corners without needing images.</p>
+                <div class="css-demo-box">
+                    Styled with CSS3
+                </div>
+                <div class="nav-controls">
+                    <button class="prev-btn" onclick="showModule(4)"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn" onclick="showModule(6)">Next: Box Model <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Module 6 -->
+            <div id="module6" class="module-content">
+                <h2>Advanced Box Model 📦</h2>
+                <p>Mastering <code>box-sizing: border-box;</code> is essential for modern layouts. It makes padding and borders part of the width.</p>
                 <div class="box-model-viz">
                     <div class="margin">Margin
                         <div class="border">Border
@@ -108,21 +146,75 @@
                         </div>
                     </div>
                 </div>
-                <button class="next-btn" onclick="showModule(6)">Next: Layouts <i class="fas fa-arrow-right"></i></button>
+                <div class="nav-controls">
+                    <button class="prev-btn" onclick="showModule(5)"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn" onclick="showModule(7)">Next: Flexbox <i class="fas fa-arrow-right"></i></button>
+                </div>
             </div>
 
-            <div id="module6" class="module-content">
-                <h2>Layouts & Flexbox 🚀</h2>
-                <p>Flexbox is a modern way to align elements easily. It's like magic for web design!</p>
+            <!-- Module 7 -->
+            <div id="module7" class="module-content">
+                <h2>Flexbox Layouts 🚀</h2>
+                <p>Flexbox is a one-dimensional layout method for arranging items in rows or columns.</p>
                 <div class="flex-demo">
-                    <div class="flex-item">1</div>
-                    <div class="flex-item">2</div>
-                    <div class="flex-item">3</div>
+                    <div class="flex-item">Flex 1</div>
+                    <div class="flex-item">Flex 2</div>
+                    <div class="flex-item">Flex 3</div>
+                </div>
+                <div class="nav-controls">
+                    <button class="prev-btn" onclick="showModule(6)"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn" onclick="showModule(8)">Next: CSS Grid <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Module 8 -->
+            <div id="module8" class="module-content">
+                <h2>CSS Grid Mastery 🏁</h2>
+                <p>Grid is a two-dimensional layout system. It's perfect for complex page structures.</p>
+                <div class="grid-demo">
+                    <div class="grid-item header">Header</div>
+                    <div class="grid-item sidebar">Sidebar</div>
+                    <div class="grid-item main">Main Content</div>
+                    <div class="grid-item footer">Footer</div>
+                </div>
+                <div class="nav-controls">
+                    <button class="prev-btn" onclick="showModule(7)"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn" onclick="showModule(9)">Next: Responsive <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Module 9 -->
+            <div id="module9" class="module-content">
+                <h2>Responsive Design 📱</h2>
+                <p>Use Media Queries to make your site look great on all devices. Mobile-first is the best approach!</p>
+                <div class="code-playground">
+                    <pre><code>@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}</code></pre>
+                </div>
+                <div class="nav-controls">
+                    <button class="prev-btn" onclick="showModule(8)"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn" onclick="showModule(10)">Next: Animations <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Module 10 -->
+            <div id="module10" class="module-content">
+                <h2>Animations & Effects ✨</h2>
+                <p>Bring your site to life with CSS transitions and keyframe animations.</p>
+                <div class="animate-demo">
+                    Hover Me!
                 </div>
                 <div class="congrats-card">
-                    <h3>🎉 Congratulations!</h3>
-                    <p>You've completed the basics of HTML & CSS. You're ready to build amazing things!</p>
+                    <h3>🏆 You are a Master!</h3>
+                    <p>You've completed the full HTML & CSS Mastery course. Go build something amazing!</p>
                     <a href="../index.html" class="finish-btn">Back to Portfolio</a>
+                </div>
+                <div class="nav-controls">
+                    <button class="prev-btn" onclick="showModule(9)"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="next-btn disabled" disabled>Finished! <i class="fas fa-check"></i></button>
                 </div>
             </div>
         </section>
@@ -130,22 +222,17 @@
 
     <script>
         function showModule(num) {
-            // Hide all modules
             document.querySelectorAll('.module-content').forEach(m => m.classList.remove('active'));
-            // Show selected module
             document.getElementById('module' + num).classList.add('active');
             
-            // Update sidebar
             document.querySelectorAll('.module-list li').forEach((li, index) => {
                 if (index + 1 === num) li.classList.add('active');
                 else li.classList.remove('active');
             });
 
-            // Update progress bar
-            const progress = (num / 6) * 100;
+            const progress = (num / 10) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
 
-            // Scroll to top of content
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>

@@ -593,3 +593,449 @@ section {
         align-self: flex-start;
     }
 }
+
+/* Blog Page Styles */
+.blog-hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.blog-hero-content {
+    animation: fadeInUp 1s ease-out;
+}
+
+.blog-hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.blog-hero-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.95;
+}
+
+.blog-section {
+    background-color: var(--bg-light);
+    padding: 80px 20px;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.blog-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow);
+}
+
+.blog-card-image {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: var(--primary-color);
+}
+
+.blog-card-content {
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.blog-date {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.blog-category {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.blog-title {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.blog-excerpt {
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.blog-read-more {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.blog-read-more:hover {
+    color: var(--secondary-color);
+    gap: 1rem;
+}
+
+.blog-read-more i {
+    transition: transform 0.3s ease;
+}
+
+.blog-read-more:hover i {
+    transform: translateX(5px);
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.newsletter-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.newsletter-content p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.95;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.newsletter-form input {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.newsletter-form input:focus {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.newsletter-form .btn-primary {
+    white-space: nowrap;
+}
+
+/* Responsive Blog Styles */
+@media (max-width: 768px) {
+    .blog-hero-title {
+        font-size: 2.5rem;
+    }
+
+    .blog-hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .newsletter-form {
+        flex-direction: column;
+    }
+
+    .newsletter-form input {
+        min-width: 100%;
+    }
+
+    .newsletter-content h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-hero-title {
+        font-size: 2rem;
+    }
+
+    .blog-card-image {
+        font-size: 3rem;
+    }
+
+    .blog-title {
+        font-size: 1.3rem;
+    }
+
+    .newsletter-content h2 {
+        font-size: 1.5rem;
+    }
+}
+
+
+/* Fun Page Styles */
+.fun-hero {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fun-hero-content {
+    animation: fadeInUp 1s ease-out;
+}
+
+.fun-hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.fun-hero-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.95;
+}
+
+.fun-section {
+    background-color: var(--bg-light);
+    padding: 80px 20px;
+}
+
+.fun-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.fun-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fun-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow);
+}
+
+.fun-card-icon {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.fun-card-title {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.fun-card-description {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.fun-btn {
+    margin-top: auto;
+}
+
+/* Fun Facts Section */
+.fun-facts-section {
+    background-color: white;
+    padding: 80px 20px;
+}
+
+.facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.fact-card {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    padding: 2rem;
+    border-radius: 15px;
+    border-left: 5px solid var(--primary-color);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.fact-card:hover {
+    transform: translateX(10px);
+    box-shadow: var(--shadow);
+}
+
+.fact-number {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.fact-card h3 {
+    font-size: 1.3rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.fact-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Hobbies Section */
+.hobbies-section {
+    background-color: var(--bg-light);
+    padding: 80px 20px;
+}
+
+.hobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.hobby-item {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.hobby-item:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow);
+}
+
+.hobby-item i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.hobby-item h3 {
+    font-size: 1.3rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.hobby-item p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Responsive Fun Styles */
+@media (max-width: 768px) {
+    .fun-hero-title {
+        font-size: 2.5rem;
+    }
+
+    .fun-hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .fun-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .facts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hobbies-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .fun-hero-title {
+        font-size: 2rem;
+    }
+
+    .fun-card-icon {
+        font-size: 2.5rem;
+    }
+
+    .hobby-item i {
+        font-size: 2.5rem;
+    }
+
+    .fact-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}

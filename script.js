@@ -19,13 +19,16 @@ navLinks.forEach(link => {
 // Smooth scroll for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
         }
     });
 });
@@ -66,8 +69,16 @@ window.addEventListener('scroll', () => {
 
     navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === current) {
+        const href = link.getAttribute('href');
+        if (href.startsWith('#') && href.slice(1) === current) {
             link.style.color = 'var(--primary-color)';
+        } else if (!href.startsWith('#')) {
+            // Keep default color for external/page links unless they are the current page
+            if (window.location.pathname.endsWith(href)) {
+                link.style.color = 'var(--primary-color)';
+            } else {
+                link.style.color = 'var(--text-dark)';
+            }
         } else {
             link.style.color = 'var(--text-dark)';
         }
@@ -205,3 +216,9 @@ if ('IntersectionObserver' in window) {
 // Add console message
 console.log('Welcome to Sumiksha Neupane\'s Portfolio!');
 console.log('Feel free to explore and get in touch.');
+
+// Auto-update footer year
+const yearSpan = document.getElementById('current-year');
+if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+}

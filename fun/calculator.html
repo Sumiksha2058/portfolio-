@@ -7,88 +7,140 @@
     <link rel="stylesheet" href="../css/styles.css">
     <style>
         .calculator-container {
-            max-width: 400px;
+            max-width: 450px;
             margin: 50px auto;
             padding: 20px;
-            background: #f4f4f4;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #2c3e50;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: white;
+        }
+        .mode-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .mode-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #34495e;
+            color: white;
+            transition: background 0.3s;
+        }
+        .mode-btn.active {
+            background: #3498db;
         }
         .display {
             width: 100%;
-            height: 60px;
-            background: #222;
-            color: #fff;
+            height: 70px;
+            background: #ecf0f1;
+            color: #2c3e50;
             text-align: right;
-            padding: 10px;
-            font-size: 2rem;
-            border-radius: 5px;
+            padding: 15px;
+            font-size: 2.2rem;
+            border-radius: 8px;
             margin-bottom: 20px;
             box-sizing: border-box;
+            overflow: hidden;
         }
         .buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
         }
+        .scientific-keys {
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
         .btn {
-            padding: 20px;
-            font-size: 1.2rem;
+            padding: 15px;
+            font-size: 1.1rem;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            background: #fff;
-            transition: background 0.3s;
+            background: #34495e;
+            color: white;
+            transition: all 0.2s;
         }
         .btn:hover {
-            background: #ddd;
+            background: #4e6a85;
+            transform: translateY(-2px);
         }
         .btn.operator {
-            background: #ff9500;
-            color: #fff;
+            background: #e67e22;
         }
         .btn.operator:hover {
-            background: #e08600;
+            background: #d35400;
         }
         .btn.equal {
-            background: #28a745;
-            color: #fff;
+            background: #27ae60;
             grid-column: span 2;
         }
         .btn.equal:hover {
-            background: #218838;
+            background: #2ecc71;
         }
         .btn.clear {
-            background: #dc3545;
-            color: #fff;
+            background: #e74c3c;
             grid-column: span 2;
         }
         .btn.clear:hover {
-            background: #c82333;
+            background: #c0392b;
+        }
+        .btn.sci {
+            background: #9b59b6;
+            font-size: 0.9rem;
+        }
+        .btn.sci:hover {
+            background: #8e44ad;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="fun.html" class="nav-link">← Back to Fun</a>
+        <a href="fun.html" class="nav-link" style="color: #3498db; text-decoration: none; font-weight: bold;">← Back to Fun</a>
         <div class="calculator-container">
+            <div class="mode-toggle">
+                <button id="normalModeBtn" class="mode-btn active" onclick="setMode('normal')">Normal</button>
+                <button id="sciModeBtn" class="mode-btn" onclick="setMode('scientific')">Scientific</button>
+            </div>
             <div id="display" class="display">0</div>
+            
+            <div id="sciKeys" class="scientific-keys">
+                <button class="btn sci" onclick="sciFunc('sin')">sin</button>
+                <button class="btn sci" onclick="sciFunc('cos')">cos</button>
+                <button class="btn sci" onclick="sciFunc('tan')">tan</button>
+                <button class="btn sci" onclick="sciFunc('log')">log</button>
+                <button class="btn sci" onclick="sciFunc('sqrt')">√</button>
+                <button class="btn sci" onclick="sciFunc('pow')">x²</button>
+                <button class="btn sci" onclick="appendNumber('Math.PI')">π</button>
+                <button class="btn sci" onclick="appendNumber('Math.E')">e</button>
+            </div>
+
             <div class="buttons">
                 <button class="btn clear" onclick="clearDisplay()">C</button>
-                <button class="btn operator" onclick="appendOperator('/')">/</button>
-                <button class="btn operator" onclick="appendOperator('*')">*</button>
+                <button class="btn operator" onclick="appendOperator('/')">÷</button>
+                <button class="btn operator" onclick="appendOperator('*')">×</button>
+                
                 <button class="btn" onclick="appendNumber('7')">7</button>
                 <button class="btn" onclick="appendNumber('8')">8</button>
                 <button class="btn" onclick="appendNumber('9')">9</button>
                 <button class="btn operator" onclick="appendOperator('-')">-</button>
+                
                 <button class="btn" onclick="appendNumber('4')">4</button>
                 <button class="btn" onclick="appendNumber('5')">5</button>
                 <button class="btn" onclick="appendNumber('6')">6</button>
                 <button class="btn operator" onclick="appendOperator('+')">+</button>
+                
                 <button class="btn" onclick="appendNumber('1')">1</button>
                 <button class="btn" onclick="appendNumber('2')">2</button>
                 <button class="btn" onclick="appendNumber('3')">3</button>
                 <button class="btn equal" onclick="calculate()">=</button>
+                
                 <button class="btn" onclick="appendNumber('0')">0</button>
                 <button class="btn" onclick="appendNumber('.')">.</button>
             </div>
@@ -97,17 +149,43 @@
 
     <script>
         let currentInput = '0';
+        let displayValue = '0';
         const display = document.getElementById('display');
+        const sciKeys = document.getElementById('sciKeys');
+        const normalBtn = document.getElementById('normalModeBtn');
+        const sciBtn = document.getElementById('sciModeBtn');
+
+        function setMode(mode) {
+            if (mode === 'scientific') {
+                sciKeys.style.display = 'grid';
+                sciBtn.classList.add('active');
+                normalBtn.classList.remove('active');
+            } else {
+                sciKeys.style.display = 'none';
+                normalBtn.classList.add('active');
+                sciBtn.classList.remove('active');
+            }
+        }
 
         function updateDisplay() {
-            display.innerText = currentInput;
+            display.innerText = displayValue;
         }
 
         function appendNumber(number) {
-            if (currentInput === '0') {
-                currentInput = number;
+            if (number === 'Math.PI') {
+                displayValue = (displayValue === '0') ? 'π' : displayValue + 'π';
+                currentInput = (currentInput === '0') ? 'Math.PI' : currentInput + '*Math.PI';
+            } else if (number === 'Math.E') {
+                displayValue = (displayValue === '0') ? 'e' : displayValue + 'e';
+                currentInput = (currentInput === '0') ? 'Math.E' : currentInput + '*Math.E';
             } else {
-                currentInput += number;
+                if (displayValue === '0') {
+                    displayValue = number;
+                    currentInput = number;
+                } else {
+                    displayValue += number;
+                    currentInput += number;
+                }
             }
             updateDisplay();
         }
@@ -116,22 +194,48 @@
             const lastChar = currentInput.slice(-1);
             if (['+', '-', '*', '/'].includes(lastChar)) {
                 currentInput = currentInput.slice(0, -1) + operator;
+                displayValue = displayValue.slice(0, -1) + (operator === '*' ? '×' : operator === '/' ? '÷' : operator);
             } else {
                 currentInput += operator;
+                displayValue += (operator === '*' ? '×' : operator === '/' ? '÷' : operator);
             }
             updateDisplay();
         }
 
         function clearDisplay() {
             currentInput = '0';
+            displayValue = '0';
             updateDisplay();
+        }
+
+        function sciFunc(func) {
+            try {
+                let val = eval(currentInput);
+                let result;
+                switch(func) {
+                    case 'sin': result = Math.sin(val); break;
+                    case 'cos': result = Math.cos(val); break;
+                    case 'tan': result = Math.tan(val); break;
+                    case 'log': result = Math.log10(val); break;
+                    case 'sqrt': result = Math.sqrt(val); break;
+                    case 'pow': result = Math.pow(val, 2); break;
+                }
+                currentInput = result.toString();
+                displayValue = result.toFixed(4).toString();
+                updateDisplay();
+            } catch (e) {
+                displayValue = 'Error';
+                updateDisplay();
+            }
         }
 
         function calculate() {
             try {
-                currentInput = eval(currentInput).toString();
+                let result = eval(currentInput);
+                displayValue = result.toString();
+                currentInput = result.toString();
             } catch (e) {
-                currentInput = 'Error';
+                displayValue = 'Error';
             }
             updateDisplay();
         }

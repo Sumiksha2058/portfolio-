@@ -3,72 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Calculator - Sumiksha Neupane | Portfolio</title>
+    <title>Casio Style Calculator - Sumiksha Neupane</title>
     <link rel="stylesheet" href="../css/styles.css">
     <style>
-        body { background: #1a1a1a; color: white; font-family: 'Segoe UI', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        
+        body { background: #2c3e50; color: #333; font-family: 'Arial', sans-serif; }
         .main-wrapper { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+        
+        /* Casio Body */
         .calculator-container {
-            width: 100%; max-width: 450px;
-            background: #2c3e50; padding: 20px; border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%; max-width: 400px;
+            background: #d1d1d1; padding: 25px; border-radius: 20px;
+            box-shadow: inset 0 0 10px #fff, 10px 10px 30px rgba(0,0,0,0.5);
+            border: 4px solid #a1a1a1;
         }
+        
+        /* Casio Screen */
+        .display-area {
+            background: #97a97c; color: #1b2412; padding: 15px;
+            border-radius: 5px; margin-bottom: 25px; text-align: right;
+            border: 5px solid #333; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
+            font-family: 'Orbitron', sans-serif;
+        }
+        #display-main { font-size: 1.8rem; font-weight: bold; min-height: 2.2rem; }
+        #display-sub { font-size: 0.8rem; height: 1rem; margin-bottom: 5px; opacity: 0.7; }
+
+        .mode-toggle { display: flex; justify-content: center; margin-bottom: 15px; gap: 10px; }
+        .mode-btn {
+            padding: 5px 15px; border: 1px solid #888; border-radius: 3px;
+            cursor: pointer; background: #eee; font-size: 0.7rem; font-weight: bold;
+        }
+        .mode-btn.active { background: #333; color: white; }
+
+        .grid { display: grid; gap: 8px; }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .grid-5 { grid-template-columns: repeat(5, 1fr); }
+
+        /* Casio Buttons */
+        .btn {
+            padding: 12px 5px; border: none; border-radius: 5px; cursor: pointer;
+            background: #333; color: white; font-size: 0.9rem; font-weight: bold;
+            box-shadow: 0 4px #000; transition: 0.1s;
+        }
+        .btn:active { transform: translateY(2px); box-shadow: 0 2px #000; }
+        
+        .btn.num { background: #555; }
+        .btn.op { background: #333; color: #f39c12; }
+        .btn.sci { background: #222; font-size: 0.7rem; color: #3498db; padding: 8px 2px; }
+        .btn.clr { background: #c0392b; color: white; }
+        .btn.eq { background: #2c3e50; color: white; }
+
+        .financial-panel { display: none; flex-direction: column; gap: 8px; background: #eee; padding: 15px; border-radius: 10px; border: 2px solid #333; }
+        .fin-input { width: 100%; padding: 8px; border: 1px solid #333; border-radius: 3px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
+        
         .history-container {
             width: 100%; max-width: 300px;
-            background: #34495e; padding: 20px; border-radius: 15px;
-            max-height: 600px; overflow-y: auto;
+            background: #333; color: #97a97c; padding: 20px; border-radius: 15px;
+            font-family: 'Orbitron', sans-serif; border: 4px solid #d1d1d1;
         }
-        .mode-toggle { display: flex; justify-content: space-between; margin-bottom: 15px; gap: 5px; }
-        .mode-btn {
-            flex: 1; padding: 10px; border: none; border-radius: 5px;
-            cursor: pointer; background: #3d566e; color: white; font-size: 0.8rem;
-        }
-        .mode-btn.active { background: #3498db; }
-        .display-area {
-            background: #ecf0f1; color: #2c3e50; padding: 15px;
-            border-radius: 8px; margin-bottom: 20px; text-align: right;
-        }
-        #display-main { font-size: 2.2rem; font-weight: bold; overflow: hidden; }
-        #display-sub { font-size: 1rem; color: #7f8c8d; height: 1.2rem; }
-        .grid { display: grid; gap: 10px; }
-        .grid-4 { grid-template-columns: repeat(4, 1fr); }
-        .btn {
-            padding: 15px; border: none; border-radius: 8px; cursor: pointer;
-            background: #3d566e; color: white; font-size: 1.1rem; transition: 0.2s;
-        }
-        .btn:hover { background: #4e6a85; transform: translateY(-2px); }
-        .btn.op { background: #e67e22; }
-        .btn.eq { background: #27ae60; grid-column: span 2; }
-        .btn.clr { background: #e74c3c; grid-column: span 2; }
-        .btn.sci { background: #9b59b6; font-size: 0.9rem; }
-        
-        .financial-panel { display: none; flex-direction: column; gap: 10px; }
-        .fin-input {
-            width: 100%; padding: 10px; border-radius: 5px; border: none;
-            background: #ecf0f1; color: #2c3e50; box-sizing: border-box;
-        }
-        .history-item {
-            background: #2c3e50; padding: 10px; border-radius: 5px;
-            margin-bottom: 10px; font-size: 0.9rem; border-left: 4px solid #3498db;
-        }
-        .history-item .time { font-size: 0.7rem; color: #95a5a6; }
-        .clear-history {
-            width: 100%; padding: 8px; background: #e74c3c; border: none;
-            border-radius: 5px; color: white; cursor: pointer; margin-top: 10px;
-        }
+        .history-item { border-bottom: 1px solid #444; padding: 5px 0; font-size: 0.7rem; }
     </style>
 </head>
 <body>
     <div class="container" style="padding: 20px;">
-        <a href="fun.html" style="color: #3498db; text-decoration: none; font-weight: bold;">← Back to Fun</a>
+        <a href="fun.html" style="color: #fff; text-decoration: none; font-weight: bold;">← BACK TO FUN</a>
         
         <div class="main-wrapper">
-            <!-- Calculator -->
             <div class="calculator-container">
+                <div style="text-align: left; font-size: 0.6rem; font-weight: bold; margin-bottom: 5px; color: #555;">CASIO STYLE - fx-991MS SIMULATOR</div>
+                
                 <div class="mode-toggle">
-                    <button id="btn-norm" class="mode-btn active" onclick="setMode('normal')">Normal</button>
-                    <button id="btn-sci" class="mode-btn" onclick="setMode('scientific')">Scientific</button>
-                    <button id="btn-fin" class="mode-btn" onclick="setMode('financial')">Financial</button>
+                    <button id="btn-norm" class="mode-btn active" onclick="setMode('normal')">COMP</button>
+                    <button id="btn-sci" class="mode-btn" onclick="setMode('scientific')">SCI</button>
+                    <button id="btn-fin" class="mode-btn" onclick="setMode('financial')">FIN</button>
                 </div>
 
                 <div class="display-area">
@@ -76,52 +84,55 @@
                     <div id="display-main">0</div>
                 </div>
 
-                <!-- Normal/Scientific Keys -->
                 <div id="standard-keys">
-                    <div id="sci-keys" class="grid grid-4" style="display:none; margin-bottom:10px;">
+                    <!-- Scientific Row -->
+                    <div id="sci-keys" class="grid grid-5" style="margin-bottom:15px;">
                         <button class="btn sci" onclick="sciFunc('sin')">sin</button>
                         <button class="btn sci" onclick="sciFunc('cos')">cos</button>
                         <button class="btn sci" onclick="sciFunc('tan')">tan</button>
                         <button class="btn sci" onclick="sciFunc('sqrt')">√</button>
+                        <button class="btn sci" onclick="sciFunc('log')">log</button>
                     </div>
+
                     <div class="grid grid-4">
-                        <button class="btn clr" onclick="clearAll()">C</button>
+                        <button class="btn clr" onclick="clearAll()">AC</button>
+                        <button class="btn clr" onclick="deleteLast()">DEL</button>
                         <button class="btn op" onclick="appendOp('/')">÷</button>
                         <button class="btn op" onclick="appendOp('*')">×</button>
-                        <button class="btn" onclick="appendNum('7')">7</button>
-                        <button class="btn" onclick="appendNum('8')">8</button>
-                        <button class="btn" onclick="appendNum('9')">9</button>
+                        
+                        <button class="btn num" onclick="appendNum('7')">7</button>
+                        <button class="btn num" onclick="appendNum('8')">8</button>
+                        <button class="btn num" onclick="appendNum('9')">9</button>
                         <button class="btn op" onclick="appendOp('-')">-</button>
-                        <button class="btn" onclick="appendNum('4')">4</button>
-                        <button class="btn" onclick="appendNum('5')">5</button>
-                        <button class="btn" onclick="appendNum('6')">6</button>
+                        
+                        <button class="btn num" onclick="appendNum('4')">4</button>
+                        <button class="btn num" onclick="appendNum('5')">5</button>
+                        <button class="btn num" onclick="appendNum('6')">6</button>
                         <button class="btn op" onclick="appendOp('+')">+</button>
-                        <button class="btn" onclick="appendNum('1')">1</button>
-                        <button class="btn" onclick="appendNum('2')">2</button>
-                        <button class="btn" onclick="appendNum('3')">3</button>
+                        
+                        <button class="btn num" onclick="appendNum('1')">1</button>
+                        <button class="btn num" onclick="appendNum('2')">2</button>
+                        <button class="btn num" onclick="appendNum('3')">3</button>
                         <button class="btn eq" onclick="calculate()">=</button>
-                        <button class="btn" onclick="appendNum('0')">0</button>
-                        <button class="btn" onclick="appendNum('.')">.</button>
+                        
+                        <button class="btn num" onclick="appendNum('0')">0</button>
+                        <button class="btn num" onclick="appendNum('.')">.</button>
+                        <button class="btn sci" onclick="appendNum('Math.PI')">π</button>
+                        <button class="btn sci" onclick="appendNum('Math.E')">e</button>
                     </div>
                 </div>
 
-                <!-- Financial Panel -->
                 <div id="fin-panel" class="financial-panel">
-                    <label>Loan Amount (P)</label>
-                    <input type="number" id="fin-p" class="fin-input" placeholder="e.g. 100000">
-                    <label>Interest Rate (%)</label>
-                    <input type="number" id="fin-r" class="fin-input" placeholder="e.g. 7.5">
-                    <label>Tenure (Years)</label>
-                    <input type="number" id="fin-t" class="fin-input" placeholder="e.g. 5">
-                    <button class="btn op" style="margin-top:10px;" onclick="calcEMI()">Calculate EMI</button>
+                    <input type="number" id="fin-p" class="fin-input" placeholder="LOAN AMOUNT">
+                    <input type="number" id="fin-r" class="fin-input" placeholder="INTEREST %">
+                    <input type="number" id="fin-t" class="fin-input" placeholder="YEARS">
+                    <button class="btn eq" onclick="calcEMI()">CALC EMI</button>
                 </div>
             </div>
 
-            <!-- History -->
             <div class="history-container">
-                <h3 style="margin-top:0;">History</h3>
+                <div style="font-size: 0.8rem; border-bottom: 2px solid #97a97c; margin-bottom: 10px;">HISTORY LOG</div>
                 <div id="history-list"></div>
-                <button class="clear-history" onclick="clearHistory()">Clear History</button>
             </div>
         </div>
     </div>
@@ -133,26 +144,34 @@
 
         function setMode(mode) {
             document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('standard-keys').style.display = (mode === 'financial') ? 'none' : 'block';
             document.getElementById('fin-panel').style.display = (mode === 'financial') ? 'flex' : 'none';
-            document.getElementById('sci-keys').style.display = (mode === 'scientific') ? 'grid' : 'none';
+            document.getElementById('sci-keys').style.opacity = (mode === 'scientific') ? '1' : '0.3';
             document.getElementById('btn-' + mode.substring(0,4)).classList.add('active');
         }
 
         function updateDisplay() {
-            document.getElementById('display-main').innerText = currentInput;
+            document.getElementById('display-main').innerText = currentInput.substring(0, 12);
             document.getElementById('display-sub').innerText = displayExpr;
         }
 
         function appendNum(n) {
-            if (currentInput === '0') currentInput = n;
-            else currentInput += n;
+            if (n === 'Math.PI') { currentInput = Math.PI.toFixed(6); }
+            else if (n === 'Math.E') { currentInput = Math.E.toFixed(6); }
+            else {
+                if (currentInput === '0') currentInput = n;
+                else currentInput += n;
+            }
             updateDisplay();
         }
 
         function appendOp(op) {
             displayExpr = currentInput + ' ' + op;
             currentInput = '0';
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            currentInput = currentInput.length > 1 ? currentInput.slice(0, -1) : '0';
             updateDisplay();
         }
 
@@ -170,18 +189,19 @@
                 currentInput = result.toString();
                 displayExpr = '';
                 updateDisplay();
-            } catch (e) { currentInput = 'Error'; updateDisplay(); }
+            } catch (e) { currentInput = 'ERROR'; updateDisplay(); }
         }
 
         function sciFunc(f) {
             let val = parseFloat(currentInput);
             let res;
-            if (f === 'sin') res = Math.sin(val);
-            if (f === 'cos') res = Math.cos(val);
-            if (f === 'tan') res = Math.tan(val);
+            if (f === 'sin') res = Math.sin(val * Math.PI / 180);
+            if (f === 'cos') res = Math.cos(val * Math.PI / 180);
+            if (f === 'tan') res = Math.tan(val * Math.PI / 180);
             if (f === 'sqrt') res = Math.sqrt(val);
+            if (f === 'log') res = Math.log10(val);
             saveToHistory(f + '(' + val + ') = ' + res.toFixed(4));
-            currentInput = res.toFixed(4);
+            currentInput = res.toFixed(6);
             updateDisplay();
         }
 
@@ -191,32 +211,21 @@
             let n = parseFloat(document.getElementById('fin-t').value) * 12;
             let emi = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
             currentInput = emi.toFixed(2);
-            saveToHistory(`EMI: P=${p}, R=${(r*1200).toFixed(1)}%, T=${n/12}y => ${emi.toFixed(2)}`);
+            saveToHistory(`EMI: ${emi.toFixed(2)}`);
             updateDisplay();
         }
 
         function saveToHistory(entry) {
-            let item = { entry, time: new Date().toLocaleTimeString() };
-            history.unshift(item);
-            if (history.length > 10) history.pop();
+            history.unshift({ entry, time: new Date().toLocaleTimeString() });
+            if (history.length > 8) history.pop();
             localStorage.setItem('calc_history', JSON.stringify(history));
             renderHistory();
         }
 
         function renderHistory() {
-            const list = document.getElementById('history-list');
-            list.innerHTML = history.map(h => `
-                <div class="history-item">
-                    <div>${h.entry}</div>
-                    <div class="time">${h.time}</div>
-                </div>
+            document.getElementById('history-list').innerHTML = history.map(h => `
+                <div class="history-item">${h.entry}</div>
             `).join('');
-        }
-
-        function clearHistory() {
-            history = [];
-            localStorage.removeItem('calc_history');
-            renderHistory();
         }
 
         renderHistory();

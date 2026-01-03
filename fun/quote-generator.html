@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Generator - Sumiksha Neupane | Portfolio</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .quote-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            padding: 20px;
+        }
+
+        .quote-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .quote-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+        }
+
+        .quote-icon {
+            font-size: 3rem;
+            color: #ff9a9e;
+            margin-bottom: 1.5rem;
+            opacity: 0.3;
+        }
+
+        #quote-text {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        #quote-author {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .quote-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .new-quote-btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            background-color: #ff9a9e;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            flex-grow: 1;
+        }
+
+        .new-quote-btn:hover {
+            background-color: #ff7b80;
+            transform: scale(1.05);
+        }
+
+        .tweet-btn {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1DA1F2;
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .tweet-btn:hover {
+            background-color: #0d8bd9;
+            transform: rotate(15deg);
+        }
+
+        .back-btn {
+            margin-top: 2rem;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background-color: white;
+            color: #ff9a9e;
+        }
+
+        @media (max-width: 768px) {
+            .quote-box {
+                padding: 2rem;
+            }
+
+            #quote-text {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Sumiksha Neupane</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html#home" class="nav-link">Home</a></li>
+                <li><a href="fun.html" class="nav-link">Back to Fun</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="quote-container">
+        <div class="quote-box">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <div id="quote-content">
+                <p id="quote-text">Loading inspiration...</p>
+                <span id="quote-author"></span>
+            </div>
+            <div class="quote-buttons">
+                <a href="#" id="tweet-quote" class="tweet-btn" title="Tweet this quote!" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <button id="new-quote" class="new-quote-btn">New Quote</button>
+            </div>
+        </div>
+        <a href="fun.html" class="back-btn">← Back to Fun Section</a>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script>
+        const quoteText = document.getElementById('quote-text');
+        const quoteAuthor = document.getElementById('quote-author');
+        const newQuoteBtn = document.getElementById('new-quote');
+        const tweetBtn = document.getElementById('tweet-quote');
+
+        const quotes = [
+            {
+                text: "The only way to do great work is to love what you do.",
+                author: "Steve Jobs"
+            },
+            {
+                text: "Innovation distinguishes between a leader and a follower.",
+                author: "Steve Jobs"
+            },
+            {
+                text: "Your time is limited, so don't waste it living someone else's life.",
+                author: "Steve Jobs"
+            },
+            {
+                text: "Stay hungry, stay foolish.",
+                author: "Steve Jobs"
+            },
+            {
+                text: "The future belongs to those who believe in the beauty of their dreams.",
+                author: "Eleanor Roosevelt"
+            },
+            {
+                text: "It does not matter how slowly you go as long as you do not stop.",
+                author: "Confucius"
+            },
+            {
+                text: "Everything you've ever wanted is on the other side of fear.",
+                author: "George Addair"
+            },
+            {
+                text: "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+                author: "Winston Churchill"
+            },
+            {
+                text: "Hardships often prepare ordinary people for an extraordinary destiny.",
+                author: "C.S. Lewis"
+            },
+            {
+                text: "Believe you can and you're halfway there.",
+                author: "Theodore Roosevelt"
+            },
+            {
+                text: "Your limitation—it's only your imagination.",
+                author: "Unknown"
+            },
+            {
+                text: "Push yourself, because no one else is going to do it for you.",
+                author: "Unknown"
+            },
+            {
+                text: "Sometimes later becomes never. Do it now.",
+                author: "Unknown"
+            },
+            {
+                text: "Great things never come from comfort zones.",
+                author: "Unknown"
+            },
+            {
+                text: "Dream it. Wish it. Do it.",
+                author: "Unknown"
+            },
+            {
+                text: "Success doesn’t just find you. You have to go out and get it.",
+                author: "Unknown"
+            },
+            {
+                text: "The harder you work for something, the greater you’ll feel when you achieve it.",
+                author: "Unknown"
+            },
+            {
+                text: "Dream bigger. Do bigger.",
+                author: "Unknown"
+            },
+            {
+                text: "Don’t stop when you’re tired. Stop when you’re done.",
+                author: "Unknown"
+            },
+            {
+                text: "Wake up with determination. Go to bed with satisfaction.",
+                author: "Unknown"
+            }
+        ];
+
+        function getRandomQuote() {
+            const index = Math.floor(Math.random() * quotes.length);
+            const quote = quotes[index];
+            
+            // Add a fade-out effect
+            quoteText.style.opacity = 0;
+            quoteAuthor.style.opacity = 0;
+            
+            setTimeout(() => {
+                quoteText.textContent = quote.text;
+                quoteAuthor.textContent = `- ${quote.author}`;
+                
+                // Update tweet URL
+                tweetBtn.href = `https://twitter.com/intent/tweet?text="${quote.text}" - ${quote.author}`;
+                
+                // Fade back in
+                quoteText.style.opacity = 1;
+                quoteAuthor.style.opacity = 1;
+            }, 300);
+        }
+
+        // Add transition styles for fade effect
+        quoteText.style.transition = 'opacity 0.3s ease';
+        quoteAuthor.style.transition = 'opacity 0.3s ease';
+
+        newQuoteBtn.addEventListener('click', getRandomQuote);
+
+        // Initial quote
+        getRandomQuote();
+    </script>
+</body>
+</html>

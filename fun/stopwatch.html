@@ -3,45 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analog Stopwatch - Sumiksha Neupane | Portfolio</title>
+    <title>Vintage Analog Stopwatch - Sumiksha Neupane | Portfolio</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=EB+Garamond:wght@500&display=swap');
+
         .stopwatch-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 90vh;
-            background: linear-gradient(135deg, #2c3e50, #000000);
+            background: radial-gradient(circle, #3d2b1f 0%, #1a0f0a 100%);
             padding: 20px;
-            color: white;
+            color: #f1c40f;
         }
 
         .stopwatch-title {
+            font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
-        /* Analog Clock Styles */
-        .clock-face {
-            width: 300px;
-            height: 300px;
-            border: 10px solid #ecf0f1;
+        /* Vintage Analog Clock Styles */
+        .clock-outer-rim {
+            width: 340px;
+            height: 340px;
+            border: 15px solid #8b4513; /* Wooden Brown */
             border-radius: 50%;
-            position: relative;
-            background: white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #5d2e0a; /* Darker Wood */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,0.5);
             margin-bottom: 2rem;
+            position: relative;
         }
 
-        .clock-face::after {
+        .clock-inner-rim {
+            width: 310px;
+            height: 310px;
+            border: 8px solid #d4af37; /* Golden Rim */
+            border-radius: 50%;
+            background: #fdf5e6; /* Old Paper / Yellowish Face */
+            position: relative;
+            box-shadow: inset 0 0 30px rgba(139, 69, 19, 0.3);
+        }
+
+        .clock-inner-rim::after {
             content: '';
-            width: 15px;
-            height: 15px;
-            background: #e74c3c;
+            width: 12px;
+            height: 12px;
+            background: #d4af37;
+            border: 2px solid #8b4513;
             border-radius: 50%;
             position: absolute;
             top: 50%;
@@ -55,31 +73,33 @@
             bottom: 50%;
             left: 50%;
             transform-origin: bottom;
-            transition: transform 0.05s cubic-bezier(0.4, 2.3, 0.3, 1);
+            transition: transform 0.05s linear;
             border-radius: 5px;
         }
 
         .second-hand {
             width: 2px;
-            height: 130px;
-            background: #e74c3c;
-            z-index: 8;
+            height: 135px;
+            background: #c0392b; /* Classic Red Second Hand */
+            z-index: 9;
             transform: translateX(-50%) rotate(0deg);
         }
 
         .minute-hand {
-            width: 4px;
-            height: 110px;
-            background: #2c3e50;
-            z-index: 7;
+            width: 5px;
+            height: 115px;
+            background: #d4af37; /* Golden */
+            border: 1px solid #8b4513;
+            z-index: 8;
             transform: translateX(-50%) rotate(0deg);
         }
 
         .hour-hand {
-            width: 6px;
-            height: 80px;
-            background: #2c3e50;
-            z-index: 6;
+            width: 8px;
+            height: 85px;
+            background: #d4af37; /* Golden */
+            border: 1px solid #8b4513;
+            z-index: 7;
             transform: translateX(-50%) rotate(0deg);
         }
 
@@ -89,136 +109,152 @@
             width: 100%;
             height: 100%;
             text-align: center;
+            font-family: 'EB Garamond', serif;
             font-weight: bold;
-            color: #2c3e50;
-            font-size: 1.2rem;
-            padding: 10px;
+            color: #3d2b1f;
+            font-size: 1.5rem;
+            padding: 15px;
         }
 
-        .number1 { transform: rotate(30deg); }
-        .number1 span { display: block; transform: rotate(-30deg); }
-        .number2 { transform: rotate(60deg); }
-        .number2 span { display: block; transform: rotate(-60deg); }
-        .number3 { transform: rotate(90deg); }
-        .number3 span { display: block; transform: rotate(-90deg); }
-        .number4 { transform: rotate(120deg); }
-        .number4 span { display: block; transform: rotate(-120deg); }
-        .number5 { transform: rotate(150deg); }
-        .number5 span { display: block; transform: rotate(-150deg); }
-        .number6 { transform: rotate(180deg); }
-        .number6 span { display: block; transform: rotate(-180deg); }
-        .number7 { transform: rotate(210deg); }
-        .number7 span { display: block; transform: rotate(-210deg); }
-        .number8 { transform: rotate(240deg); }
-        .number8 span { display: block; transform: rotate(-240deg); }
-        .number9 { transform: rotate(270deg); }
-        .number9 span { display: block; transform: rotate(-270deg); }
-        .number10 { transform: rotate(300deg); }
-        .number10 span { display: block; transform: rotate(-300deg); }
-        .number11 { transform: rotate(330deg); }
-        .number11 span { display: block; transform: rotate(-330deg); }
-        .number12 { transform: rotate(0deg); }
-        .number12 span { display: block; transform: rotate(0deg); }
+        .number1 { transform: rotate(30deg); } .number1 span { display: block; transform: rotate(-30deg); }
+        .number2 { transform: rotate(60deg); } .number2 span { display: block; transform: rotate(-60deg); }
+        .number3 { transform: rotate(90deg); } .number3 span { display: block; transform: rotate(-90deg); }
+        .number4 { transform: rotate(120deg); } .number4 span { display: block; transform: rotate(-120deg); }
+        .number5 { transform: rotate(150deg); } .number5 span { display: block; transform: rotate(-150deg); }
+        .number6 { transform: rotate(180deg); } .number6 span { display: block; transform: rotate(-180deg); }
+        .number7 { transform: rotate(210deg); } .number7 span { display: block; transform: rotate(-210deg); }
+        .number8 { transform: rotate(240deg); } .number8 span { display: block; transform: rotate(-240deg); }
+        .number9 { transform: rotate(270deg); } .number9 span { display: block; transform: rotate(-270deg); }
+        .number10 { transform: rotate(300deg); } .number10 span { display: block; transform: rotate(-300deg); }
+        .number11 { transform: rotate(330deg); } .number11 span { display: block; transform: rotate(-330deg); }
+        .number12 { transform: rotate(0deg); } .number12 span { display: block; transform: rotate(0deg); }
 
         .digital-display {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 10px;
+            font-size: 2.2rem;
+            background: rgba(0, 0, 0, 0.4);
+            color: #d4af37;
+            padding: 10px 30px;
+            border-radius: 5px;
             margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
         .controls {
             display: flex;
-            gap: 1rem;
+            gap: 1.2rem;
             margin-bottom: 2rem;
         }
 
         .btn-stopwatch {
-            padding: 12px 25px;
+            padding: 12px 28px;
             font-size: 1rem;
-            border: none;
-            border-radius: 50px;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 700;
+            font-family: 'EB Garamond', serif;
+            background: #3d2b1f;
+            color: #d4af37;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn-start { background-color: #27ae60; color: white; }
-        .btn-stop { background-color: #c0392b; color: white; display: none; }
-        .btn-lap { background-color: #2980b9; color: white; }
-        .btn-reset { background-color: #f39c12; color: white; }
+        .btn-stopwatch:hover {
+            background: #d4af37;
+            color: #3d2b1f;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
 
-        .btn-stopwatch:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .btn-stop { display: none; }
 
         .laps-container {
             width: 100%;
-            max-width: 350px;
-            max-height: 150px;
+            max-width: 380px;
+            max-height: 180px;
             overflow-y: auto;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #8b4513;
+            border-radius: 5px;
             padding: 10px;
         }
 
         .lap-item {
             display: flex;
             justify-content: space-between;
-            padding: 5px 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1rem;
         }
 
         .back-btn {
             margin-top: 2rem;
-            padding: 10px 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid white;
-            border-radius: 50px;
+            padding: 10px 25px;
+            background-color: transparent;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            border-radius: 5px;
             text-decoration: none;
             transition: all 0.3s ease;
+            font-family: 'EB Garamond', serif;
         }
 
-        .back-btn:hover { background-color: white; color: #2c3e50; }
+        .back-btn:hover {
+            background-color: #d4af37;
+            color: #3d2b1f;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .clock-outer-rim { width: 280px; height: 280px; }
+            .clock-inner-rim { width: 250px; height: 250px; }
+            .number { font-size: 1.2rem; padding: 10px; }
+            .second-hand { height: 110px; }
+            .minute-hand { height: 95px; }
+            .hour-hand { height: 70px; }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="container">
-            <div class="nav-brand">Sumiksha Neupane</div>
+            <div class="nav-brand" style="color: #d4af37;">Sumiksha Neupane</div>
             <ul class="nav-menu">
-                <li><a href="../index.html#home" class="nav-link">Home</a></li>
-                <li><a href="fun.html" class="nav-link">Back to Fun</a></li>
+                <li><a href="../index.html#home" class="nav-link" style="color: #d4af37;">Home</a></li>
+                <li><a href="fun.html" class="nav-link" style="color: #d4af37;">Back to Fun</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="stopwatch-container">
-        <h1 class="stopwatch-title">⏱️ Analog Stopwatch ⏱️</h1>
+        <h1 class="stopwatch-title">Vintage Timepiece</h1>
         
-        <div class="clock-face">
-            <div class="number number1"><span>1</span></div>
-            <div class="number number2"><span>2</span></div>
-            <div class="number number3"><span>3</span></div>
-            <div class="number number4"><span>4</span></div>
-            <div class="number number5"><span>5</span></div>
-            <div class="number number6"><span>6</span></div>
-            <div class="number number7"><span>7</span></div>
-            <div class="number number8"><span>8</span></div>
-            <div class="number number9"><span>9</span></div>
-            <div class="number number10"><span>10</span></div>
-            <div class="number number11"><span>11</span></div>
-            <div class="number number12"><span>12</span></div>
-            
-            <div id="hourHand" class="hand hour-hand"></div>
-            <div id="minuteHand" class="hand minute-hand"></div>
-            <div id="secondHand" class="hand second-hand"></div>
+        <div class="clock-outer-rim">
+            <div class="clock-inner-rim">
+                <div class="number number1"><span>I</span></div>
+                <div class="number number2"><span>II</span></div>
+                <div class="number number3"><span>III</span></div>
+                <div class="number number4"><span>IV</span></div>
+                <div class="number number5"><span>V</span></div>
+                <div class="number number6"><span>VI</span></div>
+                <div class="number number7"><span>VII</span></div>
+                <div class="number number8"><span>VIII</span></div>
+                <div class="number number9"><span>IX</span></div>
+                <div class="number number10"><span>X</span></div>
+                <div class="number number11"><span>XI</span></div>
+                <div class="number number12"><span>XII</span></div>
+                
+                <div id="hourHand" class="hand hour-hand"></div>
+                <div id="minuteHand" class="hand minute-hand"></div>
+                <div id="secondHand" class="hand second-hand"></div>
+            </div>
         </div>
 
         <div class="digital-display" id="display">00:00:00.00</div>

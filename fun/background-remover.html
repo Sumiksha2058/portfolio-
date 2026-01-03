@@ -48,6 +48,11 @@
             font-size: 4rem;
             color: #667eea;
             margin-bottom: 1rem;
+            pointer-events: none;
+        }
+
+        .upload-area h3, .upload-area p {
+            pointer-events: none;
         }
 
         .preview-container {
@@ -167,7 +172,13 @@
         }
 
         #file-input {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
         }
 
         @media (max-width: 600px) {
@@ -253,8 +264,6 @@
         let selectedFile = null;
 
         // Handle file selection
-        dropZone.addEventListener('click', () => fileInput.click());
-
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
                 handleFile(e.target.files[0]);
@@ -274,6 +283,8 @@
 
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
+            dropZone.style.borderColor = '#667eea';
+            dropZone.style.backgroundColor = 'transparent';
             if (e.dataTransfer.files.length > 0) {
                 handleFile(e.dataTransfer.files[0]);
             }

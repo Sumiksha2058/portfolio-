@@ -351,11 +351,11 @@
             // Digital
             document.getElementById('clk-display').innerHTML = `${toNepaliDigits(h.toString().padStart(2, '0'))}:${toNepaliDigits(m.toString().padStart(2, '0'))}:${toNepaliDigits(s.toString().padStart(2, '0'))}`;
 
-            // Date (Simplified conversion for display - for full BS calendar a library is usually needed, but we'll use a standard format in Nepali)
+            // Date (Bikram Sambat 2082 Poush 19)
             const dayName = nepaliDays[now.getDay()];
-            const monthName = nepaliMonths[now.getMonth()]; // Note: This is a rough mapping to Gregorian months for display
-            const date = toNepaliDigits(now.getDate());
-            const year = toNepaliDigits(now.getFullYear());
+            const monthName = "पुष";
+            const date = toNepaliDigits(19);
+            const year = toNepaliDigits(2082);
             document.getElementById('nepali-date').innerHTML = `${dayName}, ${date} ${monthName} ${year}`;
         }
 

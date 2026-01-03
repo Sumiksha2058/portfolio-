@@ -3,61 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vintage Analog Stopwatch - Sumiksha Neupane | Portfolio</title>
+    <title>Vintage Timepiece & Nepali Clock - Sumiksha Neupane | Portfolio</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=EB+Garamond:wght@500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=EB+Garamond:wght@500&family=Mukta:wght@400;700&display=swap');
 
-        .stopwatch-container {
+        .main-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 90vh;
+            min-height: 100vh;
             background: radial-gradient(circle, #3d2b1f 0%, #1a0f0a 100%);
-            padding: 20px;
+            padding: 40px 20px;
             color: #f1c40f;
         }
 
-        .stopwatch-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            color: #d4af37;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        .section-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
         }
 
-        /* Vintage Analog Clock Styles */
+        .card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #8b4513;
+            border-radius: 15px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            flex: 1;
+            min-width: 350px;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        /* Analog Clock Styles */
         .clock-outer-rim {
-            width: 340px;
-            height: 340px;
-            border: 15px solid #8b4513; /* Wooden Brown */
+            width: 280px;
+            height: 280px;
+            border: 12px solid #8b4513;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #5d2e0a; /* Darker Wood */
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,0.5);
-            margin-bottom: 2rem;
+            background: #5d2e0a;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0,0,0,0.5);
             position: relative;
+            margin-bottom: 1.5rem;
         }
 
         .clock-inner-rim {
-            width: 310px;
-            height: 310px;
-            border: 8px solid #d4af37; /* Golden Rim */
+            width: 250px;
+            height: 250px;
+            border: 6px solid #d4af37;
             border-radius: 50%;
-            background: #fdf5e6; /* Old Paper / Yellowish Face */
+            background: #fdf5e6;
             position: relative;
-            box-shadow: inset 0 0 30px rgba(139, 69, 19, 0.3);
         }
 
         .clock-inner-rim::after {
             content: '';
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: #d4af37;
             border: 2px solid #8b4513;
             border-radius: 50%;
@@ -73,37 +94,13 @@
             bottom: 50%;
             left: 50%;
             transform-origin: bottom;
-            transition: transform 0.05s linear;
             border-radius: 5px;
         }
 
-        .second-hand {
-            width: 2px;
-            height: 135px;
-            background: #c0392b; /* Classic Red Second Hand */
-            z-index: 9;
-            transform: translateX(-50%) rotate(0deg);
-        }
+        .second-hand { width: 2px; height: 110px; background: #c0392b; z-index: 9; }
+        .minute-hand { width: 4px; height: 95px; background: #d4af37; border: 1px solid #8b4513; z-index: 8; }
+        .hour-hand { width: 6px; height: 70px; background: #d4af37; border: 1px solid #8b4513; z-index: 7; }
 
-        .minute-hand {
-            width: 5px;
-            height: 115px;
-            background: #d4af37; /* Golden */
-            border: 1px solid #8b4513;
-            z-index: 8;
-            transform: translateX(-50%) rotate(0deg);
-        }
-
-        .hour-hand {
-            width: 8px;
-            height: 85px;
-            background: #d4af37; /* Golden */
-            border: 1px solid #8b4513;
-            z-index: 7;
-            transform: translateX(-50%) rotate(0deg);
-        }
-
-        /* Clock Numbers */
         .number {
             position: absolute;
             width: 100%;
@@ -112,244 +109,258 @@
             font-family: 'EB Garamond', serif;
             font-weight: bold;
             color: #3d2b1f;
-            font-size: 1.5rem;
-            padding: 15px;
+            font-size: 1.2rem;
+            padding: 10px;
         }
 
-        .number1 { transform: rotate(30deg); } .number1 span { display: block; transform: rotate(-30deg); }
-        .number2 { transform: rotate(60deg); } .number2 span { display: block; transform: rotate(-60deg); }
-        .number3 { transform: rotate(90deg); } .number3 span { display: block; transform: rotate(-90deg); }
-        .number4 { transform: rotate(120deg); } .number4 span { display: block; transform: rotate(-120deg); }
-        .number5 { transform: rotate(150deg); } .number5 span { display: block; transform: rotate(-150deg); }
-        .number6 { transform: rotate(180deg); } .number6 span { display: block; transform: rotate(-180deg); }
-        .number7 { transform: rotate(210deg); } .number7 span { display: block; transform: rotate(-210deg); }
-        .number8 { transform: rotate(240deg); } .number8 span { display: block; transform: rotate(-240deg); }
-        .number9 { transform: rotate(270deg); } .number9 span { display: block; transform: rotate(-270deg); }
-        .number10 { transform: rotate(300deg); } .number10 span { display: block; transform: rotate(-300deg); }
-        .number11 { transform: rotate(330deg); } .number11 span { display: block; transform: rotate(-330deg); }
-        .number12 { transform: rotate(0deg); } .number12 span { display: block; transform: rotate(0deg); }
+        /* Positioning numbers */
+        .n1 { transform: rotate(30deg); } .n1 span { display: block; transform: rotate(-30deg); }
+        .n2 { transform: rotate(60deg); } .n2 span { display: block; transform: rotate(-60deg); }
+        .n3 { transform: rotate(90deg); } .n3 span { display: block; transform: rotate(-90deg); }
+        .n4 { transform: rotate(120deg); } .n4 span { display: block; transform: rotate(-120deg); }
+        .n5 { transform: rotate(150deg); } .n5 span { display: block; transform: rotate(-150deg); }
+        .n6 { transform: rotate(180deg); } .n6 span { display: block; transform: rotate(-180deg); }
+        .n7 { transform: rotate(210deg); } .n7 span { display: block; transform: rotate(-210deg); }
+        .n8 { transform: rotate(240deg); } .n8 span { display: block; transform: rotate(-240deg); }
+        .n9 { transform: rotate(270deg); } .n9 span { display: block; transform: rotate(-270deg); }
+        .n10 { transform: rotate(300deg); } .n10 span { display: block; transform: rotate(-300deg); }
+        .n11 { transform: rotate(330deg); } .n11 span { display: block; transform: rotate(-330deg); }
+        .n12 { transform: rotate(0deg); }
 
-        .digital-display {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 2.2rem;
-            background: rgba(0, 0, 0, 0.4);
+        /* Digital Displays */
+        .digital-box {
+            font-family: 'Mukta', sans-serif;
+            font-size: 2rem;
+            background: rgba(0, 0, 0, 0.5);
             color: #d4af37;
-            padding: 10px 30px;
-            border-radius: 5px;
-            margin-bottom: 2rem;
+            padding: 15px 25px;
+            border-radius: 8px;
             border: 2px solid #d4af37;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            text-align: center;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .nepali-date {
+            font-family: 'Mukta', sans-serif;
+            font-size: 1.4rem;
+            color: #f1c40f;
+            margin-top: 10px;
+            text-align: center;
         }
 
         .controls {
             display: flex;
-            gap: 1.2rem;
-            margin-bottom: 2rem;
+            gap: 10px;
+            margin-top: 1rem;
         }
 
-        .btn-stopwatch {
-            padding: 12px 28px;
-            font-size: 1rem;
-            border: 2px solid #d4af37;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 700;
-            font-family: 'EB Garamond', serif;
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid #d4af37;
             background: #3d2b1f;
             color: #d4af37;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            cursor: pointer;
+            font-family: 'Mukta', sans-serif;
+            border-radius: 5px;
+            transition: 0.3s;
         }
 
-        .btn-stopwatch:hover {
+        .btn:hover {
             background: #d4af37;
             color: #3d2b1f;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
-        .btn-stop { display: none; }
-
-        .laps-container {
+        .laps {
             width: 100%;
-            max-width: 380px;
-            max-height: 180px;
+            max-height: 120px;
             overflow-y: auto;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid #8b4513;
-            border-radius: 5px;
-            padding: 10px;
+            margin-top: 15px;
+            font-size: 0.9rem;
         }
 
         .lap-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 15px;
+            padding: 5px 10px;
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            font-family: 'EB Garamond', serif;
-            font-size: 1.1rem;
         }
 
-        .back-btn {
-            margin-top: 2rem;
-            padding: 10px 25px;
-            background-color: transparent;
+        .back-link {
+            margin-top: 30px;
             color: #d4af37;
-            border: 1px solid #d4af37;
-            border-radius: 5px;
             text-decoration: none;
-            transition: all 0.3s ease;
-            font-family: 'EB Garamond', serif;
+            border: 1px solid #d4af37;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
 
-        .back-btn:hover {
-            background-color: #d4af37;
+        .back-link:hover {
+            background: #d4af37;
             color: #3d2b1f;
         }
 
-        /* Responsive */
-        @media (max-width: 480px) {
-            .clock-outer-rim { width: 280px; height: 280px; }
-            .clock-inner-rim { width: 250px; height: 250px; }
-            .number { font-size: 1.2rem; padding: 10px; }
-            .second-hand { height: 110px; }
-            .minute-hand { height: 95px; }
-            .hour-hand { height: 70px; }
+        @media (max-width: 768px) {
+            .section-wrapper { flex-direction: column; align-items: center; }
+            .card { min-width: 300px; width: 90%; }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand" style="color: #d4af37;">Sumiksha Neupane</div>
-            <ul class="nav-menu">
-                <li><a href="../index.html#home" class="nav-link" style="color: #d4af37;">Home</a></li>
-                <li><a href="fun.html" class="nav-link" style="color: #d4af37;">Back to Fun</a></li>
-            </ul>
-        </div>
-    </nav>
+    <div class="main-container">
+        <h1 class="title" style="font-size: 3rem; margin-bottom: 3rem;">Time & Precision</h1>
 
-    <div class="stopwatch-container">
-        <h1 class="stopwatch-title">Vintage Timepiece</h1>
-        
-        <div class="clock-outer-rim">
-            <div class="clock-inner-rim">
-                <div class="number number1"><span>I</span></div>
-                <div class="number number2"><span>II</span></div>
-                <div class="number number3"><span>III</span></div>
-                <div class="number number4"><span>IV</span></div>
-                <div class="number number5"><span>V</span></div>
-                <div class="number number6"><span>VI</span></div>
-                <div class="number number7"><span>VII</span></div>
-                <div class="number number8"><span>VIII</span></div>
-                <div class="number number9"><span>IX</span></div>
-                <div class="number number10"><span>X</span></div>
-                <div class="number number11"><span>XI</span></div>
-                <div class="number number12"><span>XII</span></div>
-                
-                <div id="hourHand" class="hand hour-hand"></div>
-                <div id="minuteHand" class="hand minute-hand"></div>
-                <div id="secondHand" class="hand second-hand"></div>
+        <div class="section-wrapper">
+            <!-- Stopwatch Section -->
+            <div class="card">
+                <h2 class="title">Stopwatch</h2>
+                <div class="clock-outer-rim">
+                    <div class="clock-inner-rim">
+                        <div class="number n1"><span>I</span></div>
+                        <div class="number n2"><span>II</span></div>
+                        <div class="number n3"><span>III</span></div>
+                        <div class="number n4"><span>IV</span></div>
+                        <div class="number n5"><span>V</span></div>
+                        <div class="number n6"><span>VI</span></div>
+                        <div class="number n7"><span>VII</span></div>
+                        <div class="number n8"><span>VIII</span></div>
+                        <div class="number n9"><span>IX</span></div>
+                        <div class="number n10"><span>X</span></div>
+                        <div class="number n11"><span>XI</span></div>
+                        <div class="number n12"><span>XII</span></div>
+                        <div id="sw-hour" class="hand hour-hand"></div>
+                        <div id="sw-min" class="hand minute-hand"></div>
+                        <div id="sw-sec" class="hand second-hand"></div>
+                    </div>
+                </div>
+                <div class="digital-box" id="sw-display">00:00:00.00</div>
+                <div class="controls">
+                    <button class="btn" id="startBtn">Start</button>
+                    <button class="btn" id="stopBtn" style="display:none;">Stop</button>
+                    <button class="btn" id="lapBtn">Lap</button>
+                    <button class="btn" id="resetBtn">Reset</button>
+                </div>
+                <div class="laps" id="laps"></div>
+            </div>
+
+            <!-- Hindu/Nepali Clock Section -->
+            <div class="card">
+                <h2 class="title">Hindu Digital Clock</h2>
+                <div class="clock-outer-rim">
+                    <div class="clock-inner-rim">
+                        <div class="number n1"><span>१</span></div>
+                        <div class="number n2"><span>२</span></div>
+                        <div class="number n3"><span>३</span></div>
+                        <div class="number n4"><span>४</span></div>
+                        <div class="number n5"><span>५</span></div>
+                        <div class="number n6"><span>६</span></div>
+                        <div class="number n7"><span>७</span></div>
+                        <div class="number n8"><span>८</span></div>
+                        <div class="number n9"><span>९</span></div>
+                        <div class="number n10"><span>१०</span></div>
+                        <div class="number n11"><span>११</span></div>
+                        <div class="number n12"><span>१२</span></div>
+                        <div id="clk-hour" class="hand hour-hand"></div>
+                        <div id="clk-min" class="hand minute-hand"></div>
+                        <div id="clk-sec" class="hand second-hand"></div>
+                    </div>
+                </div>
+                <div class="digital-box" id="clk-display">००:००:००</div>
+                <div class="nepali-date" id="nepali-date">लोड हुँदैछ...</div>
+                <p style="margin-top: 15px; font-style: italic; color: #d4af37;">Current Time & Date</p>
             </div>
         </div>
 
-        <div class="digital-display" id="display">00:00:00.00</div>
-
-        <div class="controls">
-            <button id="startBtn" class="btn-stopwatch btn-start"><i class="fas fa-play"></i> Start</button>
-            <button id="stopBtn" class="btn-stopwatch btn-stop"><i class="fas fa-stop"></i> Stop</button>
-            <button id="lapBtn" class="btn-stopwatch btn-lap"><i class="fas fa-flag"></i> Lap</button>
-            <button id="resetBtn" class="btn-stopwatch btn-reset"><i class="fas fa-redo"></i> Reset</button>
-        </div>
-
-        <div class="laps-container" id="laps"></div>
-
-        <a href="fun.html" class="back-btn">← Back to Fun Section</a>
+        <a href="fun.html" class="back-link">← Back to Fun Section</a>
     </div>
 
     <script>
-        let startTime;
-        let elapsedTime = 0;
-        let timerInterval;
-        let lapCount = 0;
+        // --- Stopwatch Logic ---
+        let swStartTime, swElapsedTime = 0, swInterval, swLapCount = 0;
+        const swDisplay = document.getElementById('sw-display');
+        const swHourHand = document.getElementById('sw-hour');
+        const swMinHand = document.getElementById('sw-min');
+        const swSecHand = document.getElementById('sw-sec');
 
-        const display = document.getElementById('display');
-        const hourHand = document.getElementById('hourHand');
-        const minuteHand = document.getElementById('minuteHand');
-        const secondHand = document.getElementById('secondHand');
-        const startBtn = document.getElementById('startBtn');
-        const stopBtn = document.getElementById('stopBtn');
-        const lapBtn = document.getElementById('lapBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const lapsContainer = document.getElementById('laps');
-
-        function updateHands(time) {
-            const ms = time % 1000;
-            const s = (time / 1000) % 60;
-            const m = (time / (1000 * 60)) % 60;
-            const h = (time / (1000 * 60 * 60)) % 12;
-
-            const sDeg = (s * 6) + (ms * 0.006);
-            const mDeg = (m * 6) + (s * 0.1);
-            const hDeg = (h * 30) + (m * 0.5);
-
-            secondHand.style.transform = `translateX(-50%) rotate(${sDeg}deg)`;
-            minuteHand.style.transform = `translateX(-50%) rotate(${mDeg}deg)`;
-            hourHand.style.transform = `translateX(-50%) rotate(${hDeg}deg)`;
+        function updateSwHands(time) {
+            const ms = time % 1000, s = (time / 1000) % 60, m = (time / 60000) % 60, h = (time / 3600000) % 12;
+            swSecHand.style.transform = `translateX(-50%) rotate(${(s * 6) + (ms * 0.006)}deg)`;
+            swMinHand.style.transform = `translateX(-50%) rotate(${(m * 6) + (s * 0.1)}deg)`;
+            swHourHand.style.transform = `translateX(-50%) rotate(${(h * 30) + (m * 0.5)}deg)`;
         }
 
-        function timeToString(time) {
-            let hh = Math.floor(time / 3600000);
-            let mm = Math.floor((time % 3600000) / 60000);
-            let ss = Math.floor((time % 60000) / 1000);
-            let ms = Math.floor((time % 1000) / 10);
-            return `${hh.toString().padStart(2, "0")}:${mm.toString().padStart(2, "0")}:${ss.toString().padStart(2, "0")}.${ms.toString().padStart(2, "0")}`;
+        function swTimeToString(time) {
+            let h = Math.floor(time / 3600000), m = Math.floor((time % 3600000) / 60000), s = Math.floor((time % 60000) / 1000), ms = Math.floor((time % 1000) / 10);
+            return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}.${ms.toString().padStart(2, "0")}`;
         }
 
-        function start() {
-            startTime = Date.now() - elapsedTime;
-            timerInterval = setInterval(() => {
-                elapsedTime = Date.now() - startTime;
-                display.innerHTML = timeToString(elapsedTime);
-                updateHands(elapsedTime);
+        document.getElementById('startBtn').onclick = () => {
+            swStartTime = Date.now() - swElapsedTime;
+            swInterval = setInterval(() => {
+                swElapsedTime = Date.now() - swStartTime;
+                swDisplay.innerHTML = swTimeToString(swElapsedTime);
+                updateSwHands(swElapsedTime);
             }, 10);
-            startBtn.style.display = "none";
-            stopBtn.style.display = "flex";
-        }
+            document.getElementById('startBtn').style.display = "none";
+            document.getElementById('stopBtn').style.display = "inline-block";
+        };
 
-        function stop() {
-            clearInterval(timerInterval);
-            startBtn.style.display = "flex";
-            stopBtn.style.display = "none";
-        }
+        document.getElementById('stopBtn').onclick = () => {
+            clearInterval(swInterval);
+            document.getElementById('startBtn').style.display = "inline-block";
+            document.getElementById('stopBtn').style.display = "none";
+        };
 
-        function reset() {
-            stop();
-            elapsedTime = 0;
-            lapCount = 0;
-            display.innerHTML = "00:00:00.00";
-            updateHands(0);
-            lapsContainer.innerHTML = '';
-        }
+        document.getElementById('resetBtn').onclick = () => {
+            clearInterval(swInterval);
+            swElapsedTime = 0; swLapCount = 0;
+            swDisplay.innerHTML = "00:00:00.00";
+            updateSwHands(0);
+            document.getElementById('laps').innerHTML = '';
+            document.getElementById('startBtn').style.display = "inline-block";
+            document.getElementById('stopBtn').style.display = "none";
+        };
 
-        function lap() {
-            if (elapsedTime > 0) {
-                lapCount++;
-                const lapItem = document.createElement('div');
-                lapItem.classList.add('lap-item');
-                lapItem.innerHTML = `<span>Lap ${lapCount}</span><span>${timeToString(elapsedTime)}</span>`;
-                lapsContainer.prepend(lapItem);
+        document.getElementById('lapBtn').onclick = () => {
+            if (swElapsedTime > 0) {
+                swLapCount++;
+                const item = document.createElement('div');
+                item.className = 'lap-item';
+                item.innerHTML = `<span>Lap ${swLapCount}</span><span>${swTimeToString(swElapsedTime)}</span>`;
+                document.getElementById('laps').prepend(item);
             }
+        };
+
+        // --- Hindu Clock & Nepali Date Logic ---
+        const nepaliDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+        const toNepaliDigits = (num) => num.toString().split('').map(d => nepaliDigits[d] || d).join('');
+
+        const nepaliMonths = ['बैशाख', 'जेठ', 'असार', 'साउन', 'भदौ', 'असोज', 'कात्तिक', 'मंसिर', 'पुष', 'माघ', 'फागुन', 'चैत'];
+        const nepaliDays = ['आइतबार', 'सोमबार', 'मंगलबार', 'बुधबार', 'बिहीबार', 'शुक्रबार', 'शनिबार'];
+
+        function updateClock() {
+            const now = new Date();
+            const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+            
+            // Analog
+            document.getElementById('clk-sec').style.transform = `translateX(-50%) rotate(${s * 6}deg)`;
+            document.getElementById('clk-min').style.transform = `translateX(-50%) rotate(${(m * 6) + (s * 0.1)}deg)`;
+            document.getElementById('clk-hour').style.transform = `translateX(-50%) rotate(${(h % 12 * 30) + (m * 0.5)}deg)`;
+
+            // Digital
+            document.getElementById('clk-display').innerHTML = `${toNepaliDigits(h.toString().padStart(2, '0'))}:${toNepaliDigits(m.toString().padStart(2, '0'))}:${toNepaliDigits(s.toString().padStart(2, '0'))}`;
+
+            // Date (Simplified conversion for display - for full BS calendar a library is usually needed, but we'll use a standard format in Nepali)
+            const dayName = nepaliDays[now.getDay()];
+            const monthName = nepaliMonths[now.getMonth()]; // Note: This is a rough mapping to Gregorian months for display
+            const date = toNepaliDigits(now.getDate());
+            const year = toNepaliDigits(now.getFullYear());
+            document.getElementById('nepali-date').innerHTML = `${dayName}, ${date} ${monthName} ${year}`;
         }
 
-        startBtn.addEventListener("click", start);
-        stopBtn.addEventListener("click", stop);
-        resetBtn.addEventListener("click", reset);
-        lapBtn.addEventListener("click", lap);
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
 </body>
 </html>

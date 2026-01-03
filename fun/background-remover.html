@@ -37,6 +37,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
 
         .upload-area:hover {
@@ -179,6 +180,7 @@
             height: 100%;
             opacity: 0;
             cursor: pointer;
+            z-index: 10;
         }
 
         @media (max-width: 600px) {
@@ -239,19 +241,11 @@
         </p>
     </div>
 
-    <!-- Load the library from CDN -->
-    <script type="importmap">
-        {
-          "imports": {
-            "@imgly/background-removal": "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/index.js"
-          }
-        }
-    </script>
-
+    <script src="../js/script.js"></script>
     <script type="module">
-        import imglyRemoveBackground from "@imgly/background-removal";
+        // Import the library directly from the CDN
+        import imglyRemoveBackground from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/index.js";
 
-        const dropZone = document.getElementById('drop-zone');
         const fileInput = document.getElementById('file-input');
         const removeBtn = document.getElementById('remove-btn');
         const downloadBtn = document.getElementById('download-btn');
@@ -260,6 +254,7 @@
         const resultPreview = document.getElementById('result-preview');
         const loadingOverlay = document.getElementById('loading-overlay');
         const statusText = document.getElementById('status-text');
+        const dropZone = document.getElementById('drop-zone');
 
         let selectedFile = null;
 
@@ -270,6 +265,7 @@
             }
         });
 
+        // Drag and drop visual feedback
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropZone.style.borderColor = '#764ba2';
@@ -320,12 +316,14 @@
                         const percent = Math.round((current / total) * 100);
                         statusText.textContent = `Downloading AI Model: ${percent}%`;
                     },
-                    model: 'isnet_fp16', // Balanced quality/size
+                    model: 'isnet_fp16',
                 };
 
+                console.log("Starting background removal...");
                 const blob = await imglyRemoveBackground(selectedFile, config);
-                const url = URL.createObjectURL(blob);
+                console.log("Background removal complete!");
                 
+                const url = URL.createObjectURL(blob);
                 resultPreview.src = url;
                 downloadBtn.href = url;
                 downloadBtn.style.display = 'inline-block';
@@ -336,8 +334,8 @@
                 }, 500);
 
             } catch (error) {
-                console.error(error);
-                alert('Error removing background. Please try again.');
+                console.error("Error during background removal:", error);
+                alert('Error removing background: ' + error.message);
                 loadingOverlay.style.display = 'none';
             }
         });

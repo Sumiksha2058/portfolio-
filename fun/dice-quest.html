@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Quest - Adventure Game | Sumiksha Neupane</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .game-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .game-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .setup-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .setup-section h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        .player-setup {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .player-input {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-input label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .player-input input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .player-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .player-count {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .player-count label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .player-count input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .start-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .game-board {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .game-board.active {
+            display: block;
+        }
+
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .board-space {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: #f5f5f5;
+            font-weight: 700;
+            font-size: 0.9rem;
+            position: relative;
+            cursor: default;
+            transition: all 0.3s;
+        }
+
+        .board-space.treasure {
+            background: linear-gradient(135deg, #ffd89b, #19547b);
+            color: white;
+        }
+
+        .board-space.monster {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+        }
+
+        .board-space.trap {
+            background: linear-gradient(135deg, #a8a8a8, #5a5a5a);
+            color: white;
+        }
+
+        .board-space.start {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 700;
+        }
+
+        .board-space.finish {
+            background: linear-gradient(135deg, #00d084, #00a86b);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .player-token {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+            border: 2px solid white;
+        }
+
+        .game-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .player-status {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .player-status.active {
+            background: #e8eaf6;
+            border-left-color: #00d084;
+        }
+
+        .player-status h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .player-status p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .roll-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .roll-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .roll-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .reset-btn {
+            padding: 12px 30px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #ee5a6f;
+            transform: translateY(-2px);
+        }
+
+        .game-message {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 1rem;
+            min-height: 2rem;
+        }
+
+        .winner-message {
+            color: #00d084;
+            font-size: 1.5rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background-color: white;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .board-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .game-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .setup-section {
+                padding: 1.5rem;
+            }
+
+            .player-setup {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Sumiksha Neupane</div>
+            <ul class="nav-menu">
+                <li><a href="../index.html#home" class="nav-link">Home</a></li>
+                <li><a href="fun.html" class="nav-link">Back to Fun</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <div class="game-header">
+            <h1>🎲 Dice Quest 🎲</h1>
+            <p>An Adventure Game for 2–6 Players</p>
+        </div>
+
+        <!-- Setup Section -->
+        <div class="setup-section" id="setupSection">
+            <h2>Game Setup</h2>
+            <div class="player-count">
+                <label for="playerCount">Number of Players:</label>
+                <input type="number" id="playerCount" min="2" max="6" value="2">
+            </div>
+            <div class="player-setup" id="playerSetup"></div>
+            <button class="start-btn" onclick="startGame()">Start Game</button>
+        </div>
+
+        <!-- Game Board -->
+        <div class="game-board" id="gameBoard">
+            <div class="game-message" id="gameMessage"></div>
+            <div class="board-grid" id="boardGrid"></div>
+            <div class="game-info" id="playerInfo"></div>
+            <div class="game-controls">
+                <button class="roll-btn" id="rollBtn" onclick="rollDice()">Roll Dice</button>
+                <button class="reset-btn" onclick="resetGame()">New Game</button>
+            </div>
+            <div style="text-align: center;">
+                <a href="fun.html" class="back-btn">← Back to Fun Section</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script>
+        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
+        let players = [];
+        let currentPlayerIndex = 0;
+        let gameActive = false;
+        let trapPlayers = new Set();
+
+        const boardSpaces = [
+            { type: 'start', label: 'START' },
+            { type: 'normal', label: '1' },
+            { type: 'monster', label: '⚔️' },
+            { type: 'normal', label: '3' },
+            { type: 'treasure', label: '💎' },
+            { type: 'normal', label: '5' },
+            { type: 'trap', label: '🕳️' },
+            { type: 'normal', label: '7' },
+            { type: 'monster', label: '⚔️' },
+            { type: 'normal', label: '9' },
+            { type: 'treasure', label: '💎' },
+            { type: 'normal', label: '11' },
+            { type: 'trap', label: '🕳️' },
+            { type: 'normal', label: '13' },
+            { type: 'monster', label: '⚔️' },
+            { type: 'normal', label: '15' },
+            { type: 'treasure', label: '💎' },
+            { type: 'normal', label: '17' },
+            { type: 'trap', label: '🕳️' },
+            { type: 'normal', label: '19' },
+            { type: 'monster', label: '⚔️' },
+            { type: 'normal', label: '21' },
+            { type: 'treasure', label: '💎' },
+            { type: 'normal', label: '23' },
+            { type: 'trap', label: '🕳️' },
+            { type: 'normal', label: '25' },
+            { type: 'monster', label: '⚔️' },
+            { type: 'normal', label: '27' },
+            { type: 'treasure', label: '💎' },
+            { type: 'finish', label: '🏆 FINISH' }
+        ];
+
+        function setupPlayerInputs() {
+            const playerCount = parseInt(document.getElementById('playerCount').value);
+            const playerSetup = document.getElementById('playerSetup');
+            playerSetup.innerHTML = '';
+
+            for (let i = 0; i < playerCount; i++) {
+                const div = document.createElement('div');
+                div.className = 'player-input';
+                div.innerHTML = `
+                    <label for="player${i}">Player ${i + 1} Name:</label>
+                    <input type="text" id="player${i}" placeholder="Enter name" value="Player ${i + 1}">
+                `;
+                playerSetup.appendChild(div);
+            }
+        }
+
+        document.getElementById('playerCount').addEventListener('change', setupPlayerInputs);
+
+        function startGame() {
+            const playerCount = parseInt(document.getElementById('playerCount').value);
+            players = [];
+
+            for (let i = 0; i < playerCount; i++) {
+                const name = document.getElementById(`player${i}`).value || `Player ${i + 1}`;
+                players.push({
+                    name: name,
+                    position: 0,
+                    color: colors[i],
+                    skipping: false
+                });
+            }
+
+            gameActive = true;
+            currentPlayerIndex = 0;
+            trapPlayers.clear();
+
+            document.getElementById('setupSection').style.display = 'none';
+            document.getElementById('gameBoard').classList.add('active');
+
+            renderBoard();
+            updatePlayerInfo();
+            updateGameMessage(`${players[0].name}'s turn! Roll the dice.`);
+        }
+
+        function renderBoard() {
+            const boardGrid = document.getElementById('boardGrid');
+            boardGrid.innerHTML = '';
+
+            boardSpaces.forEach((space, index) => {
+                const div = document.createElement('div');
+                div.className = `board-space ${space.type}`;
+                div.textContent = space.label;
+
+                players.forEach(player => {
+                    if (player.position === index) {
+                        const token = document.createElement('div');
+                        token.className = 'player-token';
+                        token.style.backgroundColor = player.color;
+                        token.textContent = players.indexOf(player) + 1;
+                        div.appendChild(token);
+                    }
+                });
+
+                boardGrid.appendChild(div);
+            });
+        }
+
+        function updatePlayerInfo() {
+            const playerInfo = document.getElementById('playerInfo');
+            playerInfo.innerHTML = '';
+
+            players.forEach((player, index) => {
+                const div = document.createElement('div');
+                div.className = `player-status ${index === currentPlayerIndex ? 'active' : ''}`;
+                div.innerHTML = `
+                    <h3 style="color: ${player.color};">● ${player.name}</h3>
+                    <p>Position: ${player.position} / ${boardSpaces.length - 1}</p>
+                    ${player.skipping ? '<p style="color: red;">⏸️ Skipping next turn</p>' : ''}
+                `;
+                playerInfo.appendChild(div);
+            });
+        }
+
+        function rollDice() {
+            const currentPlayer = players[currentPlayerIndex];
+
+            if (currentPlayer.skipping) {
+                currentPlayer.skipping = false;
+                updateGameMessage(`${currentPlayer.name} was trapped! Skipping turn.`);
+                nextTurn();
+                return;
+            }
+
+            document.getElementById('rollBtn').disabled = true;
+
+            const diceValue = Math.floor(Math.random() * 6) + 1;
+            updateGameMessage(`${currentPlayer.name} rolled a ${diceValue}!`);
+
+            setTimeout(() => {
+                movePlayer(diceValue);
+            }, 1000);
+        }
+
+        function movePlayer(diceValue) {
+            const currentPlayer = players[currentPlayerIndex];
+            const newPosition = currentPlayer.position + diceValue;
+
+            if (newPosition > boardSpaces.length - 1) {
+                updateGameMessage(`${currentPlayer.name} overshot! Need exact roll to reach the finish.`);
+                document.getElementById('rollBtn').disabled = false;
+                nextTurn();
+                return;
+            }
+
+            currentPlayer.position = newPosition;
+            renderBoard();
+
+            if (newPosition === boardSpaces.length - 1) {
+                updateGameMessage(`🎉 ${currentPlayer.name} reached the treasure! WINNER! 🎉`, true);
+                document.getElementById('rollBtn').disabled = true;
+                gameActive = false;
+                return;
+            }
+
+            const space = boardSpaces[newPosition];
+
+            if (space.type === 'monster') {
+                updateGameMessage(`${currentPlayer.name} encountered a monster! Rolling to fight...`);
+                setTimeout(() => {
+                    const fightRoll = Math.floor(Math.random() * 6) + 1;
+                    if (fightRoll >= 4) {
+                        updateGameMessage(`${currentPlayer.name} won the fight! Rolling again...`);
+                        setTimeout(() => {
+                            const bonusRoll = Math.floor(Math.random() * 6) + 1;
+                            movePlayer(bonusRoll);
+                        }, 1000);
+                    } else {
+                        currentPlayer.position -= 2;
+                        if (currentPlayer.position < 0) currentPlayer.position = 0;
+                        renderBoard();
+                        updateGameMessage(`${currentPlayer.name} lost the fight! Moving back 2 spaces.`);
+                        document.getElementById('rollBtn').disabled = false;
+                        nextTurn();
+                    }
+                }, 1000);
+                return;
+            } else if (space.type === 'treasure') {
+                updateGameMessage(`${currentPlayer.name} found treasure! Rolling again...`);
+                setTimeout(() => {
+                    const treasureRoll = Math.floor(Math.random() * 6) + 1;
+                    updateGameMessage(`${currentPlayer.name} rolled a ${treasureRoll}! Moving forward...`);
+                    setTimeout(() => {
+                        movePlayer(treasureRoll);
+                    }, 1000);
+                }, 1000);
+                return;
+            } else if (space.type === 'trap') {
+                currentPlayer.skipping = true;
+                updateGameMessage(`${currentPlayer.name} fell into a trap! Will skip next turn.`);
+            }
+
+            document.getElementById('rollBtn').disabled = false;
+            nextTurn();
+        }
+
+        function nextTurn() {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            updatePlayerInfo();
+            updateGameMessage(`${players[currentPlayerIndex].name}'s turn! Roll the dice.`);
+        }
+
+        function updateGameMessage(message, isWinner = false) {
+            const messageDiv = document.getElementById('gameMessage');
+            messageDiv.textContent = message;
+            if (isWinner) {
+                messageDiv.classList.add('winner-message');
+            } else {
+                messageDiv.classList.remove('winner-message');
+            }
+        }
+
+        function resetGame() {
+            document.getElementById('setupSection').style.display = 'block';
+            document.getElementById('gameBoard').classList.remove('active');
+            setupPlayerInputs();
+        }
+
+        setupPlayerInputs();
+    </script>
+</body>
+</html>

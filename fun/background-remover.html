@@ -75,6 +75,7 @@
 
         .preview-img {
             max-width: 100%;
+            height: auto;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             background-image: 
@@ -84,6 +85,8 @@
                 linear-gradient(-45deg, transparent 75%, #eee 75%);
             background-size: 20px 20px;
             background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            min-height: 200px;
+            object-fit: contain;
         }
 
         .controls {
@@ -217,11 +220,11 @@
             <div class="preview-container" id="preview-container">
                 <div class="preview-item">
                     <h4>Original</h4>
-                    <img id="original-preview" class="preview-img">
+                    <img id="original-preview" class="preview-img" alt="Original Image">
                 </div>
                 <div class="preview-item">
                     <h4>Result</h4>
-                    <img id="result-preview" class="preview-img">
+                    <img id="result-preview" class="preview-img" alt="Background Removed Image">
                 </div>
             </div>
 
@@ -243,7 +246,6 @@
 
     <script src="../js/script.js"></script>
     <script type="module">
-        // Import the library directly from the CDN
         import imglyRemoveBackground from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/index.js";
 
         const fileInput = document.getElementById('file-input');
@@ -257,15 +259,14 @@
         const dropZone = document.getElementById('drop-zone');
 
         let selectedFile = null;
+        let resultUrl = null;
 
-        // Handle file selection
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
                 handleFile(e.target.files[0]);
             }
         });
 
-        // Drag and drop visual feedback
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropZone.style.borderColor = '#764ba2';
@@ -299,44 +300,67 @@
                 removeBtn.disabled = false;
                 downloadBtn.style.display = 'none';
                 resultPreview.src = '';
+                
+                // Clean up previous result URL if it exists
+                if (resultUrl) {
+                    URL.revokeObjectURL(resultUrl);
+                    resultUrl = null;
+                }
             };
             reader.readAsDataURL(file);
         }
 
-        // Handle background removal
         removeBtn.addEventListener('click', async () => {
             if (!selectedFile) return;
 
             loadingOverlay.style.display = 'flex';
             statusText.textContent = 'Initializing AI...';
+            removeBtn.disabled = true;
 
             try {
                 const config = {
                     progress: (key, current, total) => {
                         const percent = Math.round((current / total) * 100);
-                        statusText.textContent = `Downloading AI Model: ${percent}%`;
+                        statusText.textContent = `Processing: ${percent}%`;
                     },
                     model: 'isnet_fp16',
+                    output: {
+                        format: 'image/png',
+                        quality: 0.8,
+                        type: 'foreground'
+                    }
                 };
 
-                console.log("Starting background removal...");
+                console.log("Starting background removal for:", selectedFile.name);
                 const blob = await imglyRemoveBackground(selectedFile, config);
-                console.log("Background removal complete!");
+                console.log("Background removal complete, blob size:", blob.size);
                 
-                const url = URL.createObjectURL(blob);
-                resultPreview.src = url;
-                downloadBtn.href = url;
-                downloadBtn.style.display = 'inline-block';
+                // Create new URL and update image
+                resultUrl = URL.createObjectURL(blob);
+                resultPreview.src = resultUrl;
                 
-                statusText.textContent = 'Done!';
-                setTimeout(() => {
+                // Ensure the image is visible
+                resultPreview.onload = () => {
+                    console.log("Result image loaded successfully");
+                    downloadBtn.href = resultUrl;
+                    downloadBtn.style.display = 'inline-block';
                     loadingOverlay.style.display = 'none';
-                }, 500);
+                    removeBtn.disabled = false;
+                };
+
+                // Fallback if onload doesn't fire
+                setTimeout(() => {
+                    if (loadingOverlay.style.display !== 'none') {
+                        loadingOverlay.style.display = 'none';
+                        removeBtn.disabled = false;
+                    }
+                }, 2000);
 
             } catch (error) {
                 console.error("Error during background removal:", error);
                 alert('Error removing background: ' + error.message);
                 loadingOverlay.style.display = 'none';
+                removeBtn.disabled = false;
             }
         });
     </script>

@@ -279,34 +279,106 @@
             font-size: 0.9rem;
         }
 
+        /* 3D Dice Styles */
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3rem 0;
+            perspective: 1200px;
+            min-height: 200px;
+        }
+
+        .dice-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .dice-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .dice-wrapper.rolling {
+            animation: diceRoll 0.8s ease-out;
+        }
+
+        @keyframes diceRoll {
+            0% {
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+            }
+            25% {
+                transform: rotateX(720deg) rotateY(720deg) rotateZ(360deg) scale(1.1);
+            }
+            50% {
+                transform: rotateX(1440deg) rotateY(1440deg) rotateZ(720deg) scale(1.15);
+            }
+            75% {
+                transform: rotateX(2160deg) rotateY(2160deg) rotateZ(1080deg) scale(1.1);
+            }
+            100% {
+                transform: rotateX(var(--finalX)) rotateY(var(--finalY)) rotateZ(0deg) scale(1);
+            }
+        }
+
+        .dice {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            transition: transform 0.6s ease-out;
+        }
+
+        .dice-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border: 3px solid #333;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            font-size: 3rem;
+            color: #333;
+        }
+
+        .dice-face-1 { transform: translateZ(75px); }
+        .dice-face-2 { transform: rotateY(180deg) translateZ(75px); }
+        .dice-face-3 { transform: rotateY(90deg) translateZ(75px); }
+        .dice-face-4 { transform: rotateY(-90deg) translateZ(75px); }
+        .dice-face-5 { transform: rotateX(90deg) translateZ(75px); }
+        .dice-face-6 { transform: rotateX(-90deg) translateZ(75px); }
+
+        .dice-dot {
+            width: 20px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 50%;
+            margin: 5px;
+        }
+
+        .roll-instruction {
+            text-align: center;
+            color: #667eea;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
         .game-controls {
             display: flex;
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
-        }
-
-        .roll-btn {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .roll-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .roll-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
         }
 
         .reset-btn {
@@ -398,6 +470,15 @@
             .current-player-name {
                 font-size: 1.5rem;
             }
+
+            .dice-wrapper {
+                width: 120px;
+                height: 120px;
+            }
+
+            .dice-face {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -447,8 +528,23 @@
             <div class="game-message" id="gameMessage"></div>
             <div class="board-grid" id="boardGrid"></div>
             <div class="game-info" id="playerInfo"></div>
+
+            <!-- 3D Dice -->
+            <div class="roll-instruction" id="rollInstruction">Click the dice to roll!</div>
+            <div class="dice-container">
+                <div class="dice-wrapper" id="diceWrapper" onclick="rollDice()">
+                    <div class="dice" id="dice">
+                        <div class="dice-face dice-face-1">1</div>
+                        <div class="dice-face dice-face-2">2</div>
+                        <div class="dice-face dice-face-3">3</div>
+                        <div class="dice-face dice-face-4">4</div>
+                        <div class="dice-face dice-face-5">5</div>
+                        <div class="dice-face dice-face-6">6</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="game-controls">
-                <button class="roll-btn" id="rollBtn" onclick="rollDice()">🎲 Roll Dice</button>
                 <button class="reset-btn" onclick="resetGame()">New Game</button>
             </div>
             <div style="text-align: center;">
@@ -464,6 +560,7 @@
         let currentPlayerIndex = 0;
         let gameActive = false;
         let trapPlayers = new Set();
+        let isRolling = false;
 
         const boardSpaces = [
             { type: 'start', label: 'START' },
@@ -586,6 +683,7 @@
             gameActive = true;
             currentPlayerIndex = 0;
             trapPlayers.clear();
+            isRolling = false;
 
             document.getElementById('setupSection').style.display = 'none';
             document.getElementById('gameBoard').classList.add('active');
@@ -593,7 +691,7 @@
             renderBoard();
             updatePlayerInfo();
             updateCurrentPlayerIndicator();
-            updateGameMessage(`${players[0].name}'s turn! Roll the dice.`);
+            updateGameMessage(`${players[0].name}'s turn! Click the dice to roll!`);
         }
 
         function updateCurrentPlayerIndicator() {
@@ -642,6 +740,8 @@
         }
 
         function rollDice() {
+            if (isRolling || !gameActive) return;
+
             const currentPlayer = players[currentPlayerIndex];
 
             if (currentPlayer.skipping) {
@@ -652,15 +752,36 @@
                 return;
             }
 
-            document.getElementById('rollBtn').disabled = true;
+            isRolling = true;
             playSound('roll');
 
+            const diceWrapper = document.getElementById('diceWrapper');
+            const dice = document.getElementById('dice');
+            
+            diceWrapper.classList.add('rolling');
+
             const diceValue = Math.floor(Math.random() * 6) + 1;
-            updateGameMessage(`${currentPlayer.name} rolled a ${diceValue}!`);
+            const rotations = {
+                1: { x: 0, y: 0 },
+                2: { x: 0, y: 180 },
+                3: { x: 0, y: 90 },
+                4: { x: 0, y: -90 },
+                5: { x: 90, y: 0 },
+                6: { x: -90, y: 0 }
+            };
+
+            const finalRot = rotations[diceValue];
 
             setTimeout(() => {
-                movePlayer(diceValue);
-            }, 1000);
+                diceWrapper.classList.remove('rolling');
+                dice.style.transform = `rotateX(${finalRot.x}deg) rotateY(${finalRot.y}deg)`;
+                updateGameMessage(`${currentPlayer.name} rolled a ${diceValue}!`);
+                
+                setTimeout(() => {
+                    movePlayer(diceValue);
+                    isRolling = false;
+                }, 1000);
+            }, 800);
         }
 
         function movePlayer(diceValue) {
@@ -670,7 +791,6 @@
             if (newPosition > boardSpaces.length - 1) {
                 playSound('lose');
                 updateGameMessage(`${currentPlayer.name} overshot! Need exact roll to reach the finish.`);
-                document.getElementById('rollBtn').disabled = false;
                 nextTurn();
                 return;
             }
@@ -681,7 +801,6 @@
             if (newPosition === boardSpaces.length - 1) {
                 playSound('win');
                 updateGameMessage(`🎉 ${currentPlayer.name} reached the treasure! WINNER! 🎉`, true);
-                document.getElementById('rollBtn').disabled = true;
                 gameActive = false;
                 return;
             }
@@ -706,7 +825,6 @@
                         renderBoard();
                         playSound('lose');
                         updateGameMessage(`${currentPlayer.name} lost the fight! Moving back 2 spaces.`);
-                        document.getElementById('rollBtn').disabled = false;
                         nextTurn();
                     }
                 }, 1000);
@@ -728,7 +846,6 @@
                 updateGameMessage(`${currentPlayer.name} fell into a trap! Will skip next turn.`);
             }
 
-            document.getElementById('rollBtn').disabled = false;
             nextTurn();
         }
 
@@ -736,7 +853,7 @@
             currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
             updatePlayerInfo();
             updateCurrentPlayerIndicator();
-            updateGameMessage(`${players[currentPlayerIndex].name}'s turn! Roll the dice.`);
+            updateGameMessage(`${players[currentPlayerIndex].name}'s turn! Click the dice to roll!`);
         }
 
         function updateGameMessage(message, isWinner = false) {

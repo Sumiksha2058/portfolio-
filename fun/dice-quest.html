@@ -141,6 +141,48 @@
             display: block;
         }
 
+        /* Current Player Indicator */
+        .current-player-indicator {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .current-player-indicator h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-player-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-player-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-block;
+            border: 3px solid white;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+            50% {
+                box-shadow: 0 5px 25px rgba(102, 126, 234, 0.8);
+            }
+        }
+
         .board-grid {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
@@ -216,12 +258,15 @@
             background: #f5f5f5;
             padding: 1rem;
             border-radius: 10px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #ddd;
+            transition: all 0.3s;
         }
 
         .player-status.active {
             background: #e8eaf6;
-            border-left-color: #00d084;
+            border-left-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
         .player-status h3 {
@@ -288,11 +333,27 @@
             color: #667eea;
             margin-bottom: 1rem;
             min-height: 2rem;
+            padding: 1rem;
+            background: #f0f0f0;
+            border-radius: 10px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .winner-message {
             color: #00d084;
             font-size: 1.5rem;
+            background: #e8f5e9;
         }
 
         .back-btn {
@@ -328,6 +389,14 @@
 
             .player-setup {
                 grid-template-columns: 1fr;
+            }
+
+            .current-player-indicator h2 {
+                font-size: 1.2rem;
+            }
+
+            .current-player-name {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -368,11 +437,18 @@
 
         <!-- Game Board -->
         <div class="game-board" id="gameBoard">
+            <!-- Current Player Indicator -->
+            <div class="current-player-indicator" id="currentPlayerIndicator">
+                <h2>Current Player</h2>
+                <div class="current-player-name" id="currentPlayerName"></div>
+                <span class="current-player-color" id="currentPlayerColorBox"></span>
+            </div>
+
             <div class="game-message" id="gameMessage"></div>
             <div class="board-grid" id="boardGrid"></div>
             <div class="game-info" id="playerInfo"></div>
             <div class="game-controls">
-                <button class="roll-btn" id="rollBtn" onclick="rollDice()">Roll Dice</button>
+                <button class="roll-btn" id="rollBtn" onclick="rollDice()">🎲 Roll Dice</button>
                 <button class="reset-btn" onclick="resetGame()">New Game</button>
             </div>
             <div style="text-align: center;">
@@ -422,6 +498,59 @@
             { type: 'finish', label: '🏆 FINISH' }
         ];
 
+        // Sound effects using Web Audio API
+        function playSound(type) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            switch(type) {
+                case 'roll':
+                    oscillator.frequency.value = 400;
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                    break;
+                case 'win':
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    break;
+                case 'lose':
+                    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    break;
+                case 'treasure':
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(1000, audioContext.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                    break;
+                case 'trap':
+                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.05);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    break;
+            }
+        }
+
         function setupPlayerInputs() {
             const playerCount = parseInt(document.getElementById('playerCount').value);
             const playerSetup = document.getElementById('playerSetup');
@@ -463,7 +592,14 @@
 
             renderBoard();
             updatePlayerInfo();
+            updateCurrentPlayerIndicator();
             updateGameMessage(`${players[0].name}'s turn! Roll the dice.`);
+        }
+
+        function updateCurrentPlayerIndicator() {
+            const currentPlayer = players[currentPlayerIndex];
+            document.getElementById('currentPlayerName').textContent = currentPlayer.name;
+            document.getElementById('currentPlayerColorBox').style.backgroundColor = currentPlayer.color;
         }
 
         function renderBoard() {
@@ -510,12 +646,14 @@
 
             if (currentPlayer.skipping) {
                 currentPlayer.skipping = false;
+                playSound('lose');
                 updateGameMessage(`${currentPlayer.name} was trapped! Skipping turn.`);
                 nextTurn();
                 return;
             }
 
             document.getElementById('rollBtn').disabled = true;
+            playSound('roll');
 
             const diceValue = Math.floor(Math.random() * 6) + 1;
             updateGameMessage(`${currentPlayer.name} rolled a ${diceValue}!`);
@@ -530,6 +668,7 @@
             const newPosition = currentPlayer.position + diceValue;
 
             if (newPosition > boardSpaces.length - 1) {
+                playSound('lose');
                 updateGameMessage(`${currentPlayer.name} overshot! Need exact roll to reach the finish.`);
                 document.getElementById('rollBtn').disabled = false;
                 nextTurn();
@@ -540,6 +679,7 @@
             renderBoard();
 
             if (newPosition === boardSpaces.length - 1) {
+                playSound('win');
                 updateGameMessage(`🎉 ${currentPlayer.name} reached the treasure! WINNER! 🎉`, true);
                 document.getElementById('rollBtn').disabled = true;
                 gameActive = false;
@@ -549,10 +689,12 @@
             const space = boardSpaces[newPosition];
 
             if (space.type === 'monster') {
+                playSound('lose');
                 updateGameMessage(`${currentPlayer.name} encountered a monster! Rolling to fight...`);
                 setTimeout(() => {
                     const fightRoll = Math.floor(Math.random() * 6) + 1;
                     if (fightRoll >= 4) {
+                        playSound('win');
                         updateGameMessage(`${currentPlayer.name} won the fight! Rolling again...`);
                         setTimeout(() => {
                             const bonusRoll = Math.floor(Math.random() * 6) + 1;
@@ -562,6 +704,7 @@
                         currentPlayer.position -= 2;
                         if (currentPlayer.position < 0) currentPlayer.position = 0;
                         renderBoard();
+                        playSound('lose');
                         updateGameMessage(`${currentPlayer.name} lost the fight! Moving back 2 spaces.`);
                         document.getElementById('rollBtn').disabled = false;
                         nextTurn();
@@ -569,6 +712,7 @@
                 }, 1000);
                 return;
             } else if (space.type === 'treasure') {
+                playSound('treasure');
                 updateGameMessage(`${currentPlayer.name} found treasure! Rolling again...`);
                 setTimeout(() => {
                     const treasureRoll = Math.floor(Math.random() * 6) + 1;
@@ -580,6 +724,7 @@
                 return;
             } else if (space.type === 'trap') {
                 currentPlayer.skipping = true;
+                playSound('trap');
                 updateGameMessage(`${currentPlayer.name} fell into a trap! Will skip next turn.`);
             }
 
@@ -590,6 +735,7 @@
         function nextTurn() {
             currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
             updatePlayerInfo();
+            updateCurrentPlayerIndicator();
             updateGameMessage(`${players[currentPlayerIndex].name}'s turn! Roll the dice.`);
         }
 

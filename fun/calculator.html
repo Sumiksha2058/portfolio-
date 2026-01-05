@@ -131,7 +131,10 @@
             </div>
 
             <div class="history-container">
-                <div style="font-size: 0.8rem; border-bottom: 2px solid #97a97c; margin-bottom: 10px;">HISTORY LOG</div>
+                <div style="font-size: 0.8rem; border-bottom: 2px solid #97a97c; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>HISTORY LOG</span>
+                    <button onclick="clearHistory()" style="background: #c0392b; color: white; border: none; border-radius: 3px; font-size: 0.6rem; cursor: pointer; padding: 2px 5px;">CLEAR</button>
+                </div>
                 <div id="history-list"></div>
             </div>
         </div>
@@ -226,6 +229,14 @@
             document.getElementById('history-list').innerHTML = history.map(h => `
                 <div class="history-item">${h.entry}</div>
             `).join('');
+        }
+
+        function clearHistory() {
+            if (confirm('Clear all calculation history?')) {
+                history = [];
+                localStorage.removeItem('calc_history');
+                renderHistory();
+            }
         }
 
         renderHistory();

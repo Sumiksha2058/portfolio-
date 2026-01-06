@@ -29,25 +29,25 @@
             color: #333;
         }
 
-        .upload-area {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 3rem 2rem;
+        .upload-section {
             margin-bottom: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            background-color: #f9f9f9;
+            padding: 2rem;
+            border: 2px solid #eee;
+            border-radius: 15px;
         }
 
-        .upload-area:hover {
-            background-color: #f0f2ff;
-            border-color: #764ba2;
+        .file-input-label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: #666;
         }
 
-        .upload-area i {
-            font-size: 4rem;
-            color: #667eea;
+        #file-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
             margin-bottom: 1rem;
         }
 
@@ -170,11 +170,6 @@
             color: #667eea;
         }
 
-        /* Hidden file input but accessible */
-        #file-input {
-            display: none;
-        }
-
         @media (max-width: 600px) {
             .preview-container {
                 grid-template-columns: 1fr;
@@ -199,13 +194,10 @@
             <h2 style="margin-bottom: 1rem;">✨ AI Background Remover</h2>
             <p style="margin-bottom: 2rem; color: #666;">Remove backgrounds from your images entirely in your browser. No data leaves your device!</p>
             
-            <!-- Simplified upload area -->
-            <div class="upload-area" id="upload-trigger">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <h3>Click to Upload Image</h3>
-                <p>Supports JPG, PNG, WebP</p>
+            <div class="upload-section">
+                <label for="file-input" class="file-input-label">Select an image to start:</label>
+                <input type="file" id="file-input" accept="image/*">
             </div>
-            <input type="file" id="file-input" accept="image/*">
 
             <div class="preview-container" id="preview-container">
                 <div class="preview-item">
@@ -238,7 +230,6 @@
     <script type="module">
         import imglyRemoveBackground from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/index.js";
 
-        const uploadTrigger = document.getElementById('upload-trigger');
         const fileInput = document.getElementById('file-input');
         const removeBtn = document.getElementById('remove-btn');
         const downloadBtn = document.getElementById('download-btn');
@@ -251,21 +242,13 @@
         let selectedFile = null;
         let resultUrl = null;
 
-        // Simple click to trigger file input
-        uploadTrigger.onclick = () => {
-            console.log("Upload area clicked");
-            fileInput.click();
-        };
-
-        fileInput.onchange = (e) => {
-            console.log("File input changed");
+        fileInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
                 handleFile(e.target.files[0]);
             }
-        };
+        });
 
         function handleFile(file) {
-            console.log("Handling file:", file.name);
             if (!file.type.startsWith('image/')) {
                 alert('Please upload an image file.');
                 return;
@@ -283,12 +266,11 @@
                     URL.revokeObjectURL(resultUrl);
                     resultUrl = null;
                 }
-                console.log("Preview updated");
             };
             reader.readAsDataURL(file);
         }
 
-        removeBtn.onclick = async () => {
+        removeBtn.addEventListener('click', async () => {
             if (!selectedFile) return;
 
             loadingOverlay.style.display = 'flex';
@@ -321,7 +303,7 @@
                 loadingOverlay.style.display = 'none';
                 removeBtn.disabled = false;
             }
-        };
+        });
     </script>
 </body>
 </html>

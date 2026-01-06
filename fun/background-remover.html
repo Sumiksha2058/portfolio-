@@ -170,6 +170,21 @@
             color: #667eea;
         }
 
+        #debug-log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #333;
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+            width: 100%;
+        }
+
         @media (max-width: 600px) {
             .preview-container {
                 grid-template-columns: 1fr;
@@ -214,6 +229,8 @@
                 <button id="remove-btn" class="btn-remove" disabled>Remove Background</button>
                 <a id="download-btn" class="btn-download" download="removed-bg.png">Download Result</a>
             </div>
+
+            <div id="debug-log"></div>
         </div>
         <a href="fun.html" class="back-btn">← Back to Fun Section</a>
     </div>
@@ -228,6 +245,7 @@
 
     <script src="../js/script.js"></script>
     <script type="module">
+        // Use a more compatible version of the library
         import imglyRemoveBackground from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/index.js";
 
         const fileInput = document.getElementById('file-input');
@@ -238,9 +256,17 @@
         const resultPreview = document.getElementById('result-preview');
         const loadingOverlay = document.getElementById('loading-overlay');
         const statusText = document.getElementById('status-text');
+        const debugLog = document.getElementById('debug-log');
 
         let selectedFile = null;
         let resultUrl = null;
+
+        function log(msg) {
+            console.log(msg);
+            debugLog.style.display = 'block';
+            debugLog.innerHTML += `> ${msg}<br>`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+        }
 
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
@@ -249,6 +275,7 @@
         });
 
         function handleFile(file) {
+            log(`File selected: ${file.name} (${file.type})`);
             if (!file.type.startsWith('image/')) {
                 alert('Please upload an image file.');
                 return;
@@ -266,6 +293,7 @@
                     URL.revokeObjectURL(resultUrl);
                     resultUrl = null;
                 }
+                log("Preview updated.");
             };
             reader.readAsDataURL(file);
         }
@@ -273,24 +301,32 @@
         removeBtn.addEventListener('click', async () => {
             if (!selectedFile) return;
 
+            log("Starting background removal...");
             loadingOverlay.style.display = 'flex';
             statusText.textContent = 'Initializing AI...';
             removeBtn.disabled = true;
 
             try {
+                // Configuration for maximum compatibility
                 const config = {
                     progress: (key, current, total) => {
                         const percent = Math.round((current / total) * 100);
                         statusText.textContent = `Processing: ${percent}%`;
+                        if (percent % 10 === 0) log(`Progress: ${percent}%`);
                     },
                     model: 'isnet_fp16',
+                    device: 'cpu', // Force CPU for maximum compatibility
                 };
 
+                log("Calling AI library...");
                 const blob = await imglyRemoveBackground(selectedFile, config);
+                log("AI processing complete. Creating result URL...");
+                
                 resultUrl = URL.createObjectURL(blob);
                 resultPreview.src = resultUrl;
                 
                 resultPreview.onload = () => {
+                    log("Result image rendered.");
                     downloadBtn.href = resultUrl;
                     downloadBtn.style.display = 'inline-block';
                     loadingOverlay.style.display = 'none';
@@ -298,12 +334,15 @@
                 };
 
             } catch (error) {
-                console.error("Error:", error);
+                log(`ERROR: ${error.message}`);
+                console.error(error);
                 alert('Error: ' + error.message);
                 loadingOverlay.style.display = 'none';
                 removeBtn.disabled = false;
             }
         });
+
+        log("System initialized. Ready for image selection.");
     </script>
 </body>
 </html>

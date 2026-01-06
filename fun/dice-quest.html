@@ -6,6 +6,9 @@
     <title>Dice Quest - Adventure Game | Sumiksha Neupane</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
     <style>
         * {
             margin: 0;
@@ -349,6 +352,13 @@
             font-weight: bold;
             font-size: 3rem;
             color: #333;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .dice.player-color .dice-face {
+            background: var(--player-color, white);
+            border-color: var(--player-color-dark, #333);
+            color: white;
         }
 
         .dice-face-1 { transform: translateZ(75px); }
@@ -485,21 +495,8 @@
      crossorigin="anonymous"></script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">Sumiksha Neupane</div>
-            <ul class="nav-menu">
-                <li><a href="../index.html#home" class="nav-link">Home</a></li>
-                <li><a href="fun.html" class="nav-link">Back to Fun</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+    <!-- Shared Components will be injected here -->
+    <script src="../js/components.js"></script>
 
     <div class="game-container">
         <div class="game-header">
@@ -709,6 +706,27 @@
             const currentPlayer = players[currentPlayerIndex];
             document.getElementById('currentPlayerName').textContent = currentPlayer.name;
             document.getElementById('currentPlayerColorBox').style.backgroundColor = currentPlayer.color;
+            
+            // Update dice color
+            const dice = document.getElementById('dice');
+            dice.classList.add('player-color');
+            dice.style.setProperty('--player-color', currentPlayer.color);
+            
+            // Calculate darker shade for border
+            const darkerColor = adjustBrightness(currentPlayer.color, -30);
+            dice.style.setProperty('--player-color-dark', darkerColor);
+        }
+        
+        function adjustBrightness(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255))
+                .toString(16).slice(1);
         }
 
         function renderBoard() {

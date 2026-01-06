@@ -63,6 +63,7 @@
             padding: 10px;
             box-sizing: border-box;
             box-shadow: inset 0 0 15px rgba(139, 69, 19, 0.2);
+            backface-visibility: hidden;
         }
 
         .dot {
@@ -74,13 +75,13 @@
             justify-self: center;
         }
 
-        /* Face rotations */
+        /* Face positions - Standard Dice Layout */
         .face-1 { transform: rotateY(0deg) translateZ(50px); }
-        .face-2 { transform: rotateY(90deg) translateZ(50px); }
+        .face-6 { transform: rotateY(180deg) translateZ(50px); }
+        .face-2 { transform: rotateY(-90deg) translateZ(50px); }
+        .face-5 { transform: rotateY(90deg) translateZ(50px); }
         .face-3 { transform: rotateX(90deg) translateZ(50px); }
         .face-4 { transform: rotateX(-90deg) translateZ(50px); }
-        .face-5 { transform: rotateY(-90deg) translateZ(50px); }
-        .face-6 { transform: rotateY(180deg) translateZ(50px); }
 
         /* Dot positions */
         .face-1 .dot:nth-child(1) { grid-area: 2 / 2; }
@@ -157,11 +158,6 @@
         .back-btn:hover {
             border-bottom: 1px solid #d4af37;
         }
-
-        @media (max-width: 480px) {
-            .dice-wrapper { gap: 2rem; }
-            .dice-title { font-size: 2rem; }
-        }
     </style>
 </head>
 <body>
@@ -204,18 +200,24 @@
         const rollBtn = document.getElementById('roll-button');
         const resultText = document.getElementById('result');
 
-        // Fixed rotation values for each face
+        // Mapping values to rotations based on the CSS face definitions
+        // Face 1: Y=0
+        // Face 6: Y=180
+        // Face 2: Y=90
+        // Face 5: Y=-90
+        // Face 3: X=-90
+        // Face 4: X=90
         const faceRotations = {
             1: { x: 0, y: 0 },
-            2: { x: 0, y: -90 },
+            2: { x: 0, y: 90 },
             3: { x: -90, y: 0 },
             4: { x: 90, y: 0 },
-            5: { x: 0, y: 90 },
+            5: { x: 0, y: -90 },
             6: { x: 0, y: 180 }
         };
 
-        let currentRotation1 = { x: 0, y: 0 };
-        let currentRotation2 = { x: 0, y: 0 };
+        let currentRot1 = { x: 0, y: 0 };
+        let currentRot2 = { x: 0, y: 0 };
 
         function rollDice() {
             rollBtn.disabled = true;
@@ -224,19 +226,21 @@
             const val1 = Math.floor(Math.random() * 6) + 1;
             const val2 = Math.floor(Math.random() * 6) + 1;
 
-            // Add multiple full rotations for effect
-            const extraRotations = 5 * 360;
+            // Add random full rotations (3-5 full spins)
+            const spins1 = (Math.floor(Math.random() * 3) + 3) * 360;
+            const spins2 = (Math.floor(Math.random() * 3) + 3) * 360;
             
-            const targetRot1 = faceRotations[val1];
-            const targetRot2 = faceRotations[val2];
+            const target1 = faceRotations[val1];
+            const target2 = faceRotations[val2];
 
-            currentRotation1.x += extraRotations + targetRot1.x;
-            currentRotation1.y += extraRotations + targetRot1.y;
-            currentRotation2.x += extraRotations + targetRot2.x;
-            currentRotation2.y += extraRotations + targetRot2.y;
+            // Update cumulative rotation to keep spinning forward
+            currentRot1.x += spins1 + target1.x;
+            currentRot1.y += spins1 + target1.y;
+            currentRot2.x += spins2 + target2.x;
+            currentRot2.y += spins2 + target2.y;
 
-            dice1.style.transform = `rotateX(${currentRotation1.x}deg) rotateY(${currentRotation1.y}deg)`;
-            dice2.style.transform = `rotateX(${currentRotation2.x}deg) rotateY(${currentRotation2.y}deg)`;
+            dice1.style.transform = `rotateX(${currentRot1.x}deg) rotateY(${currentRot1.y}deg)`;
+            dice2.style.transform = `rotateX(${currentRot2.x}deg) rotateY(${currentRot2.y}deg)`;
 
             setTimeout(() => {
                 resultText.textContent = `You rolled a ${val1} and ${val2} (Total: ${val1 + val2})! 🎉`;

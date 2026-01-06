@@ -3,38 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Dice Roller - Sumiksha Neupane | Portfolio</title>
+    <title>Vintage Dice Roller - Sumiksha Neupane | Portfolio</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=EB+Garamond:wght@500&display=swap');
+
         .dice-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 90vh;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            background: radial-gradient(circle, #3d2b1f 0%, #1a0f0a 100%);
             padding: 20px;
+            color: #f1c40f;
         }
 
         .dice-title {
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .dice-wrapper {
             display: flex;
-            gap: 3rem;
-            margin-bottom: 3rem;
-            perspective: 1200px;
+            gap: 4rem;
+            margin-bottom: 4rem;
+            perspective: 1000px;
         }
 
         .dice-scene {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             position: relative;
             transform-style: preserve-3d;
         }
@@ -44,291 +47,202 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.6s ease-out;
+            transition: transform 1.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
         }
 
         .dice-face {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background: white;
-            border: 2px solid #333;
+            width: 100px;
+            height: 100px;
+            background: #fdf5e6;
+            border: 2px solid #d4af37;
             border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
             padding: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            font-weight: bold;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 15px rgba(139, 69, 19, 0.2);
         }
-
-        /* Dice faces */
-        .face-1 { transform: rotateY(0deg) translateZ(50px); }
-        .face-2 { transform: rotateY(180deg) translateZ(50px); }
-        .face-3 { transform: rotateY(90deg) translateZ(50px); }
-        .face-4 { transform: rotateY(-90deg) translateZ(50px); }
-        .face-5 { transform: rotateX(90deg) translateZ(50px); }
-        .face-6 { transform: rotateX(-90deg) translateZ(50px); }
 
         .dot {
-            width: 12px;
-            height: 12px;
-            background-color: #333;
+            width: 14px;
+            height: 14px;
+            background-color: #3d2b1f;
             border-radius: 50%;
-            margin: 3px;
+            align-self: center;
+            justify-self: center;
         }
 
-        /* Dot arrangements for each face */
-        .face-1 {
-            justify-content: center;
-        }
+        /* Face rotations */
+        .face-1 { transform: rotateY(0deg) translateZ(50px); }
+        .face-2 { transform: rotateY(90deg) translateZ(50px); }
+        .face-3 { transform: rotateX(90deg) translateZ(50px); }
+        .face-4 { transform: rotateX(-90deg) translateZ(50px); }
+        .face-5 { transform: rotateY(-90deg) translateZ(50px); }
+        .face-6 { transform: rotateY(180deg) translateZ(50px); }
 
-        .face-2 {
-            justify-content: space-around;
-        }
-
-        .face-3 {
-            justify-content: space-around;
-        }
-
-        .face-4 {
-            justify-content: space-around;
-        }
-
-        .face-5 {
-            justify-content: space-around;
-        }
-
-        .face-6 {
-            justify-content: space-around;
-        }
+        /* Dot positions */
+        .face-1 .dot:nth-child(1) { grid-area: 2 / 2; }
+        
+        .face-2 .dot:nth-child(1) { grid-area: 1 / 1; }
+        .face-2 .dot:nth-child(2) { grid-area: 3 / 3; }
+        
+        .face-3 .dot:nth-child(1) { grid-area: 1 / 1; }
+        .face-3 .dot:nth-child(2) { grid-area: 2 / 2; }
+        .face-3 .dot:nth-child(3) { grid-area: 3 / 3; }
+        
+        .face-4 .dot:nth-child(1) { grid-area: 1 / 1; }
+        .face-4 .dot:nth-child(2) { grid-area: 1 / 3; }
+        .face-4 .dot:nth-child(3) { grid-area: 3 / 1; }
+        .face-4 .dot:nth-child(4) { grid-area: 3 / 3; }
+        
+        .face-5 .dot:nth-child(1) { grid-area: 1 / 1; }
+        .face-5 .dot:nth-child(2) { grid-area: 1 / 3; }
+        .face-5 .dot:nth-child(3) { grid-area: 2 / 2; }
+        .face-5 .dot:nth-child(4) { grid-area: 3 / 1; }
+        .face-5 .dot:nth-child(5) { grid-area: 3 / 3; }
+        
+        .face-6 .dot:nth-child(1) { grid-area: 1 / 1; }
+        .face-6 .dot:nth-child(2) { grid-area: 1 / 3; }
+        .face-6 .dot:nth-child(3) { grid-area: 2 / 1; }
+        .face-6 .dot:nth-child(4) { grid-area: 2 / 3; }
+        .face-6 .dot:nth-child(5) { grid-area: 3 / 1; }
+        .face-6 .dot:nth-child(6) { grid-area: 3 / 3; }
 
         .roll-btn {
             padding: 15px 50px;
-            font-size: 1.2rem;
-            background-color: white;
-            color: #667eea;
-            border: none;
-            border-radius: 50px;
+            font-size: 1.5rem;
+            background: #3d2b1f;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            font-weight: 700;
+            font-family: 'EB Garamond', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             margin-bottom: 2rem;
         }
 
         .roll-btn:hover {
+            background: #d4af37;
+            color: #3d2b1f;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .roll-btn:active {
-            transform: translateY(0);
         }
 
         .roll-btn:disabled {
-            opacity: 0.7;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
         .result-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            height: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            color: #d4af37;
+            height: 3rem;
+            text-align: center;
         }
 
         .back-btn {
             margin-top: 2rem;
-            padding: 10px 20px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-            border-radius: 50px;
+            color: #d4af37;
             text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            font-family: 'EB Garamond', serif;
+            border-bottom: 1px solid transparent;
+            transition: 0.3s;
         }
 
         .back-btn:hover {
-            background-color: white;
-            color: #667eea;
-        }
-
-        @media (max-width: 768px) {
-            .dice-wrapper {
-                gap: 2rem;
-            }
-
-            .dice-scene {
-                width: 100px;
-                height: 100px;
-            }
-
-            .dice-title {
-                font-size: 2rem;
-            }
-
-            .roll-btn {
-                padding: 12px 30px;
-                font-size: 1rem;
-            }
+            border-bottom: 1px solid #d4af37;
         }
 
         @media (max-width: 480px) {
-            .dice-wrapper {
-                gap: 1rem;
-            }
-
-            .dice-scene {
-                width: 80px;
-                height: 80px;
-            }
-
-            .dice-title {
-                font-size: 1.5rem;
-            }
+            .dice-wrapper { gap: 2rem; }
+            .dice-title { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">Sumiksha Neupane</div>
-            <ul class="nav-menu">
-                <li><a href="../index.html#home" class="nav-link">Home</a></li>
-                <li><a href="fun.html" class="nav-link">Back to Fun</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
-
     <div class="dice-container">
-        <h1 class="dice-title">🎲 3D Dice Roller 🎲</h1>
+        <h1 class="dice-title">Vintage Dice Roller</h1>
         
         <div class="dice-wrapper">
             <div class="dice-scene">
                 <div id="dice-1" class="dice">
                     <div class="dice-face face-1"><div class="dot"></div></div>
-                    <div class="dice-face face-2">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <div class="dice-face face-3">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <div class="dice-face face-4">
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div></div>
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div></div>
-                    </div>
-                    <div class="dice-face face-5">
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dot"></div>
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div></div>
-                    </div>
-                    <div class="dice-face face-6">
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                    </div>
+                    <div class="dice-face face-2"><div class="dot"></div><div class="dot"></div></div>
+                    <div class="dice-face face-3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                    <div class="dice-face face-4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                    <div class="dice-face face-5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                    <div class="dice-face face-6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
                 </div>
             </div>
 
             <div class="dice-scene">
                 <div id="dice-2" class="dice">
                     <div class="dice-face face-1"><div class="dot"></div></div>
-                    <div class="dice-face face-2">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <div class="dice-face face-3">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <div class="dice-face face-4">
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div></div>
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div></div>
-                    </div>
-                    <div class="dice-face face-5">
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dot"></div>
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div></div>
-                    </div>
-                    <div class="dice-face face-6">
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                        <div style="display: flex; gap: 5px;"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                    </div>
+                    <div class="dice-face face-2"><div class="dot"></div><div class="dot"></div></div>
+                    <div class="dice-face face-3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                    <div class="dice-face face-4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                    <div class="dice-face face-5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                    <div class="dice-face face-6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
                 </div>
             </div>
         </div>
 
-        <button id="roll-button" class="roll-btn">Roll Dice</button>
-        <div id="result" class="result-text"></div>
+        <button id="roll-button" class="roll-btn" onclick="rollDice()">Roll Dice</button>
+        <div id="result" class="result-text">Click to Roll</div>
+        
         <a href="fun.html" class="back-btn">← Back to Fun Section</a>
     </div>
 
-    <script src="../js/script.js"></script>
     <script>
         const dice1 = document.getElementById('dice-1');
         const dice2 = document.getElementById('dice-2');
         const rollBtn = document.getElementById('roll-button');
         const resultText = document.getElementById('result');
 
-        // Rotation values for each face (in degrees)
-        const rotations = {
+        // Fixed rotation values for each face
+        const faceRotations = {
             1: { x: 0, y: 0 },
-            2: { x: 0, y: 180 },
-            3: { x: 0, y: 90 },
-            4: { x: 0, y: -90 },
-            5: { x: 90, y: 0 },
-            6: { x: -90, y: 0 }
+            2: { x: 0, y: -90 },
+            3: { x: -90, y: 0 },
+            4: { x: 90, y: 0 },
+            5: { x: 0, y: 90 },
+            6: { x: 0, y: 180 }
         };
+
+        let currentRotation1 = { x: 0, y: 0 };
+        let currentRotation2 = { x: 0, y: 0 };
 
         function rollDice() {
             rollBtn.disabled = true;
             resultText.textContent = 'Rolling...';
 
-            // Random rotations for rolling effect
-            const randomRotations1 = {
-                x: Math.random() * 720,
-                y: Math.random() * 720
-            };
-            const randomRotations2 = {
-                x: Math.random() * 720,
-                y: Math.random() * 720
-            };
+            const val1 = Math.floor(Math.random() * 6) + 1;
+            const val2 = Math.floor(Math.random() * 6) + 1;
 
-            dice1.style.transform = `rotateX(${randomRotations1.x}deg) rotateY(${randomRotations1.y}deg)`;
-            dice2.style.transform = `rotateX(${randomRotations2.x}deg) rotateY(${randomRotations2.y}deg)`;
+            // Add multiple full rotations for effect
+            const extraRotations = 5 * 360;
+            
+            const targetRot1 = faceRotations[val1];
+            const targetRot2 = faceRotations[val2];
+
+            currentRotation1.x += extraRotations + targetRot1.x;
+            currentRotation1.y += extraRotations + targetRot1.y;
+            currentRotation2.x += extraRotations + targetRot2.x;
+            currentRotation2.y += extraRotations + targetRot2.y;
+
+            dice1.style.transform = `rotateX(${currentRotation1.x}deg) rotateY(${currentRotation1.y}deg)`;
+            dice2.style.transform = `rotateX(${currentRotation2.x}deg) rotateY(${currentRotation2.y}deg)`;
 
             setTimeout(() => {
-                const val1 = Math.floor(Math.random() * 6) + 1;
-                const val2 = Math.floor(Math.random() * 6) + 1;
-
-                const rot1 = rotations[val1];
-                const rot2 = rotations[val2];
-
-                dice1.style.transform = `rotateX(${rot1.x}deg) rotateY(${rot1.y}deg)`;
-                dice2.style.transform = `rotateX(${rot2.x}deg) rotateY(${rot2.y}deg)`;
-
-                resultText.textContent = `You rolled a ${val1 + val2}! 🎉`;
+                resultText.textContent = `You rolled a ${val1} and ${val2} (Total: ${val1 + val2})! 🎉`;
                 rollBtn.disabled = false;
-            }, 1000);
+            }, 1500);
         }
-
-        rollBtn.addEventListener('click', rollDice);
-
-        // Initial state
-        resultText.textContent = 'Click "Roll Dice" to start!';
     </script>
 </body>
 </html>

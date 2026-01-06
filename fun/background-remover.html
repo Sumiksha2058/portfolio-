@@ -170,7 +170,7 @@
             color: #667eea;
         }
 
-        #debug-log {
+        #status-log {
             margin-top: 2rem;
             padding: 1rem;
             background: #f8f9fa;
@@ -181,7 +181,6 @@
             text-align: left;
             max-height: 150px;
             overflow-y: auto;
-            display: none;
             width: 100%;
         }
 
@@ -221,7 +220,7 @@
                 </div>
                 <div class="preview-item">
                     <h4>Result</h4>
-                    <img id="result-preview" class="preview-img" alt="Background Removed Image">
+                    <canvas id="result-canvas" class="preview-img"></canvas>
                 </div>
             </div>
 
@@ -230,7 +229,7 @@
                 <a id="download-btn" class="btn-download" download="removed-bg.png">Download Result</a>
             </div>
 
-            <div id="debug-log"></div>
+            <div id="status-log">Ready. Please select an image.</div>
         </div>
         <a href="fun.html" class="back-btn">← Back to Fun Section</a>
     </div>
@@ -239,33 +238,34 @@
         <div class="spinner"></div>
         <div class="progress-text" id="status-text">Processing...</div>
         <p style="max-width: 300px; text-align: center; font-size: 0.9rem; opacity: 0.8;">
-            The first run may take a moment to download the AI model (~40MB).
+            The first run may take a moment to load the AI model.
         </p>
     </div>
 
     <script src="../js/script.js"></script>
     <script type="module">
-        // Use a more compatible version of the library
-        import imglyRemoveBackground from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/index.js";
+        // Using Transformers.js for better reliability
+        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+
+        // Disable local models
+        env.allowLocalModels = false;
 
         const fileInput = document.getElementById('file-input');
         const removeBtn = document.getElementById('remove-btn');
         const downloadBtn = document.getElementById('download-btn');
         const previewContainer = document.getElementById('preview-container');
         const originalPreview = document.getElementById('original-preview');
-        const resultPreview = document.getElementById('result-preview');
+        const resultCanvas = document.getElementById('result-canvas');
         const loadingOverlay = document.getElementById('loading-overlay');
         const statusText = document.getElementById('status-text');
-        const debugLog = document.getElementById('debug-log');
+        const statusLog = document.getElementById('status-log');
 
         let selectedFile = null;
-        let resultUrl = null;
+        let segmenter = null;
 
         function log(msg) {
             console.log(msg);
-            debugLog.style.display = 'block';
-            debugLog.innerHTML += `> ${msg}<br>`;
-            debugLog.scrollTop = debugLog.scrollHeight;
+            statusLog.innerHTML = `> ${msg}`;
         }
 
         fileInput.addEventListener('change', (e) => {
@@ -275,11 +275,7 @@
         });
 
         function handleFile(file) {
-            log(`File selected: ${file.name} (${file.type})`);
-            if (!file.type.startsWith('image/')) {
-                alert('Please upload an image file.');
-                return;
-            }
+            log(`Selected: ${file.name}`);
             selectedFile = file;
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -287,13 +283,7 @@
                 previewContainer.style.display = 'grid';
                 removeBtn.disabled = false;
                 downloadBtn.style.display = 'none';
-                resultPreview.src = '';
-                
-                if (resultUrl) {
-                    URL.revokeObjectURL(resultUrl);
-                    resultUrl = null;
-                }
-                log("Preview updated.");
+                log("Image loaded. Click 'Remove Background' to start.");
             };
             reader.readAsDataURL(file);
         }
@@ -301,48 +291,82 @@
         removeBtn.addEventListener('click', async () => {
             if (!selectedFile) return;
 
-            log("Starting background removal...");
             loadingOverlay.style.display = 'flex';
-            statusText.textContent = 'Initializing AI...';
+            statusText.textContent = 'Loading AI Model...';
             removeBtn.disabled = true;
+            log("Initializing AI model...");
 
             try {
-                // Configuration for maximum compatibility
-                const config = {
-                    progress: (key, current, total) => {
-                        const percent = Math.round((current / total) * 100);
-                        statusText.textContent = `Processing: ${percent}%`;
-                        if (percent % 10 === 0) log(`Progress: ${percent}%`);
-                    },
-                    model: 'isnet_fp16',
-                    device: 'cpu', // Force CPU for maximum compatibility
-                };
+                if (!segmenter) {
+                    segmenter = await pipeline('image-segmentation', 'Xenova/modnet');
+                }
 
-                log("Calling AI library...");
-                const blob = await imglyRemoveBackground(selectedFile, config);
-                log("AI processing complete. Creating result URL...");
+                log("Processing image...");
+                statusText.textContent = 'Removing Background...';
                 
-                resultUrl = URL.createObjectURL(blob);
-                resultPreview.src = resultUrl;
+                const result = await segmenter(originalPreview.src);
                 
-                resultPreview.onload = () => {
-                    log("Result image rendered.");
-                    downloadBtn.href = resultUrl;
+                // Process the mask
+                const canvas = resultCanvas;
+                const ctx = canvas.getContext('2d');
+                
+                const img = new Image();
+                img.src = originalPreview.src;
+                
+                img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    
+                    // Draw original image
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Get image data
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const { data } = imageData;
+                    
+                    // Apply mask from result
+                    // result is an array of objects, Xenova/modnet returns a single mask
+                    const mask = result[0].mask;
+                    
+                    // Resize mask to match image if necessary
+                    const maskCanvas = document.createElement('canvas');
+                    maskCanvas.width = mask.width;
+                    maskCanvas.height = mask.height;
+                    const maskCtx = maskCanvas.getContext('2d');
+                    maskCtx.putImageData(mask, 0, 0);
+                    
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = canvas.width;
+                    tempCanvas.height = canvas.height;
+                    const tempCtx = tempCanvas.getContext('2d');
+                    tempCtx.drawImage(maskCanvas, 0, 0, canvas.width, canvas.height);
+                    
+                    const maskData = tempCtx.getImageData(0, 0, canvas.width, canvas.height).data;
+                    
+                    for (let i = 0; i < data.length; i += 4) {
+                        // The mask is grayscale, use it for alpha channel
+                        data[i + 3] = maskData[i]; 
+                    }
+                    
+                    ctx.putImageData(imageData, 0, 0);
+                    
+                    // Enable download
+                    downloadBtn.href = canvas.toDataURL('image/png');
                     downloadBtn.style.display = 'inline-block';
+                    
+                    log("Success! Background removed.");
                     loadingOverlay.style.display = 'none';
                     removeBtn.disabled = false;
                 };
 
             } catch (error) {
-                log(`ERROR: ${error.message}`);
+                log(`Error: ${error.message}`);
                 console.error(error);
-                alert('Error: ' + error.message);
+                alert('An error occurred. Please try a smaller image or refresh the page.');
                 loadingOverlay.style.display = 'none';
                 removeBtn.disabled = false;
             }
         });
-
-        log("System initialized. Ready for image selection.");
     </script>
 </body>
 </html>

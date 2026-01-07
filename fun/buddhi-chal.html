@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddhi Chal - Sumiksha Neupane | Portfolio</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=EB+Garamond:wght@500&display=swap');
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(circle, #3d2b1f 0%, #1a0f0a 100%);
+            padding: 40px 20px;
+            color: #f1c40f;
+        }
+
+        .game-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #8b4513;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+            font-family: 'EB Garamond', serif;
+        }
+
+        .player-box {
+            padding: 10px 20px;
+            border: 1px solid #d4af37;
+            border-radius: 5px;
+            background: rgba(61, 43, 31, 0.5);
+            color: #d4af37;
+            transition: 0.3s;
+        }
+
+        .player-box.active {
+            background: #d4af37;
+            color: #3d2b1f;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .board-container {
+            position: relative;
+            background: #fdf5e6;
+            padding: 20px;
+            border-radius: 10px;
+            border: 5px solid #8b4513;
+            margin-bottom: 20px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            width: 300px;
+            height: 300px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(139, 69, 19, 0.1);
+        }
+
+        .cell:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .cell.p1 { color: #2980b9; }
+        .cell.p2 { color: #c0392b; }
+        .cell.selected { background: rgba(212, 175, 55, 0.3); }
+
+        .status {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #f1c40f;
+            text-align: center;
+            min-height: 1.5em;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            background: #3d2b1f;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'EB Garamond', serif;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+            color: #3d2b1f;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            color: #d4af37;
+            text-decoration: none;
+            font-family: 'EB Garamond', serif;
+        }
+
+        /* SVG Grid Lines */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1 class="title">Buddhi Chal</h1>
+        
+        <div class="game-card">
+            <div class="game-info">
+                <div id="p1-box" class="player-box active">Player 1 (X)</div>
+                <div id="p2-box" class="player-box">Player 2 (O)</div>
+            </div>
+
+            <div class="board-container">
+                <svg class="grid-lines" viewBox="0 0 300 300">
+                    <line x1="50" y1="50" x2="250" y2="50" stroke="#8b4513" stroke-width="2"/>
+                    <line x1="50" y1="150" x2="250" y2="150" stroke="#8b4513" stroke-width="2"/>
+                    <line x1="50" y1="250" x2="250" y2="250" stroke="#8b4513" stroke-width="2"/>
+                    <line x1="50" y1="50" x2="50" y2="250" stroke="#8b4513" stroke-width="2"/>
+                    <line x1="150" y1="50" x2="150" y2="250" stroke="#8b4513" stroke-width="2"/>
+                    <line x1="250" y1="50" x2="250" y2="250" stroke="#8b4513" stroke-width="2"/>
+                    <line x1="50" y1="50" x2="250" y2="250" stroke="#8b4513" stroke-width="2"/>
+                    <line x1="250" y1="50" x2="50" y2="250" stroke="#8b4513" stroke-width="2"/>
+                </svg>
+                <div class="board" id="board">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+            </div>
+
+            <div class="status" id="status">Phase 1: Place your 3 dots</div>
+            <button class="btn" onclick="resetGame()">Reset Game</button>
+        </div>
+
+        <a href="fun.html" class="back-link">← Back to Fun Section</a>
+    </div>
+
+    <script>
+        let board = Array(9).fill(null);
+        let currentPlayer = 1;
+        let phase = 1; // 1: Placing, 2: Moving
+        let p1Dots = 0;
+        let p2Dots = 0;
+        let selectedIndex = null;
+
+        const cells = document.querySelectorAll('.cell');
+        const statusText = document.getElementById('status');
+        const p1Box = document.getElementById('p1-box');
+        const p2Box = document.getElementById('p2-box');
+
+        const adj = [
+            [1, 3, 4],       // 0
+            [0, 2, 4],       // 1
+            [1, 4, 5],       // 2
+            [0, 4, 6],       // 3
+            [0, 1, 2, 3, 5, 6, 7, 8], // 4 (Center)
+            [2, 4, 8],       // 5
+            [3, 4, 7],       // 6
+            [6, 4, 8],       // 7
+            [5, 4, 7]        // 8
+        ];
+
+        const winPatterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
+            [0, 4, 8], [2, 4, 6]             // Diagonals
+        ];
+
+        function checkWin() {
+            for (let pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    return board[a];
+                }
+            }
+            return null;
+        }
+
+        function handleCellClick(e) {
+            const index = parseInt(e.target.dataset.index);
+
+            if (phase === 1) {
+                if (board[index]) return;
+                board[index] = currentPlayer;
+                e.target.innerText = currentPlayer === 1 ? 'X' : 'O';
+                e.target.classList.add(currentPlayer === 1 ? 'p1' : 'p2');
+                
+                if (currentPlayer === 1) p1Dots++; else p2Dots++;
+                
+                if (p1Dots === 3 && p2Dots === 3) {
+                    phase = 2;
+                    statusText.innerText = "Phase 2: Move your dots to align 3";
+                }
+                
+                const winner = checkWin();
+                if (winner) endGame(winner);
+                else switchPlayer();
+            } else if (phase === 2) {
+                if (selectedIndex === null) {
+                    if (board[index] !== currentPlayer) return;
+                    selectedIndex = index;
+                    e.target.classList.add('selected');
+                } else {
+                    if (index === selectedIndex) {
+                        selectedIndex = null;
+                        e.target.classList.remove('selected');
+                        return;
+                    }
+                    
+                    if (board[index] === null && adj[selectedIndex].includes(index)) {
+                        board[index] = currentPlayer;
+                        board[selectedIndex] = null;
+                        
+                        cells[index].innerText = currentPlayer === 1 ? 'X' : 'O';
+                        cells[index].classList.add(currentPlayer === 1 ? 'p1' : 'p2');
+                        cells[selectedIndex].innerText = '';
+                        cells[selectedIndex].classList.remove('p1', 'p2', 'selected');
+                        
+                        const winner = checkWin();
+                        if (winner) endGame(winner);
+                        else {
+                            selectedIndex = null;
+                            switchPlayer();
+                        }
+                    }
+                }
+            }
+        }
+
+        function switchPlayer() {
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+            p1Box.classList.toggle('active');
+            p2Box.classList.toggle('active');
+        }
+
+        function endGame(winner) {
+            statusText.innerText = `Player ${winner} Wins! 🎉`;
+            cells.forEach(cell => cell.removeEventListener('click', handleCellClick));
+        }
+
+        function resetGame() {
+            board = Array(9).fill(null);
+            currentPlayer = 1;
+            phase = 1;
+            p1Dots = 0;
+            p2Dots = 0;
+            selectedIndex = null;
+            statusText.innerText = "Phase 1: Place your 3 dots";
+            p1Box.classList.add('active');
+            p2Box.classList.remove('active');
+            cells.forEach(cell => {
+                cell.innerText = '';
+                cell.classList.remove('p1', 'p2', 'selected');
+                cell.addEventListener('click', handleCellClick);
+            });
+        }
+
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    </script>
+</body>
+</html>

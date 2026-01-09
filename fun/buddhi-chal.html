@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buddhi Chal - Sumiksha Neupane | Portfolio</title>
+    <title>Buddhi Chal - Nepali Game | Sumiksha Neupane</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -31,16 +31,24 @@
             justify-content: center;
             padding: 40px 20px;
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
         }
 
         .title {
             font-family: 'Playfair Display', serif;
             font-size: 3.5rem;
             color: #d4af37;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.3);
             letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: #d4af37;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            font-style: italic;
         }
 
         .game-card {
@@ -65,17 +73,19 @@
             width: 100%;
             margin-bottom: 30px;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         .player-box {
             flex: 1;
+            min-width: 150px;
             padding: 15px 20px;
             border: 2px solid #d4af37;
             border-radius: 10px;
             background: rgba(61, 43, 31, 0.5);
             color: #d4af37;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -90,85 +100,123 @@
             transform: scale(1.05);
         }
 
+        .pieces-info {
+            font-size: 0.9rem;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
         .board-container {
             position: relative;
             background: linear-gradient(135deg, #fdf5e6 0%, #f5ead3 100%);
-            padding: 25px;
+            padding: 40px;
             border-radius: 15px;
             border: 4px solid #8b4513;
             margin-bottom: 30px;
             box-shadow: 
                 0 15px 40px rgba(0, 0, 0, 0.5),
                 inset 0 1px 0 rgba(255, 255, 255, 0.3);
-        }
-
-        .board {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            width: 320px;
-            height: 320px;
-            position: relative;
-            z-index: 2;
-            background: #fdf5e6;
-            padding: 8px;
-            border-radius: 10px;
-        }
-
-        .cell {
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 3.5rem;
-            font-weight: bold;
+        }
+
+        .board {
+            position: relative;
+            width: 350px;
+            height: 350px;
+        }
+
+        .board-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .positions {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .position {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
+            font-size: 2rem;
+            font-weight: bold;
+            border-radius: 50%;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border: 2px solid #8b4513;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #fff9f0 0%, #fdf5e6 100%);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             user-select: none;
+            z-index: 10;
         }
 
-        .cell:hover:not(.disabled) {
-            background: linear-gradient(135deg, #ffe8cc 0%, #ffd9a3 100%);
-            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3);
-            transform: translateY(-2px);
+        .position:hover:not(.disabled) {
+            background: rgba(212, 175, 55, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
 
-        .cell.p1 { 
+        .position.p1 {
             color: #2980b9;
-            font-family: 'Arial', sans-serif;
             text-shadow: 2px 2px 4px rgba(41, 128, 185, 0.3);
         }
 
-        .cell.p2 { 
+        .position.p2 {
             color: #c0392b;
-            font-family: 'Arial', sans-serif;
             text-shadow: 2px 2px 4px rgba(192, 57, 43, 0.3);
         }
 
-        .cell.selected {
+        .position.selected {
             background: linear-gradient(135deg, #d4af37 0%, #f1c40f 100%);
             box-shadow: 
                 0 0 20px rgba(212, 175, 55, 0.6),
                 inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
+            transform: scale(1.15);
         }
 
-        .cell.disabled {
+        .position.disabled {
             cursor: not-allowed;
         }
 
+        /* Position coordinates */
+        .pos0 { top: 0; left: 150px; }
+        .pos1 { top: 75px; left: 75px; }
+        .pos2 { top: 75px; left: 225px; }
+        .pos3 { top: 150px; left: 0; }
+        .pos4 { top: 150px; left: 150px; }
+        .pos5 { top: 150px; left: 300px; }
+        .pos6 { top: 225px; left: 75px; }
+        .pos7 { top: 225px; left: 225px; }
+        .pos8 { top: 300px; left: 150px; }
+
         .status {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             margin-bottom: 25px;
             color: #d4af37;
             text-align: center;
             min-height: 2em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             font-weight: bold;
+        }
+
+        .phase-info {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 3px solid #d4af37;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            color: #d4af37;
+            font-size: 0.95rem;
         }
 
         .button-group {
@@ -225,31 +273,38 @@
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
-        .game-stats {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
+        .game-rules {
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 20px;
+            border-radius: 10px;
             margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid rgba(212, 175, 55, 0.3);
-            gap: 20px;
-        }
-
-        .stat {
-            text-align: center;
             color: #d4af37;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
 
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
+        .game-rules h3 {
+            margin-bottom: 10px;
             color: #f1c40f;
+        }
+
+        .game-rules ul {
+            margin-left: 20px;
+        }
+
+        .game-rules li {
+            margin-bottom: 5px;
         }
 
         @media (max-width: 600px) {
             .title {
                 font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .subtitle {
+                font-size: 0.95rem;
                 margin-bottom: 1.5rem;
             }
 
@@ -258,18 +313,26 @@
             }
 
             .board {
-                width: 280px;
-                height: 280px;
+                width: 300px;
+                height: 300px;
             }
 
-            .cell {
-                font-size: 2.5rem;
+            .position {
+                width: 45px;
+                height: 45px;
+                font-size: 1.5rem;
             }
 
-            .player-box {
-                font-size: 0.9rem;
-                padding: 12px 15px;
-            }
+            /* Adjust positions for mobile */
+            .pos0 { top: 0; left: 125px; }
+            .pos1 { top: 65px; left: 60px; }
+            .pos2 { top: 65px; left: 190px; }
+            .pos3 { top: 130px; left: 0; }
+            .pos4 { top: 130px; left: 125px; }
+            .pos5 { top: 130px; left: 250px; }
+            .pos6 { top: 195px; left: 60px; }
+            .pos7 { top: 195px; left: 190px; }
+            .pos8 { top: 260px; left: 125px; }
 
             .status {
                 font-size: 1.1rem;
@@ -279,9 +342,12 @@
                 padding: 10px 20px;
                 font-size: 0.95rem;
             }
+
+            .game-rules {
+                font-size: 0.85rem;
+            }
         }
 
-        /* Animation for winning state */
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -289,11 +355,6 @@
 
         .game-card.winner {
             animation: pulse 0.6s ease-in-out 3;
-        }
-
-        /* Smooth transitions */
-        .cell {
-            animation: fadeIn 0.3s ease-out;
         }
 
         @keyframes fadeIn {
@@ -306,38 +367,71 @@
                 transform: scale(1);
             }
         }
+
+        .position {
+            animation: fadeIn 0.3s ease-out;
+        }
     </style>
 </head>
 <body>
     <div class="main-container">
         <h1 class="title">Buddhi Chal</h1>
+        <p class="subtitle">Traditional Nepali Strategic Board Game</p>
         
         <div class="game-card" id="gameCard">
             <div class="game-info">
                 <div id="p1-box" class="player-box active">
-                    <i class="fas fa-times"></i> Player 1 (X)
+                    <div>Player 1</div>
+                    <div class="pieces-info">Pieces: <span id="p1-pieces">0</span>/3</div>
                 </div>
                 <div id="p2-box" class="player-box">
-                    <i class="fas fa-circle"></i> Player 2 (O)
+                    <div>Player 2</div>
+                    <div class="pieces-info">Pieces: <span id="p2-pieces">0</span>/3</div>
                 </div>
+            </div>
+
+            <div class="phase-info" id="phaseInfo">
+                <strong>Phase 1:</strong> Place your 3 pieces on the board
             </div>
 
             <div class="board-container">
                 <div class="board" id="board">
-                    <div class="cell" data-index="0"></div>
-                    <div class="cell" data-index="1"></div>
-                    <div class="cell" data-index="2"></div>
-                    <div class="cell" data-index="3"></div>
-                    <div class="cell" data-index="4"></div>
-                    <div class="cell" data-index="5"></div>
-                    <div class="cell" data-index="6"></div>
-                    <div class="cell" data-index="7"></div>
-                    <div class="cell" data-index="8"></div>
+                    <svg class="board-svg" viewBox="0 0 350 350">
+                        <!-- Outer square -->
+                        <rect x="25" y="25" width="300" height="300" fill="none" stroke="#8b4513" stroke-width="3"/>
+                        
+                        <!-- Middle square -->
+                        <rect x="75" y="75" width="200" height="200" fill="none" stroke="#8b4513" stroke-width="3"/>
+                        
+                        <!-- Inner square -->
+                        <rect x="125" y="125" width="100" height="100" fill="none" stroke="#8b4513" stroke-width="3"/>
+                        
+                        <!-- Connecting lines from corners to middle -->
+                        <line x1="25" y1="25" x2="175" y2="175" stroke="#8b4513" stroke-width="2"/>
+                        <line x1="325" y1="25" x2="175" y2="175" stroke="#8b4513" stroke-width="2"/>
+                        <line x1="25" y1="325" x2="175" y2="175" stroke="#8b4513" stroke-width="2"/>
+                        <line x1="325" y1="325" x2="175" y2="175" stroke="#8b4513" stroke-width="2"/>
+                        
+                        <!-- Connecting lines from sides to middle -->
+                        <line x1="25" y1="175" x2="325" y2="175" stroke="#8b4513" stroke-width="2"/>
+                        <line x1="175" y1="25" x2="175" y2="325" stroke="#8b4513" stroke-width="2"/>
+                    </svg>
+                    <div class="positions" id="positions">
+                        <div class="position pos0" data-index="0"></div>
+                        <div class="position pos1" data-index="1"></div>
+                        <div class="position pos2" data-index="2"></div>
+                        <div class="position pos3" data-index="3"></div>
+                        <div class="position pos4" data-index="4"></div>
+                        <div class="position pos5" data-index="5"></div>
+                        <div class="position pos6" data-index="6"></div>
+                        <div class="position pos7" data-index="7"></div>
+                        <div class="position pos8" data-index="8"></div>
+                    </div>
                 </div>
             </div>
 
             <div class="status" id="status">
-                <i class="fas fa-play-circle"></i> Player 1's Turn - Place your mark
+                Player 1's Turn - Place a piece
             </div>
 
             <div class="button-group">
@@ -346,19 +440,15 @@
                 </button>
             </div>
 
-            <div class="game-stats">
-                <div class="stat">
-                    <div>Player 1 Wins</div>
-                    <div class="stat-value" id="p1-wins">0</div>
-                </div>
-                <div class="stat">
-                    <div>Draws</div>
-                    <div class="stat-value" id="draws">0</div>
-                </div>
-                <div class="stat">
-                    <div>Player 2 Wins</div>
-                    <div class="stat-value" id="p2-wins">0</div>
-                </div>
+            <div class="game-rules">
+                <h3>How to Play Buddhi Chal:</h3>
+                <ul>
+                    <li><strong>Phase 1:</strong> Players alternate placing 3 pieces each on the board intersections</li>
+                    <li><strong>Phase 2:</strong> After all pieces are placed, players move their pieces along the lines to adjacent intersections</li>
+                    <li><strong>Winning:</strong> Get 3 of your pieces in a row (horizontal, vertical, or diagonal)</li>
+                    <li><strong>Capture:</strong> When you form 3-in-a-row, you can remove one opponent's piece</li>
+                    <li><strong>Movement:</strong> Pieces can only move to adjacent connected positions</li>
+                </ul>
             </div>
         </div>
 
@@ -370,53 +460,111 @@
     <script>
         let board = Array(9).fill(null);
         let currentPlayer = 1;
+        let phase = 1; // 1: Placing, 2: Moving
+        let p1Pieces = 0;
+        let p2Pieces = 0;
+        let selectedIndex = null;
         let gameActive = true;
-        let p1WinsCount = 0;
-        let p2WinsCount = 0;
-        let drawsCount = 0;
 
-        const cells = document.querySelectorAll('.cell');
-        const statusText = document.getElementById('status');
-        const p1Box = document.getElementById('p1-box');
-        const p2Box = document.getElementById('p2-box');
-        const gameCard = document.getElementById('gameCard');
+        // Adjacency list for the board
+        const adjacency = [
+            [1, 3, 4],       // 0: top
+            [0, 2, 4],       // 1: top-left
+            [1, 4, 5],       // 2: top-right
+            [0, 4, 6],       // 3: left
+            [0, 1, 2, 3, 5, 6, 7, 8], // 4: center (connected to all)
+            [2, 4, 8],       // 5: right
+            [3, 4, 7],       // 6: bottom-left
+            [6, 4, 8],       // 7: bottom-right
+            [5, 4, 7]        // 8: bottom
+        ];
 
+        // Winning patterns (3-in-a-row)
         const winPatterns = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
             [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
             [0, 4, 8], [2, 4, 6]             // Diagonals
         ];
 
+        const positions = document.querySelectorAll('.position');
+        const statusText = document.getElementById('status');
+        const phaseInfo = document.getElementById('phaseInfo');
+        const p1Box = document.getElementById('p1-box');
+        const p2Box = document.getElementById('p2-box');
+        const gameCard = document.getElementById('gameCard');
+
+        function updatePiecesDisplay() {
+            document.getElementById('p1-pieces').textContent = p1Pieces;
+            document.getElementById('p2-pieces').textContent = p2Pieces;
+        }
+
         function checkWin() {
             for (let pattern of winPatterns) {
                 const [a, b, c] = pattern;
                 if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-                    return { winner: board[a], pattern };
+                    return board[a];
                 }
             }
             return null;
         }
 
-        function checkDraw() {
-            return board.every(cell => cell !== null);
-        }
-
-        function handleCellClick(e) {
+        function handlePositionClick(e) {
             const index = parseInt(e.target.dataset.index);
 
-            if (!gameActive || board[index]) return;
+            if (!gameActive || !positions[index]) return;
 
-            board[index] = currentPlayer;
-            e.target.innerText = currentPlayer === 1 ? '✕' : '○';
-            e.target.classList.add(currentPlayer === 1 ? 'p1' : 'p2');
+            if (phase === 1) {
+                // Placement phase
+                if (board[index]) return;
 
-            const result = checkWin();
-            if (result) {
-                endGame(result.winner, result.pattern);
-            } else if (checkDraw()) {
-                endGameDraw();
-            } else {
-                switchPlayer();
+                board[index] = currentPlayer;
+                positions[index].innerText = currentPlayer === 1 ? '●' : '○';
+                positions[index].classList.add(currentPlayer === 1 ? 'p1' : 'p2');
+
+                if (currentPlayer === 1) p1Pieces++; else p2Pieces++;
+                updatePiecesDisplay();
+
+                // Check if both players have placed 3 pieces
+                if (p1Pieces === 3 && p2Pieces === 3) {
+                    phase = 2;
+                    phaseInfo.innerHTML = '<strong>Phase 2:</strong> Move your pieces along the lines to form 3-in-a-row';
+                    statusText.innerText = 'Player 1\'s Turn - Move a piece';
+                }
+
+                const winner = checkWin();
+                if (winner) endGame(winner);
+                else switchPlayer();
+
+            } else if (phase === 2) {
+                // Movement phase
+                if (selectedIndex === null) {
+                    if (board[index] !== currentPlayer) return;
+                    selectedIndex = index;
+                    positions[index].classList.add('selected');
+                } else {
+                    if (index === selectedIndex) {
+                        selectedIndex = null;
+                        positions[index].classList.remove('selected');
+                        return;
+                    }
+
+                    if (board[index] === null && adjacency[selectedIndex].includes(index)) {
+                        board[index] = currentPlayer;
+                        board[selectedIndex] = null;
+
+                        positions[index].innerText = currentPlayer === 1 ? '●' : '○';
+                        positions[index].classList.add(currentPlayer === 1 ? 'p1' : 'p2');
+                        positions[selectedIndex].innerText = '';
+                        positions[selectedIndex].classList.remove('p1', 'p2', 'selected');
+
+                        const winner = checkWin();
+                        if (winner) endGame(winner);
+                        else {
+                            selectedIndex = null;
+                            switchPlayer();
+                        }
+                    }
+                }
             }
         }
 
@@ -424,65 +572,38 @@
             currentPlayer = currentPlayer === 1 ? 2 : 1;
             p1Box.classList.toggle('active');
             p2Box.classList.toggle('active');
-            updateStatus();
+            const action = phase === 1 ? 'Place' : 'Move';
+            statusText.innerText = `Player ${currentPlayer}'s Turn - ${action} a piece`;
         }
 
-        function updateStatus() {
-            const playerIcon = currentPlayer === 1 ? '<i class="fas fa-times"></i>' : '<i class="fas fa-circle"></i>';
-            statusText.innerHTML = `${playerIcon} Player ${currentPlayer}'s Turn`;
-        }
-
-        function endGame(winner, pattern) {
+        function endGame(winner) {
             gameActive = false;
-            const playerIcon = winner === 1 ? '<i class="fas fa-times"></i>' : '<i class="fas fa-circle"></i>';
-            statusText.innerHTML = `${playerIcon} Player ${winner} Wins! 🎉`;
-            
-            if (winner === 1) p1WinsCount++;
-            else p2WinsCount++;
-            
-            updateStats();
-            highlightWinningPattern(pattern);
+            statusText.innerText = `🎉 Player ${winner} Wins! 🎉`;
             gameCard.classList.add('winner');
-        }
-
-        function endGameDraw() {
-            gameActive = false;
-            statusText.innerHTML = '<i class="fas fa-handshake"></i> It\'s a Draw! 🤝';
-            drawsCount++;
-            updateStats();
-        }
-
-        function highlightWinningPattern(pattern) {
-            pattern.forEach(index => {
-                cells[index].style.background = 'linear-gradient(135deg, #d4af37 0%, #f1c40f 100%)';
-                cells[index].style.boxShadow = '0 0 20px rgba(212, 175, 55, 0.8)';
-            });
-        }
-
-        function updateStats() {
-            document.getElementById('p1-wins').textContent = p1WinsCount;
-            document.getElementById('p2-wins').textContent = p2WinsCount;
-            document.getElementById('draws').textContent = drawsCount;
         }
 
         function resetGame() {
             board = Array(9).fill(null);
             currentPlayer = 1;
+            phase = 1;
+            p1Pieces = 0;
+            p2Pieces = 0;
+            selectedIndex = null;
             gameActive = true;
-            statusText.innerHTML = '<i class="fas fa-play-circle"></i> Player 1\'s Turn - Place your mark';
+            statusText.innerText = 'Player 1\'s Turn - Place a piece';
+            phaseInfo.innerHTML = '<strong>Phase 1:</strong> Place your 3 pieces on the board';
             p1Box.classList.add('active');
             p2Box.classList.remove('active');
             gameCard.classList.remove('winner');
-            
-            cells.forEach(cell => {
-                cell.innerText = '';
-                cell.classList.remove('p1', 'p2', 'selected');
-                cell.style.background = '';
-                cell.style.boxShadow = '';
+            updatePiecesDisplay();
+
+            positions.forEach(pos => {
+                pos.innerText = '';
+                pos.classList.remove('p1', 'p2', 'selected');
             });
         }
 
-        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+        positions.forEach(pos => pos.addEventListener('click', handlePositionClick));
     </script>
 </body>
 </html>

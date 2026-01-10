@@ -108,8 +108,8 @@
 
         .board-container {
             position: relative;
-            background: linear-gradient(135deg, #fdf5e6 0%, #f5ead3 100%);
-            padding: 40px;
+            background: linear-gradient(135deg, #e8dcc8 0%, #d9cdb8 100%);
+            padding: 30px;
             border-radius: 15px;
             border: 4px solid #8b4513;
             margin-bottom: 30px;
@@ -123,8 +123,10 @@
 
         .board {
             position: relative;
-            width: 350px;
-            height: 350px;
+            width: 380px;
+            height: 380px;
+            background: #f5f0e8;
+            border-radius: 10px;
         }
 
         .board-svg {
@@ -145,23 +147,25 @@
 
         .position {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: bold;
             border-radius: 50%;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             user-select: none;
             z-index: 10;
+            border: 3px solid #8b4513;
+            background: #e8dcc8;
         }
 
         .position:hover:not(.disabled) {
-            background: rgba(212, 175, 55, 0.2);
-            transform: scale(1.1);
+            background: rgba(212, 175, 55, 0.3);
+            transform: scale(1.15);
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
 
@@ -180,23 +184,23 @@
             box-shadow: 
                 0 0 20px rgba(212, 175, 55, 0.6),
                 inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            transform: scale(1.15);
+            transform: scale(1.2);
         }
 
         .position.disabled {
             cursor: not-allowed;
         }
 
-        /* Position coordinates */
-        .pos0 { top: 0; left: 150px; }
-        .pos1 { top: 75px; left: 75px; }
-        .pos2 { top: 75px; left: 225px; }
-        .pos3 { top: 150px; left: 0; }
-        .pos4 { top: 150px; left: 150px; }
-        .pos5 { top: 150px; left: 300px; }
-        .pos6 { top: 225px; left: 75px; }
-        .pos7 { top: 225px; left: 225px; }
-        .pos8 { top: 300px; left: 150px; }
+        /* Position coordinates for 3x3 grid */
+        .pos0 { top: 20px; left: 20px; }
+        .pos1 { top: 20px; left: 162.5px; }
+        .pos2 { top: 20px; left: 305px; }
+        .pos3 { top: 162.5px; left: 20px; }
+        .pos4 { top: 162.5px; left: 162.5px; }
+        .pos5 { top: 162.5px; left: 305px; }
+        .pos6 { top: 305px; left: 20px; }
+        .pos7 { top: 305px; left: 162.5px; }
+        .pos8 { top: 305px; left: 305px; }
 
         .status {
             font-family: 'Playfair Display', serif;
@@ -313,26 +317,26 @@
             }
 
             .board {
-                width: 300px;
-                height: 300px;
+                width: 320px;
+                height: 320px;
             }
 
             .position {
-                width: 45px;
-                height: 45px;
-                font-size: 1.5rem;
+                width: 48px;
+                height: 48px;
+                font-size: 1.8rem;
             }
 
             /* Adjust positions for mobile */
-            .pos0 { top: 0; left: 125px; }
-            .pos1 { top: 65px; left: 60px; }
-            .pos2 { top: 65px; left: 190px; }
-            .pos3 { top: 130px; left: 0; }
-            .pos4 { top: 130px; left: 125px; }
-            .pos5 { top: 130px; left: 250px; }
-            .pos6 { top: 195px; left: 60px; }
-            .pos7 { top: 195px; left: 190px; }
-            .pos8 { top: 260px; left: 125px; }
+            .pos0 { top: 15px; left: 15px; }
+            .pos1 { top: 15px; left: 136px; }
+            .pos2 { top: 15px; left: 257px; }
+            .pos3 { top: 136px; left: 15px; }
+            .pos4 { top: 136px; left: 136px; }
+            .pos5 { top: 136px; left: 257px; }
+            .pos6 { top: 257px; left: 15px; }
+            .pos7 { top: 257px; left: 136px; }
+            .pos8 { top: 257px; left: 257px; }
 
             .status {
                 font-size: 1.1rem;
@@ -396,25 +400,22 @@
 
             <div class="board-container">
                 <div class="board" id="board">
-                    <svg class="board-svg" viewBox="0 0 350 350">
-                        <!-- Outer square -->
-                        <rect x="25" y="25" width="300" height="300" fill="none" stroke="#8b4513" stroke-width="3"/>
+                    <svg class="board-svg" viewBox="0 0 380 380" preserveAspectRatio="xMidYMid meet">
+                        <!-- Horizontal lines -->
+                        <line x1="47.5" y1="47.5" x2="332.5" y2="47.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="47.5" y1="190" x2="332.5" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="47.5" y1="332.5" x2="332.5" y2="332.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
                         
-                        <!-- Middle square -->
-                        <rect x="75" y="75" width="200" height="200" fill="none" stroke="#8b4513" stroke-width="3"/>
+                        <!-- Vertical lines -->
+                        <line x1="47.5" y1="47.5" x2="47.5" y2="332.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="190" y1="47.5" x2="190" y2="332.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="332.5" y1="47.5" x2="332.5" y2="332.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
                         
-                        <!-- Inner square -->
-                        <rect x="125" y="125" width="100" height="100" fill="none" stroke="#8b4513" stroke-width="3"/>
-                        
-                        <!-- Connecting lines from corners to middle -->
-                        <line x1="25" y1="25" x2="175" y2="175" stroke="#8b4513" stroke-width="2"/>
-                        <line x1="325" y1="25" x2="175" y2="175" stroke="#8b4513" stroke-width="2"/>
-                        <line x1="25" y1="325" x2="175" y2="175" stroke="#8b4513" stroke-width="2"/>
-                        <line x1="325" y1="325" x2="175" y2="175" stroke="#8b4513" stroke-width="2"/>
-                        
-                        <!-- Connecting lines from sides to middle -->
-                        <line x1="25" y1="175" x2="325" y2="175" stroke="#8b4513" stroke-width="2"/>
-                        <line x1="175" y1="25" x2="175" y2="325" stroke="#8b4513" stroke-width="2"/>
+                        <!-- Diagonal lines -->
+                        <line x1="47.5" y1="47.5" x2="190" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="332.5" y1="47.5" x2="190" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="47.5" y1="332.5" x2="190" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
+                        <line x1="332.5" y1="332.5" x2="190" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
                     </svg>
                     <div class="positions" id="positions">
                         <div class="position pos0" data-index="0"></div>
@@ -466,17 +467,17 @@
         let selectedIndex = null;
         let gameActive = true;
 
-        // Adjacency list for the board
+        // Adjacency list for the board - connected positions
         const adjacency = [
-            [1, 3, 4],       // 0: top
-            [0, 2, 4],       // 1: top-left
+            [1, 3, 4],       // 0: top-left
+            [0, 2, 4],       // 1: top-center
             [1, 4, 5],       // 2: top-right
-            [0, 4, 6],       // 3: left
+            [0, 4, 6],       // 3: middle-left
             [0, 1, 2, 3, 5, 6, 7, 8], // 4: center (connected to all)
-            [2, 4, 8],       // 5: right
+            [2, 4, 8],       // 5: middle-right
             [3, 4, 7],       // 6: bottom-left
-            [6, 4, 8],       // 7: bottom-right
-            [5, 4, 7]        // 8: bottom
+            [6, 4, 8],       // 7: bottom-center
+            [5, 4, 7]        // 8: bottom-right
         ];
 
         // Winning patterns (3-in-a-row)

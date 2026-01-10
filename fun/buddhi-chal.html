@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buddhi Chal - Nepali Game | Sumiksha Neupane</title>
+    <title>Rock Paper Scissors - Two Player Game | Sumiksha Neupane</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -31,7 +31,7 @@
             justify-content: center;
             padding: 40px 20px;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
         }
 
         .title {
@@ -67,171 +67,157 @@
             backdrop-filter: blur(10px);
         }
 
-        .game-info {
+        .score-board {
             display: flex;
             justify-content: space-around;
             width: 100%;
             margin-bottom: 30px;
-            gap: 15px;
-            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .player-box {
+        .player-score {
             flex: 1;
-            min-width: 150px;
-            padding: 15px 20px;
+            padding: 20px;
             border: 2px solid #d4af37;
             border-radius: 10px;
             background: rgba(61, 43, 31, 0.5);
-            color: #d4af37;
             text-align: center;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .player-box.active {
+        .player-score.active {
             background: linear-gradient(135deg, #d4af37 0%, #f1c40f 100%);
             color: #3d2b1f;
-            box-shadow: 
-                0 0 25px rgba(212, 175, 55, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
         }
 
-        .pieces-info {
-            font-size: 0.9rem;
-            margin-top: 5px;
-            opacity: 0.8;
-        }
-
-        .board-container {
-            position: relative;
-            background: linear-gradient(135deg, #e8dcc8 0%, #d9cdb8 100%);
-            padding: 30px;
-            border-radius: 15px;
-            border: 4px solid #8b4513;
-            margin-bottom: 30px;
-            box-shadow: 
-                0 15px 40px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .board {
-            position: relative;
-            width: 380px;
-            height: 380px;
-            background: #f5f0e8;
-            border-radius: 10px;
-        }
-
-        .board-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .positions {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-
-        .position {
-            position: absolute;
-            width: 55px;
-            height: 55px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-size: 2.2rem;
-            font-weight: bold;
-            border-radius: 50%;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            user-select: none;
-            z-index: 10;
-            border: 3px solid #8b4513;
-            background: #e8dcc8;
-        }
-
-        .position:hover:not(.disabled) {
-            background: rgba(212, 175, 55, 0.3);
-            transform: scale(1.15);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-        }
-
-        .position.p1 {
-            color: #2980b9;
-            text-shadow: 2px 2px 4px rgba(41, 128, 185, 0.3);
-        }
-
-        .position.p2 {
-            color: #c0392b;
-            text-shadow: 2px 2px 4px rgba(192, 57, 43, 0.3);
-        }
-
-        .position.selected {
-            background: linear-gradient(135deg, #d4af37 0%, #f1c40f 100%);
-            box-shadow: 
-                0 0 20px rgba(212, 175, 55, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            transform: scale(1.2);
-        }
-
-        .position.disabled {
-            cursor: not-allowed;
-        }
-
-        /* Position coordinates for 3x3 grid */
-        .pos0 { top: 20px; left: 20px; }
-        .pos1 { top: 20px; left: 162.5px; }
-        .pos2 { top: 20px; left: 305px; }
-        .pos3 { top: 162.5px; left: 20px; }
-        .pos4 { top: 162.5px; left: 162.5px; }
-        .pos5 { top: 162.5px; left: 305px; }
-        .pos6 { top: 305px; left: 20px; }
-        .pos7 { top: 305px; left: 162.5px; }
-        .pos8 { top: 305px; left: 305px; }
-
-        .status {
+        .player-name {
             font-family: 'Playfair Display', serif;
             font-size: 1.3rem;
-            margin-bottom: 25px;
             color: #d4af37;
-            text-align: center;
-            min-height: 2em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
             font-weight: bold;
         }
 
-        .phase-info {
-            background: rgba(212, 175, 55, 0.1);
-            border-left: 3px solid #d4af37;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            color: #d4af37;
-            font-size: 0.95rem;
+        .player-score.active .player-name {
+            color: #3d2b1f;
         }
 
-        .button-group {
+        .score-value {
+            font-size: 2.5rem;
+            color: #f1c40f;
+            font-weight: bold;
+        }
+
+        .player-score.active .score-value {
+            color: #3d2b1f;
+        }
+
+        .game-area {
             display: flex;
-            gap: 15px;
-            justify-content: center;
+            justify-content: space-around;
+            align-items: center;
             width: 100%;
+            margin-bottom: 30px;
+            gap: 30px;
             flex-wrap: wrap;
         }
 
-        .btn {
+        .player-choice {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .player-label {
+            font-size: 1.2rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .choice-display {
+            font-size: 4rem;
+            min-width: 100px;
+            text-align: center;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            color: #d4af37;
+        }
+
+        .vs {
+            font-size: 2rem;
+            color: #d4af37;
+            font-weight: bold;
+            opacity: 0.5;
+        }
+
+        .buttons-area {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .choice-btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #3d2b1f 0%, #2a1f15 100%);
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+
+        .choice-btn:hover {
+            background: linear-gradient(135deg, #d4af37 0%, #f1c40f 100%);
+            color: #3d2b1f;
+            box-shadow: 
+                0 0 25px rgba(212, 175, 55, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .choice-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-area {
+            text-align: center;
+            margin-bottom: 30px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #f1c40f;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .result-detail {
+            font-size: 1.1rem;
+            color: #d4af37;
+        }
+
+        .reset-btn {
             padding: 12px 30px;
             background: linear-gradient(135deg, #3d2b1f 0%, #2a1f15 100%);
             color: #d4af37;
@@ -247,7 +233,7 @@
             font-weight: bold;
         }
 
-        .btn:hover {
+        .reset-btn:hover {
             background: linear-gradient(135deg, #d4af37 0%, #f1c40f 100%);
             color: #3d2b1f;
             box-shadow: 
@@ -256,7 +242,7 @@
             transform: translateY(-2px);
         }
 
-        .btn:active {
+        .reset-btn:active {
             transform: translateY(0);
         }
 
@@ -316,34 +302,32 @@
                 padding: 25px;
             }
 
-            .board {
-                width: 320px;
-                height: 320px;
+            .score-board {
+                flex-direction: column;
+                gap: 15px;
             }
 
-            .position {
-                width: 48px;
-                height: 48px;
-                font-size: 1.8rem;
+            .game-area {
+                flex-direction: column;
+                gap: 20px;
             }
 
-            /* Adjust positions for mobile */
-            .pos0 { top: 15px; left: 15px; }
-            .pos1 { top: 15px; left: 136px; }
-            .pos2 { top: 15px; left: 257px; }
-            .pos3 { top: 136px; left: 15px; }
-            .pos4 { top: 136px; left: 136px; }
-            .pos5 { top: 136px; left: 257px; }
-            .pos6 { top: 257px; left: 15px; }
-            .pos7 { top: 257px; left: 136px; }
-            .pos8 { top: 257px; left: 257px; }
-
-            .status {
-                font-size: 1.1rem;
+            .vs {
+                transform: rotate(90deg);
             }
 
-            .btn {
-                padding: 10px 20px;
+            .choice-display {
+                font-size: 3rem;
+                min-width: 80px;
+                height: 80px;
+            }
+
+            .result-message {
+                font-size: 1.5rem;
+            }
+
+            .choice-btn {
+                padding: 12px 20px;
                 font-size: 0.95rem;
             }
 
@@ -357,8 +341,8 @@
             50% { transform: scale(1.05); }
         }
 
-        .game-card.winner {
-            animation: pulse 0.6s ease-in-out 3;
+        .choice-display {
+            animation: fadeIn 0.3s ease-out;
         }
 
         @keyframes fadeIn {
@@ -372,83 +356,81 @@
             }
         }
 
-        .position {
-            animation: fadeIn 0.3s ease-out;
+        .waiting {
+            opacity: 0.5;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
     <div class="main-container">
-        <h1 class="title">Buddhi Chal</h1>
-        <p class="subtitle">Traditional Nepali Strategic Board Game</p>
+        <h1 class="title">Rock Paper Scissors</h1>
+        <p class="subtitle">Two Player Game</p>
         
         <div class="game-card" id="gameCard">
-            <div class="game-info">
-                <div id="p1-box" class="player-box active">
-                    <div>Player 1</div>
-                    <div class="pieces-info">Pieces: <span id="p1-pieces">0</span>/3</div>
+            <div class="score-board">
+                <div class="player-score active" id="p1-score-box">
+                    <div class="player-name">Player 1</div>
+                    <div class="score-value" id="p1-score">0</div>
                 </div>
-                <div id="p2-box" class="player-box">
-                    <div>Player 2</div>
-                    <div class="pieces-info">Pieces: <span id="p2-pieces">0</span>/3</div>
-                </div>
-            </div>
-
-            <div class="phase-info" id="phaseInfo">
-                <strong>Phase 1:</strong> Place your 3 pieces on the board
-            </div>
-
-            <div class="board-container">
-                <div class="board" id="board">
-                    <svg class="board-svg" viewBox="0 0 380 380" preserveAspectRatio="xMidYMid meet">
-                        <!-- Horizontal lines -->
-                        <line x1="47.5" y1="47.5" x2="332.5" y2="47.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                        <line x1="47.5" y1="190" x2="332.5" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                        <line x1="47.5" y1="332.5" x2="332.5" y2="332.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                        
-                        <!-- Vertical lines -->
-                        <line x1="47.5" y1="47.5" x2="47.5" y2="332.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                        <line x1="190" y1="47.5" x2="190" y2="332.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                        <line x1="332.5" y1="47.5" x2="332.5" y2="332.5" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                        
-                        <!-- Diagonal lines -->
-                        <line x1="47.5" y1="47.5" x2="190" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                        <line x1="332.5" y1="47.5" x2="190" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                        <line x1="47.5" y1="332.5" x2="190" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                        <line x1="332.5" y1="332.5" x2="190" y2="190" stroke="#2c2c2c" stroke-width="4" stroke-linecap="round"/>
-                    </svg>
-                    <div class="positions" id="positions">
-                        <div class="position pos0" data-index="0"></div>
-                        <div class="position pos1" data-index="1"></div>
-                        <div class="position pos2" data-index="2"></div>
-                        <div class="position pos3" data-index="3"></div>
-                        <div class="position pos4" data-index="4"></div>
-                        <div class="position pos5" data-index="5"></div>
-                        <div class="position pos6" data-index="6"></div>
-                        <div class="position pos7" data-index="7"></div>
-                        <div class="position pos8" data-index="8"></div>
-                    </div>
+                <div class="player-score" id="p2-score-box">
+                    <div class="player-name">Player 2</div>
+                    <div class="score-value" id="p2-score">0</div>
                 </div>
             </div>
 
-            <div class="status" id="status">
-                Player 1's Turn - Place a piece
+            <div class="game-area">
+                <div class="player-choice">
+                    <div class="player-label">Player 1</div>
+                    <div class="choice-display" id="p1-choice">?</div>
+                </div>
+                <div class="vs">VS</div>
+                <div class="player-choice">
+                    <div class="player-label">Player 2</div>
+                    <div class="choice-display" id="p2-choice">?</div>
+                </div>
             </div>
 
-            <div class="button-group">
-                <button class="btn" onclick="resetGame()">
-                    <i class="fas fa-redo"></i> New Game
+            <div class="buttons-area">
+                <button class="choice-btn" onclick="playRound(1, 'rock')">
+                    <i class="fas fa-hand-fist"></i> Rock
+                </button>
+                <button class="choice-btn" onclick="playRound(1, 'paper')">
+                    <i class="fas fa-hand"></i> Paper
+                </button>
+                <button class="choice-btn" onclick="playRound(1, 'scissors')">
+                    <i class="fas fa-hand-scissors"></i> Scissors
                 </button>
             </div>
 
+            <div class="buttons-area">
+                <button class="choice-btn" onclick="playRound(2, 'rock')">
+                    <i class="fas fa-hand-fist"></i> Rock
+                </button>
+                <button class="choice-btn" onclick="playRound(2, 'paper')">
+                    <i class="fas fa-hand"></i> Paper
+                </button>
+                <button class="choice-btn" onclick="playRound(2, 'scissors')">
+                    <i class="fas fa-hand-scissors"></i> Scissors
+                </button>
+            </div>
+
+            <div class="result-area" id="result-area">
+                <div class="result-message">Make your choices!</div>
+            </div>
+
+            <button class="reset-btn" onclick="resetGame()">
+                <i class="fas fa-redo"></i> New Game
+            </button>
+
             <div class="game-rules">
-                <h3>How to Play Buddhi Chal:</h3>
+                <h3>How to Play:</h3>
                 <ul>
-                    <li><strong>Phase 1:</strong> Players alternate placing 3 pieces each on the board intersections</li>
-                    <li><strong>Phase 2:</strong> After all pieces are placed, players move their pieces along the lines to adjacent intersections</li>
-                    <li><strong>Winning:</strong> Get 3 of your pieces in a row (horizontal, vertical, or diagonal)</li>
-                    <li><strong>Capture:</strong> When you form 3-in-a-row, you can remove one opponent's piece</li>
-                    <li><strong>Movement:</strong> Pieces can only move to adjacent connected positions</li>
+                    <li><strong>Player 1:</strong> Click one of the three buttons (Rock, Paper, or Scissors)</li>
+                    <li><strong>Player 2:</strong> Click one of the three buttons (Rock, Paper, or Scissors)</li>
+                    <li><strong>Rules:</strong> Rock beats Scissors, Scissors beats Paper, Paper beats Rock</li>
+                    <li><strong>Winning:</strong> First to win 5 rounds wins the game!</li>
+                    <li><strong>Tie:</strong> If both choose the same, the round is a tie</li>
                 </ul>
             </div>
         </div>
@@ -459,152 +441,109 @@
     </div>
 
     <script>
-        let board = Array(9).fill(null);
-        let currentPlayer = 1;
-        let phase = 1; // 1: Placing, 2: Moving
-        let p1Pieces = 0;
-        let p2Pieces = 0;
-        let selectedIndex = null;
-        let gameActive = true;
+        let p1Score = 0;
+        let p2Score = 0;
+        let p1Choice = null;
+        let p2Choice = null;
+        let roundActive = false;
+        const winTarget = 5;
 
-        // Adjacency list for the board - connected positions
-        const adjacency = [
-            [1, 3, 4],       // 0: top-left
-            [0, 2, 4],       // 1: top-center
-            [1, 4, 5],       // 2: top-right
-            [0, 4, 6],       // 3: middle-left
-            [0, 1, 2, 3, 5, 6, 7, 8], // 4: center (connected to all)
-            [2, 4, 8],       // 5: middle-right
-            [3, 4, 7],       // 6: bottom-left
-            [6, 4, 8],       // 7: bottom-center
-            [5, 4, 7]        // 8: bottom-right
-        ];
+        const choiceEmojis = {
+            rock: '✊',
+            paper: '✋',
+            scissors: '✌️'
+        };
 
-        // Winning patterns (3-in-a-row)
-        const winPatterns = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
-            [0, 4, 8], [2, 4, 6]             // Diagonals
-        ];
-
-        const positions = document.querySelectorAll('.position');
-        const statusText = document.getElementById('status');
-        const phaseInfo = document.getElementById('phaseInfo');
-        const p1Box = document.getElementById('p1-box');
-        const p2Box = document.getElementById('p2-box');
-        const gameCard = document.getElementById('gameCard');
-
-        function updatePiecesDisplay() {
-            document.getElementById('p1-pieces').textContent = p1Pieces;
-            document.getElementById('p2-pieces').textContent = p2Pieces;
-        }
-
-        function checkWin() {
-            for (let pattern of winPatterns) {
-                const [a, b, c] = pattern;
-                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-                    return board[a];
-                }
+        function playRound(player, choice) {
+            if (player === 1) {
+                p1Choice = choice;
+                document.getElementById('p1-choice').innerText = choiceEmojis[choice];
+            } else {
+                p2Choice = choice;
+                document.getElementById('p2-choice').innerText = choiceEmojis[choice];
             }
-            return null;
-        }
 
-        function handlePositionClick(e) {
-            const index = parseInt(e.target.dataset.index);
-
-            if (!gameActive || !positions[index]) return;
-
-            if (phase === 1) {
-                // Placement phase
-                if (board[index]) return;
-
-                board[index] = currentPlayer;
-                positions[index].innerText = currentPlayer === 1 ? '●' : '○';
-                positions[index].classList.add(currentPlayer === 1 ? 'p1' : 'p2');
-
-                if (currentPlayer === 1) p1Pieces++; else p2Pieces++;
-                updatePiecesDisplay();
-
-                // Check if both players have placed 3 pieces
-                if (p1Pieces === 3 && p2Pieces === 3) {
-                    phase = 2;
-                    phaseInfo.innerHTML = '<strong>Phase 2:</strong> Move your pieces along the lines to form 3-in-a-row';
-                    statusText.innerText = 'Player 1\'s Turn - Move a piece';
-                }
-
-                const winner = checkWin();
-                if (winner) endGame(winner);
-                else switchPlayer();
-
-            } else if (phase === 2) {
-                // Movement phase
-                if (selectedIndex === null) {
-                    if (board[index] !== currentPlayer) return;
-                    selectedIndex = index;
-                    positions[index].classList.add('selected');
-                } else {
-                    if (index === selectedIndex) {
-                        selectedIndex = null;
-                        positions[index].classList.remove('selected');
-                        return;
-                    }
-
-                    if (board[index] === null && adjacency[selectedIndex].includes(index)) {
-                        board[index] = currentPlayer;
-                        board[selectedIndex] = null;
-
-                        positions[index].innerText = currentPlayer === 1 ? '●' : '○';
-                        positions[index].classList.add(currentPlayer === 1 ? 'p1' : 'p2');
-                        positions[selectedIndex].innerText = '';
-                        positions[selectedIndex].classList.remove('p1', 'p2', 'selected');
-
-                        const winner = checkWin();
-                        if (winner) endGame(winner);
-                        else {
-                            selectedIndex = null;
-                            switchPlayer();
-                        }
-                    }
-                }
+            // If both players have made their choice
+            if (p1Choice && p2Choice) {
+                determineWinner();
             }
         }
 
-        function switchPlayer() {
-            currentPlayer = currentPlayer === 1 ? 2 : 1;
-            p1Box.classList.toggle('active');
-            p2Box.classList.toggle('active');
-            const action = phase === 1 ? 'Place' : 'Move';
-            statusText.innerText = `Player ${currentPlayer}'s Turn - ${action} a piece`;
+        function determineWinner() {
+            const resultArea = document.getElementById('result-area');
+            let resultMessage = '';
+            let winner = null;
+
+            if (p1Choice === p2Choice) {
+                resultMessage = "It's a Tie! 🤝";
+            } else if (
+                (p1Choice === 'rock' && p2Choice === 'scissors') ||
+                (p1Choice === 'scissors' && p2Choice === 'paper') ||
+                (p1Choice === 'paper' && p2Choice === 'rock')
+            ) {
+                resultMessage = "Player 1 Wins! 🎉";
+                p1Score++;
+                winner = 1;
+            } else {
+                resultMessage = "Player 2 Wins! 🎉";
+                p2Score++;
+                winner = 2;
+            }
+
+            updateScoreBoard();
+            resultArea.innerHTML = `
+                <div class="result-message">${resultMessage}</div>
+                <div class="result-detail">${p1Choice.toUpperCase()} vs ${p2Choice.toUpperCase()}</div>
+            `;
+
+            // Check if someone has won the game
+            if (p1Score >= winTarget) {
+                resultArea.innerHTML += `<div class="result-detail" style="color: #f1c40f; font-size: 1.3rem; margin-top: 10px;">🏆 Player 1 Wins the Game! 🏆</div>`;
+            } else if (p2Score >= winTarget) {
+                resultArea.innerHTML += `<div class="result-detail" style="color: #f1c40f; font-size: 1.3rem; margin-top: 10px;">🏆 Player 2 Wins the Game! 🏆</div>`;
+            }
+
+            // Reset choices for next round
+            setTimeout(() => {
+                p1Choice = null;
+                p2Choice = null;
+                document.getElementById('p1-choice').innerText = '?';
+                document.getElementById('p2-choice').innerText = '?';
+            }, 2000);
         }
 
-        function endGame(winner) {
-            gameActive = false;
-            statusText.innerText = `🎉 Player ${winner} Wins! 🎉`;
-            gameCard.classList.add('winner');
+        function updateScoreBoard() {
+            document.getElementById('p1-score').innerText = p1Score;
+            document.getElementById('p2-score').innerText = p2Score;
+
+            const p1Box = document.getElementById('p1-score-box');
+            const p2Box = document.getElementById('p2-score-box');
+
+            if (p1Score > p2Score) {
+                p1Box.classList.add('active');
+                p2Box.classList.remove('active');
+            } else if (p2Score > p1Score) {
+                p2Box.classList.add('active');
+                p1Box.classList.remove('active');
+            } else {
+                p1Box.classList.add('active');
+                p2Box.classList.add('active');
+            }
         }
 
         function resetGame() {
-            board = Array(9).fill(null);
-            currentPlayer = 1;
-            phase = 1;
-            p1Pieces = 0;
-            p2Pieces = 0;
-            selectedIndex = null;
-            gameActive = true;
-            statusText.innerText = 'Player 1\'s Turn - Place a piece';
-            phaseInfo.innerHTML = '<strong>Phase 1:</strong> Place your 3 pieces on the board';
-            p1Box.classList.add('active');
-            p2Box.classList.remove('active');
-            gameCard.classList.remove('winner');
-            updatePiecesDisplay();
-
-            positions.forEach(pos => {
-                pos.innerText = '';
-                pos.classList.remove('p1', 'p2', 'selected');
-            });
+            p1Score = 0;
+            p2Score = 0;
+            p1Choice = null;
+            p2Choice = null;
+            document.getElementById('p1-choice').innerText = '?';
+            document.getElementById('p2-choice').innerText = '?';
+            document.getElementById('result-area').innerHTML = '<div class="result-message">Make your choices!</div>';
+            updateScoreBoard();
         }
 
-        positions.forEach(pos => pos.addEventListener('click', handlePositionClick));
+        // Initialize score board
+        updateScoreBoard();
     </script>
 </body>
 </html>

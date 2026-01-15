@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Games & Projects</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            font-size: 3rem;
+        }
+
+        .game-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-content h2 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .game-content p {
+            color: #718096;
+            margin-bottom: 20px;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .game-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .game-link:hover {
+            background: #764ba2;
+            transform: translateX(5px);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: opacity 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link a:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎮 Fun Games & Projects</h1>
+            <p>Test your skills and have fun with interactive games</p>
+        </div>
+
+        <div class="games-grid">
+            <div class="game-card">
+                <div class="game-icon">🧠</div>
+                <div class="game-content">
+                    <h2>Budhhi Chal</h2>
+                    <p>A mind game that tests your memory and concentration. Click numbers in order and try to remember their positions!</p>
+                    <a href="budhhi-chal.html" class="game-link">Play Now →</a>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon">🎲</div>
+                <div class="game-content">
+                    <h2>Dice Game</h2>
+                    <p>Roll the dice and compete against the computer. Simple, fun, and addictive! Keep track of your wins and losses.</p>
+                    <a href="dice-game.html" class="game-link">Play Now →</a>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon">✨</div>
+                <div class="game-content">
+                    <h2>Quote Generator</h2>
+                    <p>Get inspired with random quotes. Save your favorites, copy quotes, and share them with friends!</p>
+                    <a href="quote-generator.html" class="game-link">Get Inspired →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="../index.html">← Back to Portfolio</a>
+        </div>
+    </div>
+</body>
+</html>

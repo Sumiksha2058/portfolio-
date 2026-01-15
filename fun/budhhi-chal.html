@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budhhi Chal - Mind Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .game-info {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .game-info p {
+            color: #2d3748;
+            margin: 5px 0;
+            font-weight: 500;
+        }
+
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .number-btn {
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .number-btn:hover:not(:disabled) {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .number-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .input-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .input-section label {
+            display: block;
+            margin-bottom: 10px;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .input-section input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-section input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-reset:hover {
+            background: #cbd5e0;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.correct {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 2px solid #9ae6b4;
+        }
+
+        .result.incorrect {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 2px solid #fc8181;
+        }
+
+        .instructions {
+            background: #edf2f7;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Budhhi Chal</h1>
+        <p class="subtitle">Mind Game - Test Your Memory</p>
+
+        <div class="instructions">
+            <h3>How to Play:</h3>
+            <p>1. Click on the numbers in order from 1 to 9</p>
+            <p>2. Numbers will be hidden after you click</p>
+            <p>3. Try to remember where each number is located</p>
+            <p>4. Complete the sequence as fast as you can!</p>
+        </div>
+
+        <div class="game-info">
+            <p>Selected Numbers: <strong id="selected">None</strong></p>
+            <p>Time: <strong id="timer">0</strong>s</p>
+        </div>
+
+        <div class="number-grid" id="gameGrid"></div>
+
+        <div class="input-section">
+            <label for="userInput">Enter your answer (1-9 in order):</label>
+            <input type="text" id="userInput" placeholder="e.g., 123456789" maxlength="9">
+            <div class="button-group">
+                <button class="btn btn-submit" onclick="checkAnswer()">Check Answer</button>
+                <button class="btn btn-reset" onclick="resetGame()">Reset Game</button>
+            </div>
+        </div>
+
+        <div class="result" id="result"></div>
+
+        <div class="back-link">
+            <a href="../index.html">← Back to Portfolio</a>
+        </div>
+    </div>
+
+    <script>
+        let numbers = [];
+        let startTime = 0;
+        let gameStarted = false;
+
+        function initGame() {
+            numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5);
+            const gameGrid = document.getElementById('gameGrid');
+            gameGrid.innerHTML = '';
+
+            numbers.forEach((num, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'number-btn';
+                btn.textContent = num;
+                btn.onclick = () => selectNumber(index, btn);
+                gameGrid.appendChild(btn);
+            });
+
+            startTime = Date.now();
+            gameStarted = true;
+            updateTimer();
+        }
+
+        function selectNumber(index, btn) {
+            if (!gameStarted) return;
+            
+            btn.style.visibility = 'hidden';
+            updateSelected();
+        }
+
+        function updateSelected() {
+            const visible = document.querySelectorAll('.number-btn:not([style*="visibility: hidden"])');
+            const selected = 9 - visible.length;
+            document.getElementById('selected').textContent = selected + '/9';
+        }
+
+        function updateTimer() {
+            if (gameStarted) {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                document.getElementById('timer').textContent = elapsed;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        function checkAnswer() {
+            const userInput = document.getElementById('userInput').value;
+            const correctAnswer = numbers.join('');
+            const resultDiv = document.getElementById('result');
+
+            if (userInput === correctAnswer) {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                resultDiv.className = 'result show correct';
+                resultDiv.textContent = `🎉 Correct! You completed it in ${elapsed} seconds!`;
+                gameStarted = false;
+            } else {
+                resultDiv.className = 'result show incorrect';
+                resultDiv.textContent = `❌ Incorrect! The correct sequence is: ${correctAnswer}`;
+            }
+        }
+
+        function resetGame() {
+            document.getElementById('userInput').value = '';
+            document.getElementById('result').className = 'result';
+            document.getElementById('selected').textContent = 'None';
+            document.getElementById('timer').textContent = '0';
+            gameStarted = false;
+            initGame();
+        }
+
+        // Initialize game on page load
+        window.addEventListener('load', initGame);
+    </script>
+</body>
+</html>

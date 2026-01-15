@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .game-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+        }
+
+        .game-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .dice-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .dice {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .vs {
+            font-size: 1.5rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .score-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .score-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+
+        .score-card h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .score-card .score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .result-message {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result-message.show {
+            display: block;
+        }
+
+        .result-message.win {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 2px solid #9ae6b4;
+        }
+
+        .result-message.lose {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 2px solid #fc8181;
+        }
+
+        .result-message.draw {
+            background: #bee3f8;
+            color: #2c5282;
+            border: 2px solid #90cdf4;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: #764ba2;
+        }
+
+        .history {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .history-item {
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #2d3748;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Dice Game</h1>
+        <p class="subtitle">Roll the Dice and Win!</p>
+
+        <div class="game-section">
+            <h2>Your Turn</h2>
+            <div class="dice-container">
+                <div class="dice" id="playerDice">0</div>
+                <div class="vs">VS</div>
+                <div class="dice" id="computerDice">0</div>
+            </div>
+
+            <div class="result-message" id="resultMessage"></div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="rollDice()">🎲 Roll Dice</button>
+                <button class="btn btn-secondary" onclick="resetGame()">Reset Game</button>
+            </div>
+        </div>
+
+        <div class="score-board">
+            <div class="score-card">
+                <h3>Your Score</h3>
+                <div class="score" id="playerScore">0</div>
+            </div>
+            <div class="score-card">
+                <h3>Computer Score</h3>
+                <div class="score" id="computerScore">0</div>
+            </div>
+        </div>
+
+        <div class="history">
+            <h3>Game History</h3>
+            <div id="historyList"></div>
+        </div>
+
+        <div class="back-link">
+            <a href="../index.html">← Back to Portfolio</a>
+        </div>
+    </div>
+
+    <script>
+        let playerScore = 0;
+        let computerScore = 0;
+        let gameHistory = [];
+
+        function rollDice() {
+            const playerRoll = Math.floor(Math.random() * 6) + 1;
+            const computerRoll = Math.floor(Math.random() * 6) + 1;
+
+            document.getElementById('playerDice').textContent = playerRoll;
+            document.getElementById('computerDice').textContent = computerRoll;
+
+            let result = '';
+            if (playerRoll > computerRoll) {
+                playerScore++;
+                result = `🎉 You Win! ${playerRoll} > ${computerRoll}`;
+                document.getElementById('resultMessage').className = 'result-message show win';
+            } else if (computerRoll > playerRoll) {
+                computerScore++;
+                result = `😢 You Lose! ${computerRoll} > ${playerRoll}`;
+                document.getElementById('resultMessage').className = 'result-message show lose';
+            } else {
+                result = `🤝 Draw! Both rolled ${playerRoll}`;
+                document.getElementById('resultMessage').className = 'result-message show draw';
+            }
+
+            document.getElementById('resultMessage').textContent = result;
+            document.getElementById('playerScore').textContent = playerScore;
+            document.getElementById('computerScore').textContent = computerScore;
+
+            gameHistory.unshift(result);
+            if (gameHistory.length > 10) gameHistory.pop();
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = gameHistory.map((item, index) => 
+                `<div class="history-item">Round ${index + 1}: ${item}</div>`
+            ).join('');
+        }
+
+        function resetGame() {
+            playerScore = 0;
+            computerScore = 0;
+            gameHistory = [];
+            document.getElementById('playerDice').textContent = '0';
+            document.getElementById('computerDice').textContent = '0';
+            document.getElementById('playerScore').textContent = '0';
+            document.getElementById('computerScore').textContent = '0';
+            document.getElementById('resultMessage').className = 'result-message';
+            document.getElementById('resultMessage').textContent = '';
+            updateHistory();
+        }
+    </script>
+</body>
+</html>

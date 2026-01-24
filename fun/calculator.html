@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculators</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .calculators-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .calculator-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .section-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* Simple Calculator Styles */
+        .simple-calc {
+            padding: 20px;
+        }
+
+        .simple-display {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            text-align: right;
+            font-size: 2.2rem;
+            font-weight: 600;
+            word-wrap: break-word;
+            word-break: break-all;
+            min-height: 70px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .simple-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .simple-buttons button {
+            padding: 18px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f0f0f0;
+            color: #2d3748;
+        }
+
+        .simple-buttons button:hover {
+            background: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .simple-buttons button:active {
+            transform: scale(0.95);
+        }
+
+        .simple-operator {
+            background: #667eea;
+            color: white;
+        }
+
+        .simple-operator:hover {
+            background: #5568d3;
+        }
+
+        .simple-equals {
+            background: #48bb78;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .simple-equals:hover {
+            background: #38a169;
+        }
+
+        .simple-clear {
+            background: #f56565;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .simple-clear:hover {
+            background: #e53e3e;
+        }
+
+        /* Scientific Calculator Styles */
+        .scientific-calc {
+            padding: 20px;
+        }
+
+        .sci-mode-indicator {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .sci-mode-badge {
+            background: #f0f0f0;
+            color: #2d3748;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid #cbd5e0;
+        }
+
+        .sci-mode-badge.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .sci-display-area {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .sci-display-label {
+            color: #718096;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .sci-display {
+            background: white;
+            color: #667eea;
+            padding: 12px;
+            text-align: right;
+            font-size: 1.8rem;
+            font-weight: 600;
+            word-wrap: break-word;
+            word-break: break-all;
+            min-height: 50px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #e2e8f0;
+        }
+
+        .sci-secondary-display {
+            background: white;
+            color: #a0aec0;
+            padding: 8px 12px;
+            text-align: right;
+            font-size: 0.85rem;
+            border-radius: 5px;
+            min-height: 25px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #e2e8f0;
+            margin-top: 8px;
+        }
+
+        .sci-buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .sci-buttons button {
+            padding: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #f0f0f0;
+            color: #2d3748;
+            border: 1px solid #cbd5e0;
+        }
+
+        .sci-buttons button:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .sci-buttons button:active {
+            transform: translateY(0);
+        }
+
+        .sci-shift-btn {
+            background: #ed8936;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .sci-shift-btn:hover {
+            background: #dd6b20;
+        }
+
+        .sci-shift-btn.active {
+            background: #c05621;
+        }
+
+        .sci-operator {
+            background: #667eea;
+            color: white;
+        }
+
+        .sci-operator:hover {
+            background: #5568d3;
+        }
+
+        .sci-equals {
+            background: #48bb78;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .sci-equals:hover {
+            background: #38a169;
+        }
+
+        .sci-clear {
+            background: #f56565;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .sci-clear:hover {
+            background: #e53e3e;
+        }
+
+        .sci-function-btn {
+            background: #805ad5;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        .sci-function-btn:hover {
+            background: #6b46c1;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: opacity 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link a:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .calculators-wrapper {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .simple-display {
+                font-size: 1.8rem;
+            }
+
+            .sci-display {
+                font-size: 1.4rem;
+            }
+
+            .sci-buttons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .sci-equals, .sci-clear {
+                grid-column: span 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧮 Calculators</h1>
+            <p>Choose between a simple or scientific calculator</p>
+        </div>
+
+        <div class="calculators-wrapper">
+            <!-- Simple Calculator -->
+            <div class="calculator-section">
+                <div class="section-header">
+                    <h2>Simple Calculator</h2>
+                    <p>Basic arithmetic operations</p>
+                </div>
+                <div class="simple-calc">
+                    <div class="simple-display" id="simpleDisplay">0</div>
+                    <div class="simple-buttons">
+                        <button class="simple-clear" onclick="simpleClearDisplay()">C</button>
+                        <button class="simple-operator" onclick="simpleAppendOperator('/')">&divide;</button>
+                        <button class="simple-operator" onclick="simpleAppendOperator('*')">&times;</button>
+                        
+                        <button onclick="simpleAppendNumber('7')">7</button>
+                        <button onclick="simpleAppendNumber('8')">8</button>
+                        <button onclick="simpleAppendNumber('9')">9</button>
+                        <button class="simple-operator" onclick="simpleAppendOperator('-')">−</button>
+                        
+                        <button onclick="simpleAppendNumber('4')">4</button>
+                        <button onclick="simpleAppendNumber('5')">5</button>
+                        <button onclick="simpleAppendNumber('6')">6</button>
+                        <button class="simple-operator" onclick="simpleAppendOperator('+')">+</button>
+                        
+                        <button onclick="simpleAppendNumber('1')">1</button>
+                        <button onclick="simpleAppendNumber('2')">2</button>
+                        <button onclick="simpleAppendNumber('3')">3</button>
+                        <button class="simple-operator" onclick="simpleToggleSign()">+/−</button>
+                        
+                        <button onclick="simpleAppendNumber('0')" style="grid-column: span 2;">0</button>
+                        <button onclick="simpleAppendNumber('.')">.</button>
+                        <button class="simple-equals" onclick="simpleCalculate()">=</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scientific Calculator -->
+            <div class="calculator-section">
+                <div class="section-header">
+                    <h2>Casio FX-991ES Plus</h2>
+                    <p>Advanced scientific calculator</p>
+                </div>
+                <div class="scientific-calc">
+                    <div class="sci-mode-indicator">
+                        <div class="sci-mode-badge active" id="sciModeBadge">DEG</div>
+                        <div class="sci-mode-badge" id="sciStatBadge">STAT</div>
+                    </div>
+
+                    <div class="sci-display-area">
+                        <div class="sci-display-label">Expression</div>
+                        <div class="sci-display" id="sciDisplay">0</div>
+                        <div class="sci-secondary-display" id="sciSecondaryDisplay"></div>
+                    </div>
+
+                    <div class="sci-buttons">
+                        <!-- Row 1 -->
+                        <button class="sci-shift-btn" onclick="sciToggleShift()" id="sciShiftBtn">SHIFT</button>
+                        <button class="sci-function-btn" onclick="sciAppendFunction('sin')">sin</button>
+                        <button class="sci-function-btn" onclick="sciAppendFunction('cos')">cos</button>
+                        <button class="sci-function-btn" onclick="sciAppendFunction('tan')">tan</button>
+                        <button class="sci-clear" onclick="sciClearDisplay()" style="grid-column: span 1;">C</button>
+
+                        <!-- Row 2 -->
+                        <button class="sci-function-btn" onclick="sciAppendFunction('log')">log</button>
+                        <button class="sci-function-btn" onclick="sciAppendFunction('ln')">ln</button>
+                        <button class="sci-operator" onclick="sciAppendOperator('/')">&divide;</button>
+                        <button class="sci-operator" onclick="sciAppendOperator('*')">&times;</button>
+                        <button class="sci-clear" onclick="sciDeleteLastChar()">DEL</button>
+
+                        <!-- Row 3 -->
+                        <button onclick="sciAppendNumber('7')">7</button>
+                        <button onclick="sciAppendNumber('8')">8</button>
+                        <button onclick="sciAppendNumber('9')">9</button>
+                        <button class="sci-operator" onclick="sciAppendOperator('-')">−</button>
+                        <button class="sci-function-btn" onclick="sciAppendFunction('sqrt')">√</button>
+
+                        <!-- Row 4 -->
+                        <button onclick="sciAppendNumber('4')">4</button>
+                        <button onclick="sciAppendNumber('5')">5</button>
+                        <button onclick="sciAppendNumber('6')">6</button>
+                        <button class="sci-operator" onclick="sciAppendOperator('+')">+</button>
+                        <button class="sci-function-btn" onclick="sciAppendFunction('pow')">x^y</button>
+
+                        <!-- Row 5 -->
+                        <button onclick="sciAppendNumber('1')">1</button>
+                        <button onclick="sciAppendNumber('2')">2</button>
+                        <button onclick="sciAppendNumber('3')">3</button>
+                        <button class="sci-operator" onclick="sciToggleSign()">+/−</button>
+                        <button class="sci-function-btn" onclick="sciAppendFunction('fact')">n!</button>
+
+                        <!-- Row 6 -->
+                        <button onclick="sciAppendNumber('0')" style="grid-column: span 2;">0</button>
+                        <button onclick="sciAppendNumber('.')">.</button>
+                        <button class="sci-operator" onclick="sciAppendOperator('%')">%</button>
+                        <button class="sci-equals" onclick="sciCalculate()" style="grid-column: span 1;">=</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html">← Back to Fun Section</a>
+        </div>
+    </div>
+
+    <script>
+        // ===== SIMPLE CALCULATOR =====
+        let simpleDisplay = document.getElementById('simpleDisplay');
+        let simpleCurrentValue = '0';
+        let simplePreviousValue = '';
+        let simpleOperation = null;
+        let simpleShouldResetDisplay = false;
+
+        function simpleUpdateDisplay() {
+            simpleDisplay.textContent = simpleCurrentValue;
+        }
+
+        function simpleAppendNumber(number) {
+            if (simpleShouldResetDisplay) {
+                simpleCurrentValue = number;
+                simpleShouldResetDisplay = false;
+            } else {
+                if (simpleCurrentValue === '0' && number !== '.') {
+                    simpleCurrentValue = number;
+                } else if (number === '.' && simpleCurrentValue.includes('.')) {
+                    return;
+                } else {
+                    simpleCurrentValue += number;
+                }
+            }
+            simpleUpdateDisplay();
+        }
+
+        function simpleAppendOperator(op) {
+            if (simpleOperation !== null) {
+                simpleCalculate();
+            }
+            simplePreviousValue = simpleCurrentValue;
+            simpleOperation = op;
+            simpleShouldResetDisplay = true;
+        }
+
+        function simpleCalculate() {
+            if (simpleOperation === null || simpleShouldResetDisplay) return;
+
+            let result;
+            const prev = parseFloat(simplePreviousValue);
+            const current = parseFloat(simpleCurrentValue);
+
+            switch (simpleOperation) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = current !== 0 ? prev / current : 'Error';
+                    break;
+                default:
+                    return;
+            }
+
+            simpleCurrentValue = result.toString();
+            simpleOperation = null;
+            simpleShouldResetDisplay = true;
+            simpleUpdateDisplay();
+        }
+
+        function simpleClearDisplay() {
+            simpleCurrentValue = '0';
+            simplePreviousValue = '';
+            simpleOperation = null;
+            simpleShouldResetDisplay = false;
+            simpleUpdateDisplay();
+        }
+
+        function simpleToggleSign() {
+            simpleCurrentValue = (parseFloat(simpleCurrentValue) * -1).toString();
+            simpleUpdateDisplay();
+        }
+
+        // ===== SCIENTIFIC CALCULATOR =====
+        let sciDisplay = document.getElementById('sciDisplay');
+        let sciSecondaryDisplay = document.getElementById('sciSecondaryDisplay');
+        let sciCurrentValue = '0';
+        let sciPreviousValue = '';
+        let sciOperation = null;
+        let sciShouldResetDisplay = false;
+        let sciShiftActive = false;
+        let sciAngleMode = 'DEG';
+
+        function sciUpdateDisplay() {
+            sciDisplay.textContent = sciCurrentValue;
+        }
+
+        function sciAppendNumber(number) {
+            if (sciShouldResetDisplay) {
+                sciCurrentValue = number;
+                sciShouldResetDisplay = false;
+            } else {
+                if (sciCurrentValue === '0' && number !== '.') {
+                    sciCurrentValue = number;
+                } else if (number === '.' && sciCurrentValue.includes('.')) {
+                    return;
+                } else {
+                    sciCurrentValue += number;
+                }
+            }
+            sciUpdateDisplay();
+        }
+
+        function sciAppendOperator(op) {
+            if (sciOperation !== null && !sciShouldResetDisplay) {
+                sciCalculate();
+            }
+            sciPreviousValue = sciCurrentValue;
+            sciOperation = op;
+            sciShouldResetDisplay = true;
+        }
+
+        function sciAppendFunction(func) {
+            const value = parseFloat(sciCurrentValue);
+            let result;
+
+            try {
+                switch (func) {
+                    case 'sin':
+                        const sinVal = sciAngleMode === 'DEG' ? value * Math.PI / 180 : value;
+                        result = Math.sin(sinVal);
+                        break;
+                    case 'cos':
+                        const cosVal = sciAngleMode === 'DEG' ? value * Math.PI / 180 : value;
+                        result = Math.cos(cosVal);
+                        break;
+                    case 'tan':
+                        const tanVal = sciAngleMode === 'DEG' ? value * Math.PI / 180 : value;
+                        result = Math.tan(tanVal);
+                        break;
+                    case 'log':
+                        result = Math.log10(value);
+                        break;
+                    case 'ln':
+                        result = Math.log(value);
+                        break;
+                    case 'sqrt':
+                        result = Math.sqrt(value);
+                        break;
+                    case 'pow':
+                        sciCurrentValue += '^';
+                        sciUpdateDisplay();
+                        return;
+                    case 'fact':
+                        result = sciFactorial(Math.floor(value));
+                        break;
+                    default:
+                        return;
+                }
+                sciCurrentValue = result.toString();
+                sciShouldResetDisplay = true;
+                sciUpdateDisplay();
+            } catch (e) {
+                sciCurrentValue = 'Error';
+                sciUpdateDisplay();
+            }
+        }
+
+        function sciFactorial(n) {
+            if (n < 0) return NaN;
+            if (n === 0 || n === 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) {
+                result *= i;
+            }
+            return result;
+        }
+
+        function sciCalculate() {
+            if (sciOperation === null || sciShouldResetDisplay) return;
+
+            let result;
+            let prev = parseFloat(sciPreviousValue);
+            let current = parseFloat(sciCurrentValue);
+
+            if (sciOperation === '^') {
+                result = Math.pow(prev, current);
+            } else {
+                switch (sciOperation) {
+                    case '+':
+                        result = prev + current;
+                        break;
+                    case '-':
+                        result = prev - current;
+                        break;
+                    case '*':
+                        result = prev * current;
+                        break;
+                    case '/':
+                        result = current !== 0 ? prev / current : 'Error';
+                        break;
+                    case '%':
+                        result = prev % current;
+                        break;
+                    default:
+                        return;
+                }
+            }
+
+            sciCurrentValue = result.toString();
+            sciOperation = null;
+            sciShouldResetDisplay = true;
+            sciUpdateDisplay();
+        }
+
+        function sciClearDisplay() {
+            sciCurrentValue = '0';
+            sciPreviousValue = '';
+            sciOperation = null;
+            sciShouldResetDisplay = false;
+            sciSecondaryDisplay.textContent = '';
+            sciUpdateDisplay();
+        }
+
+        function sciDeleteLastChar() {
+            if (sciCurrentValue.length > 1) {
+                sciCurrentValue = sciCurrentValue.slice(0, -1);
+            } else {
+                sciCurrentValue = '0';
+            }
+            sciUpdateDisplay();
+        }
+
+        function sciToggleSign() {
+            sciCurrentValue = (parseFloat(sciCurrentValue) * -1).toString();
+            sciUpdateDisplay();
+        }
+
+        function sciToggleShift() {
+            sciShiftActive = !sciShiftActive;
+            document.getElementById('sciShiftBtn').classList.toggle('active');
+        }
+
+        // Keyboard support for simple calculator
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'BUTTON') return;
+            
+            if (e.key >= '0' && e.key <= '9') {
+                simpleAppendNumber(e.key);
+            }
+            if (e.key === '.') simpleAppendNumber('.');
+            if (e.key === '+') simpleAppendOperator('+');
+            if (e.key === '-') simpleAppendOperator('-');
+            if (e.key === '*') simpleAppendOperator('*');
+            if (e.key === '/') {
+                e.preventDefault();
+                simpleAppendOperator('/');
+            }
+            if (e.key === 'Enter' || e.key === '=') {
+                e.preventDefault();
+                simpleCalculate();
+            }
+            if (e.key === 'Backspace') {
+                e.preventDefault();
+                simpleCurrentValue = simpleCurrentValue.slice(0, -1) || '0';
+                simpleUpdateDisplay();
+            }
+            if (e.key === 'Escape') simpleClearDisplay();
+        });
+    </script>
+</body>
+</html>

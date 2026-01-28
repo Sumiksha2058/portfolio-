@@ -1,0 +1,87 @@
+:root{
+  --size: 420px;
+  --point-size: 20px;
+  --line-color: #444;
+  --bg: #fafafa;
+  --p1: #1b6ef6;
+  --p2: #e04a4a;
+  --highlight: #ffd54d;
+}
+*{box-sizing:border-box}
+body{
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: #222;
+  padding: 24px;
+}
+.container{
+  max-width: 720px;
+  margin: 0 auto;
+}
+h1{margin:0 0 8px}
+.description{margin:6px 0 18px;color:#444}
+.controls{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+#status{font-weight:600}
+#board{
+  width:var(--size);
+  height:calc(var(--size) * 0.66);
+  background: white;
+  border: 1px solid #ddd;
+  margin-bottom:12px;
+  position:relative;
+  display:block;
+  box-shadow: 0 6px 18px rgba(20,20,20,0.06);
+  padding:12px;
+}
+
+/* draw lines with an svg background */
+#board svg{
+  position:absolute;
+  inset:12px;
+  width:calc(100% - 24px);
+  height:calc(100% - 24px);
+  pointer-events:none;
+}
+
+/* points */
+.point{
+  width:var(--point-size);
+  height:var(--point-size);
+  border-radius:50%;
+  background: white;
+  border:3px solid var(--line-color);
+  position:absolute;
+  transform:translate(-50%,-50%);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .12s, box-shadow .12s;
+}
+.point:hover{transform:translate(-50%,-50%) scale(1.06); box-shadow:0 6px 12px rgba(0,0,0,0.08)}
+.point.disabled{opacity:0.6; cursor:not-allowed}
+
+/* piece markers */
+.piece{
+  width: calc(var(--point-size) - 10px);
+  height: calc(var(--point-size) - 10px);
+  border-radius:50%;
+  display:block;
+}
+.p1 .piece{background:var(--p1)}
+.p2 .piece{background:var(--p2)}
+.empty .piece{background:transparent; border:2px dashed #bbb}
+
+/* highlight selectable */
+.point.selectable{box-shadow:0 0 0 5px rgba(100,160,255,0.08); border-color:var(--highlight)}
+
+/* layout info */
+.legend{margin-top:10px;display:flex;gap:12px}
+.dot{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;background:#fff;border-radius:6px;border:1px solid #eee}
+.dot::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%}
+.dot.p1::before{background:var(--p1)}
+.dot.p2::before{background:var(--p2)}
+
+button{padding:8px 12px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer}
+button:active{transform:translateY(1px)}
+footer{margin-top:18px;color:#666}

@@ -89,24 +89,27 @@
         .point {
             cursor: pointer;
             transition: all 0.3s ease;
+            fill: #ddd;
+            pointer-events: all;
         }
 
-        .point:hover circle {
-            r: 10;
-            filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.6));
+        .point:hover {
+            r: 12;
+            fill: #bbb;
         }
 
         .piece {
-            cursor: grab;
+            cursor: pointer;
             transition: all 0.2s ease;
+            stroke: white;
+            stroke-width: 2;
+            pointer-events: all;
         }
 
-        .piece:active {
-            cursor: grabbing;
-        }
-
-        .piece:hover {
-            filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+        .piece.selected {
+            stroke: #333;
+            stroke-width: 3;
+            filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
         }
 
         .info-panel {
@@ -123,16 +126,19 @@
             padding: 12px;
             border-radius: 8px;
             text-align: center;
+            transition: all 0.3s ease;
         }
 
         .player-turn.p1 {
             background: rgba(255, 107, 107, 0.1);
             color: var(--player1);
+            border: 1px solid var(--player1);
         }
 
         .player-turn.p2 {
             background: rgba(78, 205, 196, 0.1);
             color: var(--player2);
+            border: 1px solid var(--player2);
         }
 
         .phase-info {
@@ -160,13 +166,8 @@
             font-size: 0.85rem;
         }
 
-        .piece-count.p1 {
-            border-top: 3px solid var(--player1);
-        }
-
-        .piece-count.p2 {
-            border-top: 3px solid var(--player2);
-        }
+        .piece-count.p1 { border-top: 3px solid var(--player1); }
+        .piece-count.p2 { border-top: 3px solid var(--player2); }
 
         .controls {
             display: grid;
@@ -215,19 +216,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .message.success {
-            display: block;
-            background: #f0fff4;
-            color: #22863a;
-            border: 1px solid #c6f6d5;
-        }
-
-        .message.info {
-            display: block;
-            background: #f1f5f9;
-            color: var(--text-dark);
-            border: 1px solid #cbd5e0;
-        }
+        .message.success { display: block; background: #f0fff4; color: #22863a; border: 1px solid #c6f6d5; }
+        .message.info { display: block; background: #f1f5f9; color: var(--text-dark); border: 1px solid #cbd5e0; }
 
         .instructions {
             margin-top: 30px;
@@ -237,55 +227,17 @@
             border: 1px solid #edf2f7;
         }
 
-        .instructions h3 {
-            color: var(--primary);
-            margin-bottom: 12px;
-            font-size: 1rem;
-        }
+        .instructions h3 { color: var(--primary); margin-bottom: 12px; font-size: 1rem; }
+        .instructions ol { margin-left: 20px; color: var(--text-dark); font-size: 0.9rem; line-height: 1.6; }
+        .instructions li { margin-bottom: 8px; }
 
-        .instructions ol {
-            margin-left: 20px;
-            color: var(--text-dark);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .instructions li {
-            margin-bottom: 8px;
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .back-link a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: color 0.3s ease;
-        }
-
-        .back-link a:hover {
-            color: var(--primary);
-        }
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: var(--text-light); text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; }
 
         @media (max-width: 600px) {
-            .game-wrapper {
-                grid-template-columns: 1fr;
-            }
-
-            .board {
-                width: 250px;
-                height: 250px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
+            .game-wrapper { grid-template-columns: 1fr; }
+            .board { width: 250px; height: 250px; }
+            h1 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -299,34 +251,28 @@
                 <div class="board">
                     <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
                         <!-- Grid lines -->
-                        <line x1="50" y1="50" x2="250" y2="50" stroke="#ccc" stroke-width="2"/>
-                        <line x1="50" y1="150" x2="250" y2="150" stroke="#ccc" stroke-width="2"/>
-                        <line x1="50" y1="250" x2="250" y2="250" stroke="#ccc" stroke-width="2"/>
-                        
-                        <line x1="50" y1="50" x2="50" y2="250" stroke="#ccc" stroke-width="2"/>
-                        <line x1="150" y1="50" x2="150" y2="250" stroke="#ccc" stroke-width="2"/>
-                        <line x1="250" y1="50" x2="250" y2="250" stroke="#ccc" stroke-width="2"/>
-                        
-                        <!-- Diagonals -->
-                        <line x1="50" y1="50" x2="250" y2="250" stroke="#ccc" stroke-width="2"/>
-                        <line x1="250" y1="50" x2="50" y2="250" stroke="#ccc" stroke-width="2"/>
+                        <g stroke="#ccc" stroke-width="2">
+                            <line x1="50" y1="50" x2="250" y2="50"/>
+                            <line x1="50" y1="150" x2="250" y2="150"/>
+                            <line x1="50" y1="250" x2="250" y2="250"/>
+                            <line x1="50" y1="50" x2="50" y2="250"/>
+                            <line x1="150" y1="50" x2="150" y2="250"/>
+                            <line x1="250" y1="50" x2="250" y2="250"/>
+                            <line x1="50" y1="50" x2="250" y2="250"/>
+                            <line x1="250" y1="50" x2="50" y2="250"/>
+                        </g>
 
-                        <!-- Intersection points -->
+                        <!-- Intersection points (placed AFTER lines to be on top) -->
                         <g id="points">
-                            <!-- Row 1 -->
-                            <circle class="point" cx="50" cy="50" r="6" fill="#ddd" data-pos="0"/>
-                            <circle class="point" cx="150" cy="50" r="6" fill="#ddd" data-pos="1"/>
-                            <circle class="point" cx="250" cy="50" r="6" fill="#ddd" data-pos="2"/>
-                            
-                            <!-- Row 2 -->
-                            <circle class="point" cx="50" cy="150" r="6" fill="#ddd" data-pos="3"/>
-                            <circle class="point" cx="150" cy="150" r="6" fill="#ddd" data-pos="4"/>
-                            <circle class="point" cx="250" cy="150" r="6" fill="#ddd" data-pos="5"/>
-                            
-                            <!-- Row 3 -->
-                            <circle class="point" cx="50" cy="250" r="6" fill="#ddd" data-pos="6"/>
-                            <circle class="point" cx="150" cy="250" r="6" fill="#ddd" data-pos="7"/>
-                            <circle class="point" cx="250" cy="250" r="6" fill="#ddd" data-pos="8"/>
+                            <circle class="point" cx="50" cy="50" r="10" data-pos="0"/>
+                            <circle class="point" cx="150" cy="50" r="10" data-pos="1"/>
+                            <circle class="point" cx="250" cy="50" r="10" data-pos="2"/>
+                            <circle class="point" cx="50" cy="150" r="10" data-pos="3"/>
+                            <circle class="point" cx="150" cy="150" r="10" data-pos="4"/>
+                            <circle class="point" cx="250" cy="150" r="10" data-pos="5"/>
+                            <circle class="point" cx="50" cy="250" r="10" data-pos="6"/>
+                            <circle class="point" cx="150" cy="250" r="10" data-pos="7"/>
+                            <circle class="point" cx="250" cy="250" r="10" data-pos="8"/>
                         </g>
 
                         <!-- Pieces container -->
@@ -337,22 +283,19 @@
 
             <div class="info-panel">
                 <div class="player-turn p1" id="playerTurn">Player 1's Turn</div>
-                
                 <div class="phase-info" id="phaseInfo">
-                    <strong>Phase:</strong> <span id="phaseText">Placement (3/3 pieces)</span>
+                    <strong>Phase:</strong> <span id="phaseText">Placement (0/3 pieces)</span>
                 </div>
-
                 <div class="pieces-count">
                     <div class="piece-count p1">
                         <strong>Player 1</strong><br>
-                        <span id="p1Count">3</span> pieces
+                        <span id="p1Count">0</span>/3 pieces
                     </div>
                     <div class="piece-count p2">
                         <strong>Player 2</strong><br>
-                        <span id="p2Count">3</span> pieces
+                        <span id="p2Count">0</span>/3 pieces
                     </div>
                 </div>
-
                 <div class="controls">
                     <button class="btn btn-primary" onclick="resetGame()">
                         <i class="fas fa-redo"></i> New Game
@@ -361,7 +304,6 @@
                         <i class="fas fa-undo"></i> Undo
                     </button>
                 </div>
-
                 <div id="message" class="message"></div>
             </div>
         </div>
@@ -381,178 +323,170 @@
     </div>
 
     <script>
-        const BOARD_SIZE = 3;
-        const TOTAL_POSITIONS = 9;
         const PIECES_PER_PLAYER = 3;
-
-        let gameState = {
-            board: Array(TOTAL_POSITIONS).fill(null), // 0: empty, 1: player1, 2: player2
-            currentPlayer: 1,
-            phase: 'placement', // 'placement' or 'movement'
-            piecesPlaced: { 1: 0, 2: 0 },
-            selectedPiece: null,
-            history: []
-        };
-
         const positions = [
             { x: 50, y: 50 }, { x: 150, y: 50 }, { x: 250, y: 50 },
             { x: 50, y: 150 }, { x: 150, y: 150 }, { x: 250, y: 150 },
             { x: 50, y: 250 }, { x: 150, y: 250 }, { x: 250, y: 250 }
         ];
-
         const adjacency = [
             [1, 3, 4], [0, 2, 4], [1, 4, 5],
             [0, 4, 6], [0, 1, 2, 3, 5, 6, 7, 8], [2, 4, 8],
             [3, 4, 7], [4, 6, 8], [4, 5, 7]
         ];
-
         const winningLines = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8],
             [0, 3, 6], [1, 4, 7], [2, 5, 8],
             [0, 4, 8], [2, 4, 6]
         ];
 
-        function initGame() {
-            gameState = {
-                board: Array(TOTAL_POSITIONS).fill(null),
-                currentPlayer: 1,
-                phase: 'placement',
-                piecesPlaced: { 1: 0, 2: 0 },
-                selectedPiece: null,
-                history: []
-            };
-            renderBoard();
-            updateUI();
-        }
+        let gameState = {
+            board: Array(9).fill(null),
+            currentPlayer: 1,
+            phase: 'placement',
+            piecesPlaced: { 1: 0, 2: 0 },
+            selectedPiece: null,
+            history: [],
+            winner: null
+        };
 
-        function renderBoard() {
-            const piecesContainer = document.getElementById('pieces');
-            piecesContainer.innerHTML = '';
-
-            gameState.board.forEach((player, index) => {
-                if (player) {
-                    const pos = positions[index];
-                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                    circle.setAttribute('cx', pos.x);
-                    circle.setAttribute('cy', pos.y);
-                    circle.setAttribute('r', '12');
-                    circle.setAttribute('fill', player === 1 ? '#FF6B6B' : '#4ECDC4');
-                    circle.setAttribute('class', 'piece');
-                    circle.setAttribute('data-index', index);
-                    circle.addEventListener('click', () => selectPiece(index));
-                    piecesContainer.appendChild(circle);
-                }
-            });
-
+        function init() {
             document.querySelectorAll('.point').forEach(point => {
-                const index = parseInt(point.getAttribute('data-pos'));
-                if (gameState.board[index]) {
-                    point.setAttribute('fill', '#999');
-                } else {
-                    point.setAttribute('fill', '#ddd');
-                }
+                point.addEventListener('click', () => handlePointClick(parseInt(point.dataset.pos)));
             });
+            render();
         }
 
-        function selectPiece(index) {
+        function handlePointClick(index) {
+            if (gameState.winner) return;
+
             if (gameState.phase === 'placement') {
-                if (!gameState.board[index]) {
-                    placePiece(index);
+                if (gameState.board[index] === null) {
+                    saveHistory();
+                    gameState.board[index] = gameState.currentPlayer;
+                    gameState.piecesPlaced[gameState.currentPlayer]++;
+                    
+                    if (gameState.piecesPlaced[1] === PIECES_PER_PLAYER && gameState.piecesPlaced[2] === PIECES_PER_PLAYER) {
+                        gameState.phase = 'movement';
+                    }
+                    
+                    if (checkWin()) {
+                        gameState.winner = gameState.currentPlayer;
+                    } else {
+                        gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
+                    }
+                    render();
                 }
             } else {
                 if (gameState.board[index] === gameState.currentPlayer) {
                     gameState.selectedPiece = gameState.selectedPiece === index ? null : index;
-                    renderBoard();
+                    render();
                 } else if (gameState.selectedPiece !== null && gameState.board[index] === null) {
-                    movePiece(gameState.selectedPiece, index);
+                    if (adjacency[gameState.selectedPiece].includes(index)) {
+                        saveHistory();
+                        gameState.board[gameState.selectedPiece] = null;
+                        gameState.board[index] = gameState.currentPlayer;
+                        gameState.selectedPiece = null;
+                        
+                        if (checkWin()) {
+                            gameState.winner = gameState.currentPlayer;
+                        } else {
+                            gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
+                        }
+                        render();
+                    } else {
+                        showMessage('Invalid move! Move to an adjacent point.', 'info');
+                    }
                 }
             }
-        }
-
-        function placePiece(index) {
-            gameState.history.push(JSON.stringify(gameState));
-            gameState.board[index] = gameState.currentPlayer;
-            gameState.piecesPlaced[gameState.currentPlayer]++;
-
-            if (gameState.piecesPlaced[1] === PIECES_PER_PLAYER && gameState.piecesPlaced[2] === PIECES_PER_PLAYER) {
-                gameState.phase = 'movement';
-            }
-
-            nextTurn();
-            renderBoard();
-            updateUI();
-        }
-
-        function movePiece(from, to) {
-            if (!adjacency[from].includes(to)) {
-                showMessage('Invalid move! Pieces can only move to adjacent positions.', 'info');
-                return;
-            }
-
-            gameState.history.push(JSON.stringify(gameState));
-            gameState.board[from] = null;
-            gameState.board[to] = gameState.currentPlayer;
-            gameState.selectedPiece = null;
-
-            if (checkWin()) {
-                showMessage(`🏆 Player ${gameState.currentPlayer} wins!`, 'success');
-            } else {
-                nextTurn();
-            }
-
-            renderBoard();
-            updateUI();
-        }
-
-        function nextTurn() {
-            gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
         }
 
         function checkWin() {
-            for (let line of winningLines) {
-                if (line.every(pos => gameState.board[pos] === gameState.currentPlayer)) {
-                    return true;
-                }
-            }
-            return false;
+            return winningLines.some(line => 
+                line.every(pos => gameState.board[pos] === gameState.currentPlayer)
+            );
         }
 
-        function updateUI() {
-            const playerTurnEl = document.getElementById('playerTurn');
-            playerTurnEl.className = `player-turn ${gameState.currentPlayer === 1 ? 'p1' : 'p2'}`;
-            playerTurnEl.textContent = `Player ${gameState.currentPlayer}'s Turn`;
+        function saveHistory() {
+            gameState.history.push(JSON.stringify({
+                board: [...gameState.board],
+                currentPlayer: gameState.currentPlayer,
+                phase: gameState.phase,
+                piecesPlaced: {...gameState.piecesPlaced},
+                selectedPiece: gameState.selectedPiece
+            }));
+        }
 
-            const phaseText = gameState.phase === 'placement'
-                ? `Placement (${gameState.piecesPlaced[gameState.currentPlayer]}/3 pieces)`
+        function undoMove() {
+            if (gameState.history.length > 0) {
+                const prev = JSON.parse(gameState.history.pop());
+                Object.assign(gameState, prev);
+                gameState.winner = null;
+                render();
+                showMessage('Move undone!', 'info');
+            }
+        }
+
+        function resetGame() {
+            gameState = {
+                board: Array(9).fill(null),
+                currentPlayer: 1,
+                phase: 'placement',
+                piecesPlaced: { 1: 0, 2: 0 },
+                selectedPiece: null,
+                history: [],
+                winner: null
+            };
+            render();
+            showMessage('Game reset!', 'info');
+        }
+
+        function render() {
+            const piecesContainer = document.getElementById('pieces');
+            piecesContainer.innerHTML = '';
+            
+            gameState.board.forEach((player, index) => {
+                if (player !== null) {
+                    const pos = positions[index];
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', pos.x);
+                    circle.setAttribute('cy', pos.y);
+                    circle.setAttribute('r', '14');
+                    circle.setAttribute('fill', player === 1 ? '#FF6B6B' : '#4ECDC4');
+                    circle.setAttribute('class', `piece ${gameState.selectedPiece === index ? 'selected' : ''}`);
+                    circle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        handlePointClick(index);
+                    });
+                    piecesContainer.appendChild(circle);
+                }
+            });
+
+            const playerTurnEl = document.getElementById('playerTurn');
+            playerTurnEl.className = `player-turn p${gameState.currentPlayer}`;
+            playerTurnEl.textContent = gameState.winner ? `Player ${gameState.winner} Wins!` : `Player ${gameState.currentPlayer}'s Turn`;
+            
+            const phaseText = gameState.phase === 'placement' 
+                ? `Placement (${gameState.piecesPlaced[gameState.currentPlayer]}/3 pieces)` 
                 : 'Movement Phase';
             document.getElementById('phaseText').textContent = phaseText;
-
+            
             document.getElementById('p1Count').textContent = gameState.piecesPlaced[1];
             document.getElementById('p2Count').textContent = gameState.piecesPlaced[2];
+
+            if (gameState.winner) {
+                showMessage(`🏆 Player ${gameState.winner} wins!`, 'success');
+            }
         }
 
         function showMessage(text, type) {
             const messageEl = document.getElementById('message');
             messageEl.textContent = text;
             messageEl.className = `message ${type}`;
-            setTimeout(() => messageEl.className = 'message', 4000);
+            setTimeout(() => { if (messageEl.textContent === text) messageEl.className = 'message'; }, 3000);
         }
 
-        function resetGame() {
-            initGame();
-            showMessage('Game reset! Player 1 starts.', 'info');
-        }
-
-        function undoMove() {
-            if (gameState.history.length > 0) {
-                gameState = JSON.parse(gameState.history.pop());
-                renderBoard();
-                updateUI();
-                showMessage('Move undone!', 'info');
-            }
-        }
-
-        initGame();
+        init();
     </script>
 </body>
 </html>

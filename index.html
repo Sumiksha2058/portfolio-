@@ -3,79 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sumiksha Neupane - Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Blog - Web Development & Computer Science Insights | Sumiksha Neupane</title>
+    <meta name="description" content="Explore Sumiksha Neupane's blog for articles, tutorials, and insights on web development, computer science, and technology trends.">
+    <meta name="keywords" content="web development blog, computer science blog, programming, tutorials, tech insights, Sumiksha Neupane">
+    <meta property="og:title" content="Blog - Web Development & Computer Science Insights | Sumiksha Neupane">
+    <meta property="og:description" content="Explore Sumiksha Neupane's blog for articles, tutorials, and insights on web development, computer science, and technology trends.">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="https://sumiksha2058.github.io/portfolio/blog/index.html">
+    <meta property="og:image" content="https://sumiksha2058.github.io/portfolio/assets/images/blog_thumbnail.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .blog-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+        }
+
+        .blog-category {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .blog-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .blog-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .blog-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-excerpt {
+            color: #718096;
+            margin-bottom: 20px;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .blog-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .blog-link:hover {
+            background: #764ba2;
+            transform: translateX(5px);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: opacity 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link a:hover {
+            opacity: 0.8;
+        }
+
+        .search-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">Sumiksha Neupane</div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#education" class="nav-link">Education</a></li>
-                <li><a href="fun/index.html" class="nav-link">Fun</a></li>
-                <li><a href="blog/index.html" class="nav-link">Blog</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+    <div class="container">
+        <div class="header">
+            <h1>📝 Blog</h1>
+            <p>Thoughts, tutorials, and insights on web development and computer science</p>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Hi, I'm Sumiksha Neupane</h1>
-                <p class="hero-subtitle">Bachelor of Computer Application Student</p>
-                <p class="hero-description">Aspiring developer passionate about learning and building web applications</p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">Get In Touch</a>
-                    <a href="https://github.com/sumiksha2058" target="_blank" class="btn btn-secondary">View GitHub</a>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search blog posts..." onkeyup="filterBlogs()">
+        </div>
+
+        <div class="blog-grid" id="blogGrid">
+            <div class="blog-card">
+                <div class="blog-header">
+                    <span class="blog-category">Web Development</span>
+                    <h2>Getting Started with Web Development</h2>
+                    <div class="blog-meta">
+                        <span>📅 Jan 10, 2025</span>
+                        <span>⏱️ 5 min read</span>
+                    </div>
+                </div>
+                <div class="blog-content">
+                    <p class="blog-excerpt">Learn the fundamentals of web development with HTML, CSS, and JavaScript. This comprehensive guide will help you start your journey as a web developer.</p>
+                    <a href="getting-started-web-development.html" class="blog-link">Read More →</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-header">
+                    <span class="blog-category">Learning</span>
+                    <h2>My Journey as a Computer Science Student</h2>
+                    <div class="blog-meta">
+                        <span>📅 Jan 5, 2025</span>
+                        <span>⏱️ 7 min read</span>
+                    </div>
+                </div>
+                <div class="blog-content">
+                    <p class="blog-excerpt">Sharing my experience and lessons learned while pursuing a Bachelor of Computer Application degree at Tribhuvan University.</p>
+                    <a href="my-journey-computer-science.html" class="blog-link">Read More →</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-header">
+                    <span class="blog-category">Tools & Tips</span>
+                    <h2>10 Essential Tools for Web Developers</h2>
+                    <div class="blog-meta">
+                        <span>📅 Dec 28, 2024</span>
+                        <span>⏱️ 6 min read</span>
+                    </div>
+                </div>
+                <div class="blog-content">
+                    <p class="blog-excerpt">Discover the top tools and resources that every web developer should know about. From code editors to version control, we cover it all.</p>
+                    <a href="web-development-tools.html" class="blog-link">Read More →</a>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <p class="about-description">I am a BCA student with interests in web development, databases, and problem solving. I enjoy building projects and learning new technologies.</p>
+        <div class="back-link">
+            <a href="../index.html">← Back to Portfolio</a>
         </div>
-    </section>
+    </div>
 
-    <!-- Education Section -->
-    <section id="education" class="education">
-        <div class="container">
-            <h2 class="section-title">Education</h2>
-            <p class="education-description">Pursuing a comprehensive degree in computer applications with focus on software development, database management, and web technologies.</p>
-        </div>
-    </section>
+    <script>
+        function filterBlogs() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const blogCards = document.querySelectorAll('.blog-card');
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Contact</h2>
-            <p class="contact-info">Phone: +977-9818455889 | Location: Kathmandu, Nepal</p>
-            <p class="contact-info">GitHub: <a href="https://github.com/sumiksha2058" target="_blank">github.com/sumiksha2058</a></p>
-        </div>
-    </section>
+            blogCards.forEach(card => {
+                const title = card.querySelector('h2').textContent.toLowerCase();
+                const excerpt = card.querySelector('.blog-excerpt').textContent.toLowerCase();
+                const category = card.querySelector('.blog-category').textContent.toLowerCase();
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-          <p>&copy; <script>document.write(new Date().getFullYear());</script> Sumiksha Neupane. All rights reserved.</p>
-
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+                if (title.includes(searchTerm) || excerpt.includes(searchTerm) || category.includes(searchTerm)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

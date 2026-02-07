@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budhhi Chal - Traditional Board Game | Strategy Game</title>
+    <meta name="description" content="Play Budhhi Chal, a traditional Indian strategy board game. Place and move your pieces to align three in a row and win!">
+    <meta name="keywords" content="Budhhi Chal, traditional game, board game, strategy game, Indian game, two-player game">
+    <meta property="og:title" content="Budhhi Chal - Traditional Board Game">
+    <meta property="og:description" content="Play Budhhi Chal, a traditional Indian strategy board game. Place and move your pieces to align three in a row and win!">
+    <meta property="og:type" content="game">
+    <meta property="og:url" content="https://sumiksha2058.github.io/portfolio/fun/budhhi-chal.html">
+    <meta property="og:image" content="https://sumiksha2058.github.io/portfolio/assets/images/budhhi_chal_thumbnail.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --player1: #FF6B6B;
+            --player2: #4ECDC4;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 700px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            background: var(--bg-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .game-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .board-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .board {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background: #f8fafc;
+            border: 3px solid var(--primary);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .point {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            fill: #ddd;
+            pointer-events: all;
+        }
+
+        .point:hover {
+            r: 12;
+            fill: #bbb;
+        }
+
+        .piece {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            stroke: white;
+            stroke-width: 2;
+            pointer-events: all;
+        }
+
+        .piece.selected {
+            stroke: #333;
+            stroke-width: 3;
+            filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .info-panel {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #edf2f7;
+        }
+
+        .player-turn {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .player-turn.p1 {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--player1);
+            border: 1px solid var(--player1);
+        }
+
+        .player-turn.p2 {
+            background: rgba(78, 205, 196, 0.1);
+            color: var(--player2);
+            border: 1px solid var(--player2);
+        }
+
+        .phase-info {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary);
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .pieces-count {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .piece-count {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .piece-count.p1 { border-top: 3px solid var(--player1); }
+        .piece-count.p2 { border-top: 3px solid var(--player2); }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--bg-gradient);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.success { display: block; background: #f0fff4; color: #22863a; border: 1px solid #c6f6d5; }
+        .message.info { display: block; background: #f1f5f9; color: var(--text-dark); border: 1px solid #cbd5e0; }
+
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #edf2f7;
+        }
+
+        .instructions h3 { color: var(--primary); margin-bottom: 12px; font-size: 1rem; }
+        .instructions ol { margin-left: 20px; color: var(--text-dark); font-size: 0.9rem; line-height: 1.6; }
+        .instructions li { margin-bottom: 8px; }
+
+        .back-link { text-align: center; margin-top: 30px; }
+        .back-link a { color: var(--text-light); text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; }
+
+        @media (max-width: 600px) {
+            .game-wrapper { grid-template-columns: 1fr; }
+            .board { width: 250px; height: 250px; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Budhhi Chal</h1>
+        <p class="subtitle">Traditional Board Game - Test Your Strategy</p>
+
+        <div class="game-wrapper">
+            <div class="board-section">
+                <div class="board">
+                    <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Grid lines -->
+                        <g stroke="#ccc" stroke-width="2">
+                            <line x1="50" y1="50" x2="250" y2="50"/>
+                            <line x1="50" y1="150" x2="250" y2="150"/>
+                            <line x1="50" y1="250" x2="250" y2="250"/>
+                            <line x1="50" y1="50" x2="50" y2="250"/>
+                            <line x1="150" y1="50" x2="150" y2="250"/>
+                            <line x1="250" y1="50" x2="250" y2="250"/>
+                            <line x1="50" y1="50" x2="250" y2="250"/>
+                            <line x1="250" y1="50" x2="50" y2="250"/>
+                        </g>
+
+                        <!-- Intersection points (placed AFTER lines to be on top) -->
+                        <g id="points">
+                            <circle class="point" cx="50" cy="50" r="10" data-pos="0"/>
+                            <circle class="point" cx="150" cy="50" r="10" data-pos="1"/>
+                            <circle class="point" cx="250" cy="50" r="10" data-pos="2"/>
+                            <circle class="point" cx="50" cy="150" r="10" data-pos="3"/>
+                            <circle class="point" cx="150" cy="150" r="10" data-pos="4"/>
+                            <circle class="point" cx="250" cy="150" r="10" data-pos="5"/>
+                            <circle class="point" cx="50" cy="250" r="10" data-pos="6"/>
+                            <circle class="point" cx="150" cy="250" r="10" data-pos="7"/>
+                            <circle class="point" cx="250" cy="250" r="10" data-pos="8"/>
+                        </g>
+
+                        <!-- Pieces container -->
+                        <g id="pieces"></g>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <div class="player-turn p1" id="playerTurn">Player 1's Turn</div>
+                <div class="phase-info" id="phaseInfo">
+                    <strong>Phase:</strong> <span id="phaseText">Placement (0/3 pieces)</span>
+                </div>
+                <div class="pieces-count">
+                    <div class="piece-count p1">
+                        <strong>Player 1</strong><br>
+                        <span id="p1Count">0</span>/3 pieces
+                    </div>
+                    <div class="piece-count p2">
+                        <strong>Player 2</strong><br>
+                        <span id="p2Count">0</span>/3 pieces
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="resetGame()">
+                        <i class="fas fa-redo"></i> New Game
+                    </button>
+                    <button class="btn btn-secondary" onclick="undoMove()">
+                        <i class="fas fa-undo"></i> Undo
+                    </button>
+                </div>
+                <div id="message" class="message"></div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3><i class="fas fa-book"></i> How to Play</h3>
+            <ol>
+                <li><strong>Placement Phase:</strong> Players take turns placing their 3 pieces on any empty intersection point.</li>
+                <li><strong>Movement Phase:</strong> Once all pieces are placed, players move one piece to an adjacent empty point along the lines.</li>
+                <li><strong>Win Condition:</strong> First player to align their 3 pieces in a straight line (horizontal, vertical, or diagonal) wins!</li>
+            </ol>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Fun Section</a>
+        </div>
+    </div>
+
+    <script>
+        // Sound effects using Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(frequency, duration, type = 'sine') {
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = type;
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            } catch (e) {
+                console.log('Audio not available');
+            }
+        }
+        
+        function playPlaceSound() {
+            playSound(600, 0.1);
+            setTimeout(() => playSound(800, 0.1), 50);
+        }
+        
+        function playMoveSound() {
+            playSound(400, 0.15);
+            setTimeout(() => playSound(600, 0.15), 100);
+        }
+        
+        function playWinSound() {
+            playSound(800, 0.15);
+            setTimeout(() => playSound(1000, 0.15), 150);
+            setTimeout(() => playSound(1200, 0.2), 300);
+        }
+        
+        function playErrorSound() {
+            playSound(200, 0.2);
+        }
+        
+        function playUndoSound() {
+            playSound(500, 0.1);
+            setTimeout(() => playSound(400, 0.1), 50);
+        }
+        
+        const PIECES_PER_PLAYER = 3;
+        const positions = [
+            { x: 50, y: 50 }, { x: 150, y: 50 }, { x: 250, y: 50 },
+            { x: 50, y: 150 }, { x: 150, y: 150 }, { x: 250, y: 150 },
+            { x: 50, y: 250 }, { x: 150, y: 250 }, { x: 250, y: 250 }
+        ];
+        const adjacency = [
+            [1, 3, 4], [0, 2, 4], [1, 4, 5],
+            [0, 4, 6], [0, 1, 2, 3, 5, 6, 7, 8], [2, 4, 8],
+            [3, 4, 7], [4, 6, 8], [4, 5, 7]
+        ];
+        const winningLines = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        let gameState = {
+            board: Array(9).fill(null),
+            currentPlayer: 1,
+            phase: 'placement',
+            piecesPlaced: { 1: 0, 2: 0 },
+            selectedPiece: null,
+            history: [],
+            winner: null
+        };
+
+        function init() {
+            document.querySelectorAll('.point').forEach(point => {
+                point.addEventListener('click', () => handlePointClick(parseInt(point.dataset.pos)));
+            });
+            render();
+        }
+
+        function handlePointClick(index) {
+            if (gameState.winner) return;
+
+            if (gameState.phase === 'placement') {
+                if (gameState.board[index] === null) {
+                    saveHistory();
+                    gameState.board[index] = gameState.currentPlayer;
+                    gameState.piecesPlaced[gameState.currentPlayer]++;
+                    playPlaceSound();
+                    
+                    if (gameState.piecesPlaced[1] === PIECES_PER_PLAYER && gameState.piecesPlaced[2] === PIECES_PER_PLAYER) {
+                        gameState.phase = 'movement';
+                    }
+                    
+                    if (checkWin()) {
+                        gameState.winner = gameState.currentPlayer;
+                        playWinSound();
+                    } else {
+                        gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
+                    }
+                    render();
+                } else {
+                    playErrorSound();
+                }
+            } else {
+                if (gameState.board[index] === gameState.currentPlayer) {
+                    gameState.selectedPiece = gameState.selectedPiece === index ? null : index;
+                    playSound(700, 0.08);
+                    render();
+                } else if (gameState.selectedPiece !== null && gameState.board[index] === null) {
+                    if (adjacency[gameState.selectedPiece].includes(index)) {
+                        saveHistory();
+                        gameState.board[gameState.selectedPiece] = null;
+                        gameState.board[index] = gameState.currentPlayer;
+                        gameState.selectedPiece = null;
+                        playMoveSound();
+                        
+                        if (checkWin()) {
+                            gameState.winner = gameState.currentPlayer;
+                            playWinSound();
+                        } else {
+                            gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
+                        }
+                        render();
+                    } else {
+                        playErrorSound();
+                        showMessage('Invalid move! Move to an adjacent point.', 'info');
+                    }
+                }
+            }
+        }
+
+        function checkWin() {
+            return winningLines.some(line => 
+                line.every(pos => gameState.board[pos] === gameState.currentPlayer)
+            );
+        }
+
+        function saveHistory() {
+            gameState.history.push(JSON.stringify({
+                board: [...gameState.board],
+                currentPlayer: gameState.currentPlayer,
+                phase: gameState.phase,
+                piecesPlaced: {...gameState.piecesPlaced},
+                selectedPiece: gameState.selectedPiece
+            }));
+        }
+
+        function undoMove() {
+            if (gameState.history.length > 0) {
+                const prev = JSON.parse(gameState.history.pop());
+                Object.assign(gameState, prev);
+                gameState.winner = null;
+                playUndoSound();
+                render();
+                showMessage('Move undone!', 'info');
+            }
+        }
+
+        function resetGame() {
+            gameState = {
+                board: Array(9).fill(null),
+                currentPlayer: 1,
+                phase: 'placement',
+                piecesPlaced: { 1: 0, 2: 0 },
+                selectedPiece: null,
+                history: [],
+                winner: null
+            };
+            playUndoSound();
+            render();
+            showMessage('Game reset!', 'info');
+        }
+
+        function render() {
+            const piecesContainer = document.getElementById('pieces');
+            piecesContainer.innerHTML = '';
+            
+            gameState.board.forEach((player, index) => {
+                if (player !== null) {
+                    const pos = positions[index];
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', pos.x);
+                    circle.setAttribute('cy', pos.y);
+                    circle.setAttribute('r', '14');
+                    circle.setAttribute('fill', player === 1 ? '#FF6B6B' : '#4ECDC4');
+                    circle.setAttribute('class', `piece ${gameState.selectedPiece === index ? 'selected' : ''}`);
+                    circle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        handlePointClick(index);
+                    });
+                    piecesContainer.appendChild(circle);
+                }
+            });
+
+            const playerTurnEl = document.getElementById('playerTurn');
+            playerTurnEl.className = `player-turn p${gameState.currentPlayer}`;
+            playerTurnEl.textContent = gameState.winner ? `Player ${gameState.winner} Wins!` : `Player ${gameState.currentPlayer}'s Turn`;
+            
+            const phaseText = gameState.phase === 'placement' 
+                ? `Placement (${gameState.piecesPlaced[gameState.currentPlayer]}/3 pieces)` 
+                : 'Movement Phase';
+            document.getElementById('phaseText').textContent = phaseText;
+            
+            document.getElementById('p1Count').textContent = gameState.piecesPlaced[1];
+            document.getElementById('p2Count').textContent = gameState.piecesPlaced[2];
+
+            if (gameState.winner) {
+                showMessage(`🏆 Player ${gameState.winner} wins!`, 'success');
+            }
+        }
+
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `message ${type}`;
+            setTimeout(() => { if (messageEl.textContent === text) messageEl.className = 'message'; }, 3000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
